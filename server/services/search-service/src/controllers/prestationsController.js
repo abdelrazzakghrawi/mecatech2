@@ -3,7 +3,6 @@ const Prestations = require('../models/prestationsModel');
 const getAllCategories = async (req, res) => {
     try {
         const categories = await Prestations.distinct('Categorie');
-        console.log(categories)
         res.status(200).json(categories);
     } catch (err) {
         res.status(500).json({ message: 'Server Error' });
