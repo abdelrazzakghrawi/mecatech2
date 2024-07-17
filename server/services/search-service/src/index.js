@@ -13,6 +13,7 @@ app.use(express.json());
 // Routes
 app.use('/api/auto', require('./routes/autoRoutes'));
 app.use('/api/search', require('./routes/searchRoutes'));
+app.use('/api/prestations', require('./routes/prestationsRoutes')); // Registering the new routes
 
 // Start server
 const PORT = process.env.PORT || 3003;
