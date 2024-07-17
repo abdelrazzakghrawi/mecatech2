@@ -11,6 +11,7 @@ connectDB();
 app.use(express.json());
 
 // Routes
+app.use('/api/auto', require('./routes/autoRoutes'));
 app.use('/api/search', require('./routes/searchRoutes'));
 
 // Start server
