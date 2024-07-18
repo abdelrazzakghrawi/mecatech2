@@ -13,7 +13,7 @@ const CitySelect = ({ onCityChange }) => {
     }, []);
 
     return (
-        <div className="mb-4">
+        <div className="mb-4 w-1/3 pr-2">
             <label className="block mb-2 font-medium">Choisissez une ville</label>
             <select onChange={e => onCityChange(e.target.value)} className="w-full px-4 py-2 border rounded">
                 <option value="">Sélectionnez une ville</option>

@@ -9,8 +9,10 @@ const CitySearchContainer = () => {
 
     return (
         <div className="container mx-auto p-4">
-            <CitySelect onCityChange={setSelectedCity} />
-            {selectedCity && <SearchInput selectedCity={selectedCity} />}
+            <div className="flex items-center">
+                <CitySelect onCityChange={setSelectedCity} />
+                {selectedCity && <SearchInput selectedCity={selectedCity} />}
+            </div>
         </div>
     );
 };

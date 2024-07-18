@@ -33,7 +33,7 @@ const SearchInput = ({ selectedCity }) => {
     };
 
     return (
-        <div className="relative mb-4">
+        <div className="relative mb-4 w-2/3">
             <label className="block mb-2 font-medium">Recherchez un quartier</label>
             <input
                 type="text"
