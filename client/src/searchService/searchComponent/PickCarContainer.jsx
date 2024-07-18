@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import SearchBarButton from './PickCar';
 import SearchBarModal from './PickCarModel';
 
+
 const PickCarContainer = () => {
     const [isOpen, setIsOpen] = useState(false);
 
@@ -19,6 +20,7 @@ const PickCarContainer = () => {
         <div>
             <SearchBarButton onOpen={handleOpen} />
             <SearchBarModal isOpen={isOpen} onClose={handleClose} />
+            
         </div>
     );
 };
