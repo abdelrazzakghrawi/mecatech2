@@ -2,18 +2,19 @@ import React, { useState } from 'react';
 import PrestationModel from './PrestationModel';
 
 const PresationContainer = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-    return (
-        <div className="container mx-auto flex items-center justify-center h-screen">
-            <button 
-                onClick={() => setIsModalOpen(true)} 
-                className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">
-                Show Categories
-            </button>
-            {isModalOpen && <PrestationModel onClose={() => setIsModalOpen(false)} />}
-        </div>
-    );
+  return (
+    <div className="flex-shrink-0">
+      <button
+        onClick={() => setIsModalOpen(true)}
+        className="bg-white text-black border-solid border-2 px-4 py-2 rounded hover:bg-[#1FA9B6]"
+      >
+        Show Categories
+      </button>
+      {isModalOpen && <PrestationModel onClose={() => setIsModalOpen(false)} />}
+    </div>
+  );
 };
 
 export default PresationContainer;

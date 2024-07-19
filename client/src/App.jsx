@@ -4,14 +4,13 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PickCarContainer from './searchService/searchComponent/PickCarContainer';
 import CitySearchContainer from './searchService/searchComponent/CitySearchContainer';
 import PresationContainer from './searchService/searchComponent/PresationContainer';
+import SearchBar from './searchService/searchComponent/SearchBar';
 function App() {
 
   return (
     <Router>         
           <Routes>
-          <Route path='/' element={<PickCarContainer/>}  />
-          <Route path='/search' element={<CitySearchContainer/>} />
-          <Route path='/prestation' element={<PresationContainer/>}/>
+          <Route path='/' element={<SearchBar/>}  />
           </Routes  >               
     </Router>
   )
