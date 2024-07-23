@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 
-const SearchInput = ({ selectedCity }) => {
+const SearchInput = ({ selectedCity, onQuartierChange }) => {
   const [query, setQuery] = useState('');
   const [quartiers, setQuartiers] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
@@ -30,6 +30,7 @@ const SearchInput = ({ selectedCity }) => {
   const handleSuggestionClick = (quartier) => {
     setQuery(quartier);
     setSuggestions([]);
+    onQuartierChange(quartier);
   };
 
   return (
@@ -43,9 +44,8 @@ const SearchInput = ({ selectedCity }) => {
           className="w-full px-4 py-2 border border-l-0 rounded-r-lg focus:outline-none"
           placeholder="Tapez pour rechercher..."
         />
-        <button className="bg-[#1FA9B6] text-white px-4 py-2 ">
-          <FontAwesomeIcon icon={faMapMarkerAlt}   />
-
+        <button className="bg-[#1FA9B6] text-white px-4 py-2">
+          <FontAwesomeIcon icon={faMapMarkerAlt} />
         </button>
       </div>
       {suggestions.length > 0 && (

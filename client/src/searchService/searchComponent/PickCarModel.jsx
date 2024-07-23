@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { fetchMarques, fetchModels, fetchDetails } from '../hooks/autoApi';
-
 const PickCarModel = ({ isOpen, onClose }) => {
     const [marques, setMarques] = useState([]);
     const [models, setModels] = useState([]);
@@ -10,57 +9,68 @@ const PickCarModel = ({ isOpen, onClose }) => {
     const [selectedMarque, setSelectedMarque] = useState('');
     const [selectedModel, setSelectedModel] = useState('');
     const [selectedYears, setSelectedYears] = useState('');
-
+  
     useEffect(() => {
-        if (isOpen) {
-            setSelectedMarque('');
-            setSelectedModel('');
-            setSelectedYears('');
-            setDetails({});
-        }
-    }, [isOpen]);
-
-    const handleMarqueClick = () => {
-        if (marques.length === 0) {
-            fetchMarques()
-                .then(data => setMarques(data))
-                .catch(error => console.error('Error fetching marques:', error));
-        }
-    };
-
-    const handleMarqueChange = (e) => {
-        const marque = e.target.value;
-        setSelectedMarque(marque);
+      if (isOpen) {
+        setSelectedMarque('');
         setSelectedModel('');
         setSelectedYears('');
         setDetails({});
-        if (marque) {
-            fetchModels(marque)
-                .then(data => setModels(data))
-                .catch(error => console.error('Error fetching models:', error));
-        } else {
-            setModels([]);
-        }
+      }
+    }, [isOpen]);
+  
+    const handleMarqueClick = () => {
+      if (marques.length === 0) {
+        fetchMarques()
+          .then(data => setMarques(data))
+          .catch(error => console.error('Error fetching marques:', error));
+      }
     };
-
+  
+    const handleMarqueChange = (e) => {
+      const marque = e.target.value;
+      setSelectedMarque(marque);
+      setSelectedModel('');
+      setSelectedYears('');
+      setDetails({});
+      if (marque) {
+        fetchModels(marque)
+          .then(data => setModels(data))
+          .catch(error => console.error('Error fetching models:', error));
+      } else {
+        setModels([]);
+      }
+    };
+  
     const handleModelChange = (e) => {
-        const [model, years] = e.target.value.split(' / ');
-        setSelectedModel(model);
-        setSelectedYears(years);
-        if (selectedMarque && model && years) {
-            fetchDetails(selectedMarque, model, years)
-                .then(data => setDetails(data))
-                .catch(error => console.error('Error fetching details:', error));
-        }
+      const [model, years] = e.target.value.split(' / ');
+      setSelectedModel(model);
+      setSelectedYears(years);
+      if (selectedMarque && model && years) {
+        fetchDetails(selectedMarque, model, years)
+          .then(data => setDetails(data))
+          .catch(error => console.error('Error fetching details:', error));
+      }
     };
-
+  
     const handleModelClick = () => {
-        if (selectedMarque && models.length === 0) {
-            fetchModels(selectedMarque)
-                .then(data => setModels(data))
-                .catch(error => console.error('Error fetching models:', error));
-        }
+      if (selectedMarque && models.length === 0) {
+        fetchModels(selectedMarque)
+          .then(data => setModels(data))
+          .catch(error => console.error('Error fetching models:', error));
+      }
     };
+  
+ 
+const handleClose = () => {
+    if (selectedModel && selectedYears && selectedMarque) {
+      const selectedCar = { model: selectedModel, years: selectedYears , marques :selectedMarque };
+      onClose(selectedCar); // Pass the selected car object
+    } else {
+      alert('Veuillez sélectionner un modèle et une année avant de valider'); // Display an alert
+      onClose(null); // Pass null if no car is selected
+    }
+  };
 
     return (
         isOpen && (
@@ -117,7 +127,7 @@ const PickCarModel = ({ isOpen, onClose }) => {
                     )}
                     <div className="flex justify-center">
                         <button
-                            onClick={onClose}
+                            onClick={handleClose}
                             className="bg-teal-500 text-white px-6 py-2 rounded-md hover:bg-teal-600"
                         >
                             VALIDER
