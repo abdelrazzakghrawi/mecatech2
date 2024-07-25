@@ -4,6 +4,10 @@ const connectDB = require('./config/db');
 const cors = require("cors");
 const path = require('path');
 
+
+
+
+
 const corsOptions = {
   origin: "http://localhost:5173",
 };

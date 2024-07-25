@@ -15,7 +15,6 @@ const SearchBar = () => {
     const searchParams = {
       car: context.selectedCar,
       city: context.selectedCity,
-      quartier: context.selectedQuartier,
       category: context.selectedCategory,
     };
     console.log(searchParams)

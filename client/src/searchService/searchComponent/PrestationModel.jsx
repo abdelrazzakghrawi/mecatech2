@@ -1,70 +1,100 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
-import  { useContext } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus, faMinus, faSearch } from '@fortawesome/free-solid-svg-icons'; // Import faSearch
 import { SearchContext } from './context/SearchContext';
 
-const PrestationModel = ({ onClose, onPrestationSelect ,  setSelectedCategory }) => {
-const { selectedCategory } = useContext(SearchContext); // Access selectedCategory
-
+const PrestationModel = ({ onClose, onPrestationSelect }) => {
+  const { selectedCategory } = useContext(SearchContext);
   const [categories, setCategories] = useState([]);
-  const [prestations, setPrestations] = useState({});
-  const [expandedCategory, setExpandedCategory] = useState(null);
+  const [expandedCategories, setExpandedCategories] = useState({});
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredCategories, setFilteredCategories] = useState([]);
 
   useEffect(() => {
     axios.get('http://localhost:3003/api/prestations/categories')
-      .then(response => setCategories(response.data))
+      .then(response => {
+        const categoriesData = response.data.reduce((acc, current) => {
+          Object.keys(current).forEach(key => {
+            if (key) {
+              if (!acc[key]) {
+                acc[key] = [];
+              }
+              acc[key].push(current[key]);
+            }
+          });
+          return acc;
+        }, {});
+        setCategories(categoriesData);
+        setFilteredCategories(categoriesData);
+      })
       .catch(error => console.error('Error fetching categories:', error));
   }, []);
 
   const handleCategoryClick = (category) => {
-    if (prestations[category]) {
-      setExpandedCategory(null);
-    } else {
-      axios.get(`http://localhost:3003/api/prestations/${category}/prestations`)
-        .then(response => {
-          const prestationData = response.data.map(item => item.Prestations);
-          setPrestations(prev => ({ ...prev, [category]: prestationData }));
-        })
-        .catch(error => console.error(`Error fetching prestations for ${category}:`, error));
-      setExpandedCategory(category);
-    }
+    setExpandedCategories((prev) => ({
+      ...prev,
+      [category]: !prev[category]
+    }));
+  };
+
+  const handleSearchChange = (event) => {
+    const searchValue = event.target.value.toLowerCase();
+    setSearchTerm(searchValue);
+
+    const filtered = Object.keys(categories).reduce((acc, key) => {
+      const filteredPrestations = categories[key].filter(prestation => prestation.toLowerCase().includes(searchValue));
+      if (filteredPrestations.length > 0) {
+        acc[key] = filteredPrestations;
+      }
+      return acc;
+    }, {});
+    
+    setFilteredCategories(filtered);
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-10 z-50">
-      <div className="bg-white  max-w-4xl mt-8  p-8 rounded-lg shadow-lg relative h-screen overflow-y-auto">
-        <div className="text-2xl font-semibold mb-6  text-center bg-teal-500 text-white py-4">
-          <button
-            onClick={onClose}
-            className="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
-            &#x2715;
-          </button>
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+      <div className="bg-white shadow-lg w-full max-w-4xl relative p-8 rounded-lg overflow-y-auto h-5/6">
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+        >
+          &#x2715;
+        </button>
+        <div className="text-2xl font-semibold mb-6 text-center bg-teal-500 text-white py-4">
           Sélectionnez les interventions recherchées
         </div>
         <div className="flex justify-center mb-4">
           <input
             type="text"
+            value={searchTerm}
+            onChange={handleSearchChange}
             className="w-full max-w-md px-4 py-2 border rounded"
             placeholder="Rechercher une prestation"
           />
           <button className="bg-teal-500 text-white px-4 py-2 rounded">
-            <i className="fas fa-search"></i>
+            <FontAwesomeIcon icon={faSearch} />
           </button>
         </div>
         <div className="grid grid-cols-2 gap-4">
-          {categories.map((category, index) => (
+          {Object.keys(filteredCategories).map((category, index) => (
             <div key={index} className="border p-4 rounded">
               <div
-                className="flex justify-between items-center cursor-pointer"
+                className="flex justify-between items-center cursor-pointer text-lg font-semibold"
                 onClick={() => handleCategoryClick(category)}
               >
-                <span>{category}</span>
-                <span>{expandedCategory === category ? '-' : '+'}</span>
+                {category}
+                <FontAwesomeIcon icon={expandedCategories[category] ? faMinus : faPlus} />
               </div>
-              {expandedCategory === category && prestations[category] && (
+              {expandedCategories[category] && (
                 <div className="mt-4">
-                  {prestations[category].map((prestation, prestationIndex) => (
-                    <div key={prestationIndex} className="flex items-center">
+                  {filteredCategories[category].map((prestation, idx) => (
+                    <div
+                      key={idx}
+                      className="cursor-pointer"
+                      onClick={() => onPrestationSelect(prestation, category)}
+                    >
                       <input
                         type="checkbox"
                         id={prestation}
@@ -80,7 +110,7 @@ const { selectedCategory } = useContext(SearchContext); // Access selectedCatego
             </div>
           ))}
         </div>
-        <div className="flex justify-center mt-6">
+        <div className="flex justify-center mt-4">
           <button
             onClick={onClose}
             className="bg-teal-500 text-white px-6 py-2 rounded-md hover:bg-teal-600"
