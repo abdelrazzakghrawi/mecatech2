@@ -8,32 +8,39 @@ const PresationContainer = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handlePrestationSelect = (prestation, category) => {
-    const updatedCategory = [...selectedCategory]; // Copy selectedCategory
+    const updatedCategory = [...selectedCategory]; // Create a copy of selectedCategory
+  
     const categoryIndex = updatedCategory.findIndex(cat => cat === category);
-
+  
     if (categoryIndex >= 0) {
-      // Category already exists, toggle existing prestation
-      const prestationIndex = updatedCategory[categoryIndex].prestations.findIndex(
-        p => p === prestation
-      );
+      // Category exists
+      const prestationIndex = updatedCategory[categoryIndex].prestations.indexOf(prestation);
+  
       if (prestationIndex >= 0) {
+        // Prestation exists, remove it
         updatedCategory[categoryIndex].prestations.splice(prestationIndex, 1);
+        if (updatedCategory[categoryIndex].prestations.length === 0) {
+          // Remove category if no prestations left
+          updatedCategory.splice(categoryIndex, 1);
+        }
       } else {
+        // Prestation doesn't exist, add it
         updatedCategory[categoryIndex].prestations.push(prestation);
       }
     } else {
       // New category, add with selected prestation
       updatedCategory.push({ category, prestations: [prestation] });
     }
-
+  
     setSelectedCategory(updatedCategory);
   };
+
 
   return (
     <div className="flex-shrink-0">
       <button
         onClick={() => setIsModalOpen(true)}
-        className="bg-white text-black border-solid border-2 px-4 py-2 rounded hover:bg-[#1FA9B6]"
+        className="bg-white text-black  border-solid border-t-2 border-b-2 px-4 py-2  hover:bg-[#1FA9B6]"
       >
         Show Categories
       </button>

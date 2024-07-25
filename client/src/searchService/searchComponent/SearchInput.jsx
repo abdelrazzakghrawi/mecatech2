@@ -41,7 +41,7 @@ const SearchInput = ({ selectedCity, onQuartierChange }) => {
           type="text"
           value={query}
           onChange={e => setQuery(e.target.value)}
-          className="w-full px-4 py-2 border border-l-0 rounded-r-lg focus:outline-none"
+          className="w-full px-4 py-2 border-2 border-l-0 focus:outline-none"
           placeholder="Tapez pour rechercher..."
         />
         <button className="bg-[#1FA9B6] text-white px-4 py-2">

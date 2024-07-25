@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { searchMechanics } = require('../controllers/searchController');
+const { searchMecanique } = require('../controllers/searchController'); // Make sure this matches the export name
 
-router.get('/', searchMechanics);
+router.get('/', searchMecanique);
 
 module.exports = router;
