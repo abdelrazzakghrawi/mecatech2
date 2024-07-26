@@ -7,7 +7,7 @@ const MechanicCard = ({ mechanic }) => {
 
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
-
+  console.log(mechanic)
   return (
     <div className="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
       <img src={`http://localhost:3003/${mechanic.image_path}`} alt={mechanic['Nom Garage']} className="w-full h-48 object-cover" />
@@ -34,7 +34,6 @@ const MechanicCard = ({ mechanic }) => {
             <div className="p-6 flex flex-col justify-center">
               <h3 className="text-2xl font-bold">{mechanic['Nom Garage']}</h3>
               <div className="border-l-4 border-[#1FA9B6] pl-4 mt-4 space-y-2">
-                <p className="text-gray-700"><strong>Compétance:</strong> {mechanic['compétance']}</p>
                 <p className="text-gray-700"><strong>Ville:</strong> {mechanic['Ville']}</p>
                 <p className="text-gray-700"><strong>Téléphone:</strong> {mechanic['Téléphone']}</p>
                 <p className="text-gray-700"><strong>Adresse:</strong> {mechanic['Adresse']}</p>

@@ -55,14 +55,15 @@ const PrestationModel = ({ onClose, onPrestationSelect }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white shadow-lg w-full max-w-4xl relative p-8 rounded-lg overflow-y-auto h-5/6">
+      <div className="bg-white shadow-lg w-full max-w-4xl relative   overflow-y-auto h-5/6">
+       
+        <div className="text-2xl font-semibold mb-6 text-center pt-8 pb-8 bg-teal-500 text-white py-4">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
         >
           &#x2715;
         </button>
-        <div className="text-2xl font-semibold mb-6 text-center bg-teal-500 text-white py-4">
           Sélectionnez les interventions recherchées
         </div>
         <div className="flex justify-center mb-4">
@@ -77,7 +78,7 @@ const PrestationModel = ({ onClose, onPrestationSelect }) => {
             <FontAwesomeIcon icon={faSearch} />
           </button>
         </div>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4 ml-2 mr-2">
           {Object.keys(filteredCategories).map((category, index) => (
             <div key={index} className="border p-4 rounded">
               <div
@@ -110,7 +111,7 @@ const PrestationModel = ({ onClose, onPrestationSelect }) => {
             </div>
           ))}
         </div>
-        <div className="flex justify-center mt-4">
+        <div className="flex justify-center mt-4 mb-4">
           <button
             onClick={onClose}
             className="bg-teal-500 text-white px-6 py-2 rounded-md hover:bg-teal-600"

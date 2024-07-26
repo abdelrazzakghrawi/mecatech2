@@ -85,13 +85,13 @@ const handleClose = () => {
                     <div className="text-2xl font-semibold mb-6 text-center bg-teal-500 text-white py-4">
                         Sélectionnez le modèle de votre véhicule
                     </div>
-                    <div className="mb-6">
+                    <div className="mb-6 mr-2 ml-2">
                         <label className="block mb-2 font-medium">Choisissez un constructeur</label>
                         <select
                             value={selectedMarque}
                             onChange={handleMarqueChange}
                             onClick={handleMarqueClick}
-                            className="w-full px-4 py-2 border rounded"
+                            className="w-full px-4 py-2 border "
                         >
                             <option value="" className="text-gray-500">Marques les plus populaires</option>
                             {marques.map((marque, index) => (
@@ -99,13 +99,13 @@ const handleClose = () => {
                             ))}
                         </select>
                     </div>
-                    <div className="mb-6">
+                    <div className="mb-6 mr-2 ml-2">
                         <label className="block mb-2 font-medium">Choisissez un modèle</label>
                         <select
                             value={`${selectedModel} / ${selectedYears}`}
                             onChange={handleModelChange}
                             onClick={handleModelClick}
-                            className="w-full px-4 py-2 border rounded"
+                            className="w-full px-4 py-2 border "
                             disabled={!selectedMarque}
                         >
                             <option value="" className="text-gray-500">Choisissez un modèle</option>
@@ -115,9 +115,9 @@ const handleClose = () => {
                         </select>
                     </div>
                     {Object.keys(details).length > 0 && (
-                        <div className="mb-6">
+                        <div className="mb-6  mr-2 ml-2 ">
                             <label className="block mb-2 font-medium">Choisissez une motorisation</label>
-                            <select className="w-full px-4 py-2 border rounded">
+                            <select className="w-full px-4 py-2  border ">
                                 <option value="" className="text-gray-500">Sélectionnez une motorisation</option>
                                 {Object.keys(details).map((detailKey, index) => (
                                     <option key={detailKey + index} value={details[detailKey]} className="text-gray-700">{detailKey}: {details[detailKey]}</option>
