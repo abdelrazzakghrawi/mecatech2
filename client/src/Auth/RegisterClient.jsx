@@ -7,11 +7,13 @@ import axios from 'axios';
 import { MdEmail } from 'react-icons/md';
 import { RiLockPasswordFill } from 'react-icons/ri';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import { useNavigate } from 'react-router-dom';
 import './Auth.css/RegisterClient.css';
 
 const RegisterClientModal = ({ isOpen, closeModal, openLoginModal }) => {
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const formik = useFormik({
     initialValues: {
@@ -39,23 +41,19 @@ const RegisterClientModal = ({ isOpen, closeModal, openLoginModal }) => {
         closeModal();
         openLoginModal();
       } catch (error) {
-        if (error.response && error.response.data && error.response.data.message) {
-          setError(error.response.data.message);
-        } else {
-          setError("Erreur lors de l'inscription. Veuillez réessayer.");
-        }
+        console.error('Error during registration:', error.response?.data || error.message);
+        setError(error.response?.data?.message || "Erreur lors de l'inscription. Veuillez réessayer.");
       }
     },
   });
 
   const handleGoogleSuccess = async (response) => {
-    console.log('Google response:', response); // Log the response
+    console.log('Google login success:', response);
     try {
       const token = response.credential;
       const res = await axios.post('http://localhost:5000/api/auth/google/google-login', { token });
       console.log('Server response:', res.data); // Log the server response
-      closeModal();
-      openLoginModal();
+      navigate('/'); // Redirect to the application homepage after successful login
     } catch (error) {
       console.error('Error during Google login:', error);
       setError("Erreur lors de l'authentification avec Google. Veuillez réessayer.");
@@ -68,7 +66,7 @@ const RegisterClientModal = ({ isOpen, closeModal, openLoginModal }) => {
   };
 
   return (
-    <GoogleOAuthProvider clientId="961029157972-ia0rhfo9h1d1gjdkecpoc723gvjqfoam.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId="961029157972-u1snijjdd7vpdqverlns8oiuj17f374d.apps.googleusercontent.com">
       <Modal isOpen={isOpen} onRequestClose={closeModal} contentLabel="Register Client" className="modal" overlayClassName="overlay">
         <div className="auth-container">
           <h2 className="title">Inscription Client</h2>
@@ -128,7 +126,7 @@ const RegisterClientModal = ({ isOpen, closeModal, openLoginModal }) => {
             <div className="divider">ou</div>
             <GoogleLogin
               onSuccess={handleGoogleSuccess}
-              onFailure={handleGoogleFailure}
+              onError={handleGoogleFailure}
               buttonText="S'inscrire avec Google"
               className="google-signin"
             />

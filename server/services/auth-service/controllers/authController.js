@@ -51,15 +51,17 @@ const googleLogin = async (req, res) => {
       audience: process.env.GOOGLE_CLIENT_ID,
     });
     const { email, name, sub: googleId } = ticket.getPayload();
+
     let user = await User.findOne({ email });
     if (!user) {
-      user = new User({ googleId, email, username: name, role: 'client' }); // or 'mecano'
+      user = new User({ googleId, email, username: name, role: 'client' });
       await user.save();
     }
     const jwtToken = generateToken(user);
     res.json({ token: jwtToken, username: user.username, role: user.role });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    console.error('Google authentication failed:', error);
+    res.status(400).json({ message: 'Google authentication failed' });
   }
 };
 

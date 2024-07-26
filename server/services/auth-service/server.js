@@ -1,7 +1,9 @@
+// server.js
 const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
-const authRoutes = require('./routes/authRoutes'); // Nous utilisons maintenant un seul fichier de routes
+const authRoutes = require('./routes/authRoutes');
+const googleAuthRoutes = require('./routes/googleAuthRoutes'); // Assurez-vous que ce fichier est correctement importé
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const passport = require('passport');
@@ -16,7 +18,10 @@ app.use(cors());
 app.use(passport.initialize());
 require('./utils/passport');
 
-app.use('/api/auth', authRoutes); // Utilisation du fichier de routes combiné
+app.use('/api/auth', authRoutes);
+app.use('/api/auth/google-login', googleAuthRoutes); 
+app.use('/api/auth/google', googleAuthRoutes);// Ajoutez cette ligne pour la route Google
+app.use('/api/auth/google/google-login', googleAuthRoutes); 
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

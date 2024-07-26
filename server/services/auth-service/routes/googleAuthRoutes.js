@@ -1,48 +1,42 @@
-exports.googleLogin = async (req, res) => {
+const express = require('express');
+const { OAuth2Client } = require('google-auth-library');
+const jwt = require('jsonwebtoken');
+const User = require('../models/User');
+const router = express.Router();
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+router.post('/google-login', async (req, res) => {
+    
   const { token } = req.body;
+  console.log('Received token:', token); // Log the received token
 
   try {
-    const response = await axios.get(`https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=${token}`);
-    const { email, sub: googleId } = response.data;
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
 
-    if (!email || !googleId) {
-      return res.status(400).json({ message: "Erreur de validation du token Google." });
-    }
+    const { name, email, sub: googleId } = ticket.getPayload();
+    console.log('Google Payload:', { name, email }); // Log the payload
 
     let user = await User.findOne({ email });
 
-    if (user) {
-      if (user.googleId && user.googleId !== googleId) {
-        return res.status(400).json({ message: 'Cet email est déjà enregistré via Google. Veuillez vous connecter via Google.' });
-      } else if (!user.googleId) {
-        user.googleId = googleId;
-        await user.save();
-      }
-
-      return res.json({
-        _id: user._id,
-        username: user.username,
-        email: user.email,
-        role: user.role,
-        token: generateToken(user._id),
-      });
+    if (!user) {
+      user = new User({ username: name, email, googleId, role: 'client' });
+      await user.save();
+    } else if (!user.googleId) {
+      // If user exists but doesn't have googleId, update it
+      user.googleId = googleId;
+      await user.save();
     }
 
-    const newUser = await User.create({
-      username: email.split('@')[0],
-      email,
-      googleId,
-      role: 'client',
-    });
+    const jwtToken = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-    res.json({
-      _id: newUser._id,
-      username: newUser.username,
-      email: newUser.email,
-      role: newUser.role,
-      token: generateToken(newUser._id),
-    });
+    res.json({ token: jwtToken, username: user.username, role: user.role });
   } catch (error) {
-    res.status(500).json({ message: "Erreur lors de l'authentification avec Google. Veuillez réessayer." });
+    console.error('Google authentication failed', error);
+    res.status(401).json({ message: 'Google authentication failed' });
   }
-};
+});
+
+module.exports = router;

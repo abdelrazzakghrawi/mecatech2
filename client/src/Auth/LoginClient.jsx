@@ -8,7 +8,7 @@ import axios from 'axios';
 import { MdEmail } from 'react-icons/md';
 import { RiLockPasswordFill } from 'react-icons/ri';
 import Modal from 'react-modal';
-import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+
 import './Auth.css/LoginClient.css';
 
 const LoginClient = ({ isOpen, closeModal, openRegisterModal }) => {
@@ -53,27 +53,9 @@ const LoginClient = ({ isOpen, closeModal, openRegisterModal }) => {
     setError('');
   };
 
-  const handleGoogleSuccess = async (response) => {
-    try {
-      const { credential } = response;
-      const { data } = await axios.post('http://localhost:5000/api/auth/google-login', { token: credential });
+  
 
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('username', data.username);
-      localStorage.setItem('role', data.role);
-
-      login(data.token, data.username, data.role);
-
-      closeModal();
-      navigate('/');
-    } catch (err) {
-      setError('Erreur de connexion avec Google. Veuillez réessayer.');
-    }
-  };
-
-  const handleGoogleFailure = () => {
-    setError('Échec de la connexion avec Google. Veuillez réessayer.');
-  };
+  
 
   return (
     <Modal
@@ -135,12 +117,7 @@ const LoginClient = ({ isOpen, closeModal, openRegisterModal }) => {
 
           <div className="divider">ou</div>
 
-          <GoogleOAuthProvider clientId="961029157972-ia0rhfo9h1d1gjdkecpoc723gvjqfoam.apps.googleusercontent.com">
-            <GoogleLogin
-              onSuccess={handleGoogleSuccess}
-              onFailure={handleGoogleFailure}
-            />
-          </GoogleOAuthProvider>
+        
         </form>
 
         <p className="signup-link">
