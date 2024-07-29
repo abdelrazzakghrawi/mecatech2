@@ -1,13 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarAlt, faInfoCircle, faTimes } from '@fortawesome/free-solid-svg-icons';
 
-const MechanicCard = ({ mechanic }) => {
+const calculateDistance = (lat1, lon1, lat2, lon2) => {
+  if (!lat1 || !lon1 || !lat2 || !lon2) return null;
+  const R = 6371; // Radius of the Earth in km
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a = 
+    0.5 - Math.cos(dLat)/2 + 
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+    (1 - Math.cos(dLon))/2;
+
+  return R * 2 * Math.asin(Math.sqrt(a));
+};
+
+const MechanicCard = ({ mechanic, userLocation }) => {
   const [showModal, setShowModal] = useState(false);
+  const [distance, setDistance] = useState(null);
+
+  useEffect(() => {
+    if (userLocation) {
+      const dist = calculateDistance(userLocation.lat, userLocation.lng, parseFloat(mechanic.latitude), parseFloat(mechanic.longitude));
+      setDistance(dist ? dist.toFixed(2) : null);
+    }
+  }, [userLocation, mechanic.latitude, mechanic.longitude]);
 
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
-  console.log(mechanic)
+
   return (
     <div className="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
       <img src={`http://localhost:3003/${mechanic.image_path}`} alt={mechanic['Nom Garage']} className="w-full h-48 object-cover" />
@@ -22,6 +43,7 @@ const MechanicCard = ({ mechanic }) => {
             Réservation <FontAwesomeIcon icon={faCalendarAlt} className="ml-2" />
           </button>
         </div>
+        {distance && <p className="text-gray-700 mt-2">Distance: {distance} km</p>}
       </div>
 
       {showModal && (
@@ -39,6 +61,7 @@ const MechanicCard = ({ mechanic }) => {
                 <p className="text-gray-700"><strong>Adresse:</strong> {mechanic['Adresse']}</p>
                 <p className="text-gray-700"><strong>Spécialités:</strong> {mechanic['Spécialités']}</p>
               </div>
+              {distance && <p className="text-gray-700 mt-2">Distance: {distance} km</p>}
               <button className="mt-6 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors duration-300" onClick={handleCloseModal}>
                 Fermer
               </button>
