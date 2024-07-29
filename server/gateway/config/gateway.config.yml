@@ -1,0 +1,33 @@
+# /gateway/config/gateway.config.yml
+http:
+  port: 8080
+
+apiEndpoints:
+  auth:
+    host: localhost
+    paths: "/api/auth/"
+
+serviceEndpoints:
+  auth-service:
+    url: "http://auth-service:3002"
+
+policies:
+  - basic-auth
+  - cors
+  - expression
+  - key-auth
+  - log
+  - proxy
+  - rate-limit
+  - redirect
+  - request-transformer
+  - response-handler
+
+pipelines:
+  auth:
+    apiEndpoints:
+      - auth
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: auth-service

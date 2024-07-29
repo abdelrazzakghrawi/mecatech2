@@ -8,12 +8,14 @@ import { MdEmail } from 'react-icons/md';
 import { RiLockPasswordFill } from 'react-icons/ri';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../Auth/AuthContext'; // Import useAuth
 import './Auth.css/RegisterClient.css';
 
 const RegisterClientModal = ({ isOpen, closeModal, openLoginModal }) => {
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate(); // Initialize useNavigate
+  const { login } = useAuth(); 
 
   const formik = useFormik({
     initialValues: {
@@ -47,19 +49,21 @@ const RegisterClientModal = ({ isOpen, closeModal, openLoginModal }) => {
     },
   });
 
+  
   const handleGoogleSuccess = async (response) => {
     console.log('Google login success:', response);
     try {
       const token = response.credential;
       const res = await axios.post('http://localhost:5000/api/auth/google/google-login', { token });
-      console.log('Server response:', res.data); // Log the server response
+      console.log('Server response:', res.data);
+      closeModal(); // Close the modal
+      login(token, res.data.username, 'client'); // Store user info in AuthContext
       navigate('/'); // Redirect to the application homepage after successful login
     } catch (error) {
       console.error('Error during Google login:', error);
       setError("Erreur lors de l'authentification avec Google. Veuillez réessayer.");
     }
   };
-
   const handleGoogleFailure = (response) => {
     console.log('Google Sign-In a échoué', response);
     setError("Erreur lors de l'authentification avec Google. Veuillez réessayer.");

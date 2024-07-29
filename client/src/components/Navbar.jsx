@@ -44,6 +44,8 @@ const Navbar = () => {
   };
   const closeRegisterClientModal = () => closeModal(setIsRegisterClientModalOpen);
 
+
+
   // Mécano Modals
   const openLoginMecanoModal = () => openModal(setIsLoginMecanoModalOpen);
   const closeLoginMecanoModal = () => closeModal(setIsLoginMecanoModalOpen);
@@ -119,6 +121,7 @@ const Navbar = () => {
           }}
         />
       </Modal>
+
 
       {/* Modals Mécano */}
       <Modal

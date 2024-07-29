@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  gateway:
+    build: ./server/services/gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - auth-service
+      - client
+
+  auth-service:
+    build: ./server/services/auth-service
+    ports:
+      - "3002:3000"
+
+  client:
+    build: ./client
+    ports:
+      - "5173:3000"

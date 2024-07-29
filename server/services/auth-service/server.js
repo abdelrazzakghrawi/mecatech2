@@ -21,7 +21,7 @@ require('./utils/passport');
 app.use('/api/auth', authRoutes);
 app.use('/api/auth/google-login', googleAuthRoutes); 
 app.use('/api/auth/google', googleAuthRoutes);// Ajoutez cette ligne pour la route Google
-app.use('/api/auth/google/google-login', googleAuthRoutes); 
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
