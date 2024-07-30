@@ -7,13 +7,27 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { SearchProvider, SearchContext } from './context/SearchContext';
 import axios from 'axios';
 import MechanicCard from './MechanicCard';
-import MechanicsMap from './Map';
+import Map from './Map';
 
 const SearchBar = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [showMap, setShowMap] = useState(false);
   const [userLocation, setUserLocation] = useState(null);
+  const [distanceFilter, setDistanceFilter] = useState(10); // Default distance filter to 10 km
 
+  const calculateDistance = (lat1, lon1, lat2, lon2) => {
+    if (!lat1 || !lon1 || !lat2 || !lon2) return null;
+    const R = 6371; // Radius of the Earth in km
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = 
+      0.5 - Math.cos(dLat)/2 + 
+      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+      (1 - Math.cos(dLon))/2;
+  
+    return R * 2 * Math.asin(Math.sqrt(a));
+  };
+  
   const handleSearchClick = (context) => {
     const searchParams = {
       car: context.selectedCar,
@@ -37,9 +51,15 @@ const SearchBar = () => {
         });
     }, (error) => {
       console.error('Error getting user location:', error);
-      setShowMap(true);  // Show map even if we don't get user location
+      setShowMap(true);
     });
   };
+
+  const filteredResults = searchResults.filter(mechanic => {
+    if (!userLocation) return true;
+    const distance = calculateDistance(userLocation.lat, userLocation.lng, parseFloat(mechanic.latitude), parseFloat(mechanic.longitude));
+    return distance <= distanceFilter;
+  });
 
   return (
     <SearchProvider>
@@ -58,9 +78,29 @@ const SearchBar = () => {
                 <FontAwesomeIcon icon={faSearch} size="lg" color="white" className="ml-2" />
               </button>
             </div>
-            {showMap && <MechanicsMap mechanics={searchResults} userLocation={userLocation} />}
+            <div className="mt-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="distance">
+                Filter by distance (km):
+              </label>
+              <input
+                type="range"
+                id="distance"
+                name="distance"
+                min="1"
+                max="50"
+                value={distanceFilter}
+                onChange={(e) => setDistanceFilter(e.target.value)}
+                className="w-full"
+              />
+              <div className="flex justify-between text-gray-600 mt-1">
+                <span>1 km</span>
+                <span>50 km</span>
+              </div>
+              <div className="text-gray-700 mt-1">Selected distance: {distanceFilter} km</div>
+            </div>
+            {showMap && <Map mechanics={filteredResults} userLocation={userLocation} />}
             <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {searchResults.map(mechanic => (
+              {filteredResults.map(mechanic => (
                 <MechanicCard key={mechanic._id} mechanic={mechanic} userLocation={userLocation} />
               ))}
             </div>

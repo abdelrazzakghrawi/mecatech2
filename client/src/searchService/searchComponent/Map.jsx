@@ -11,7 +11,6 @@ const Map = ({ mechanics, userLocation }) => {
     popupAnchor: [1, -34],
   });
 
-  // Helper function to validate and parse latitude and longitude
   const parseLatLng = (lat, lng) => {
     const parsedLat = parseFloat(lat);
     const parsedLng = parseFloat(lng);
@@ -32,7 +31,7 @@ const Map = ({ mechanics, userLocation }) => {
         />
         {mechanics.map(mechanic => {
           const position = parseLatLng(mechanic.latitude, mechanic.longitude);
-          if (!position) return null; // Skip markers with invalid positions
+          if (!position) return null;
           return (
             <Marker key={mechanic._id} position={position} icon={defaultIcon}>
               <Popup>
