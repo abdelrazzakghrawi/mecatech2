@@ -1,9 +1,9 @@
 import React from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Circle } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
-const Map = ({ mechanics, userLocation }) => {
+const Map = ({ mechanics, userLocation, distanceFilter }) => {
   const defaultIcon = L.icon({
     iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
     iconSize: [25, 41],
@@ -23,11 +23,25 @@ const Map = ({ mechanics, userLocation }) => {
   const userPosition = userLocation ? parseLatLng(userLocation.lat, userLocation.lng) : [33.5899317, -7.5873941];
 
   return (
-    <div className="w-full   h-96 mt-8 ">
+    <div className="w-full h-96 mt-8">
       <MapContainer center={userPosition} zoom={13} style={{ height: "100%", width: "100%" }}>
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
+        {userPosition && (
+          <>
+            <Circle
+              center={userPosition}
+              radius={distanceFilter * 1000} // Convert km to meters
+              pathOptions={{ color: 'blue', fillColor: 'lightblue', fillOpacity: 0.3 }}
+            />
+            <Marker position={userPosition} icon={defaultIcon}>
+              <Popup>
+                <strong>Your Location</strong>
+              </Popup>
+            </Marker>
+          </>
+        )}
         {mechanics.map(mechanic => {
           const position = parseLatLng(mechanic.latitude, mechanic.longitude);
           if (!position) return null;
@@ -40,13 +54,6 @@ const Map = ({ mechanics, userLocation }) => {
             </Marker>
           );
         })}
-        {userPosition && (
-          <Marker position={userPosition} icon={defaultIcon}>
-            <Popup>
-              <strong>Your Location</strong>
-            </Popup>
-          </Marker>
-        )}
       </MapContainer>
     </div>
   );

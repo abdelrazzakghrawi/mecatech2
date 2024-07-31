@@ -69,7 +69,7 @@ const SearchBar = () => {
     <SearchProvider>
       <SearchContext.Consumer>
         {(context) => (
-          <div className="container mx-auto p-4 z-10">
+          <div className="container mx-auto p-4">
             <div className="flex flex-col md:flex-row items-center mb-4">
               <PickCarContainer />
               <CitySearchContainer />
@@ -118,7 +118,7 @@ const SearchBar = () => {
                 <div className="filter-distance text-gray-700 mt-1 text-sm">Selected distance: {distanceFilter} km</div>
               </div>
             )}
-            {showMap && <Map mechanics={filteredResults} userLocation={userLocation} />}
+            {showMap && <Map mechanics={filteredResults} userLocation={userLocation} distanceFilter={distanceFilter} />}
             <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {filteredResults.map(mechanic => (
                 <MechanicCard key={mechanic._id} mechanic={mechanic} userLocation={userLocation} />
