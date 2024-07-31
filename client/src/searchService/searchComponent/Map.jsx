@@ -3,14 +3,22 @@ import { MapContainer, TileLayer, Marker, Popup, Circle } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
-const Map = ({ mechanics, userLocation, distanceFilter }) => {
-  const defaultIcon = L.icon({
-    iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-  });
+// Custom icons
+const userIcon = L.icon({
+  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+});
 
+const mechanicIcon = L.icon({
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+});
+
+const Map = ({ mechanics, userLocation, distanceFilter }) => {
   const parseLatLng = (lat, lng) => {
     const parsedLat = parseFloat(lat);
     const parsedLng = parseFloat(lng);
@@ -35,7 +43,7 @@ const Map = ({ mechanics, userLocation, distanceFilter }) => {
               radius={distanceFilter * 1000} // Convert km to meters
               pathOptions={{ color: 'blue', fillColor: 'lightblue', fillOpacity: 0.3 }}
             />
-            <Marker position={userPosition} icon={defaultIcon}>
+            <Marker position={userPosition} icon={userIcon}>
               <Popup>
                 <strong>Your Location</strong>
               </Popup>
@@ -46,7 +54,7 @@ const Map = ({ mechanics, userLocation, distanceFilter }) => {
           const position = parseLatLng(mechanic.latitude, mechanic.longitude);
           if (!position) return null;
           return (
-            <Marker key={mechanic._id} position={position} icon={defaultIcon}>
+            <Marker key={mechanic._id} position={position} icon={mechanicIcon}>
               <Popup>
                 <strong>{mechanic['Nom Garage']}</strong><br />
                 {mechanic['Adresse']}
