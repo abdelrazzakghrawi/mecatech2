@@ -77,7 +77,7 @@ const PickCarModel = ({ isOpen, onClose }) => {
 
   return (
     isOpen && (
-      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[1000]">
         <div className="bg-white pb-8 pl- shadow-lg w-full max-w-md relative">
           <button
             onClick={handleCloseModal}
