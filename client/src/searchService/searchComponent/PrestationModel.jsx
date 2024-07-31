@@ -54,7 +54,7 @@ const PrestationModel = ({ onClose, onPrestationSelect }) => {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[1000]">
       <div className="bg-white shadow-lg w-full max-w-4xl relative   overflow-y-auto h-5/6">
        
         <div className="text-2xl font-semibold mb-6 text-center pt-8 pb-8 bg-teal-500 text-white py-4">

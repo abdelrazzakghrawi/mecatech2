@@ -47,7 +47,7 @@ const MechanicCard = ({ mechanic, userLocation }) => {
       </div>
 
       {showModal && (
-        <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-[1000]">
           <div className="bg-white rounded-lg overflow-hidden w-11/12 md:w-2/3 lg:w-1/2 shadow-2xl flex flex-col md:flex-row">
             <button className="absolute top-4 right-4 text-gray-600 hover:text-gray-900" onClick={handleCloseModal}>
               <FontAwesomeIcon icon={faTimes} size="lg" />
