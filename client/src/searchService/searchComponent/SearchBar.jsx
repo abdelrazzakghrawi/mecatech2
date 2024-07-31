@@ -2,12 +2,13 @@ import React, { useState, useEffect, useContext } from 'react';
 import PickCarContainer from './PickCarContainer';
 import CitySearchContainer from './CitySearchContainer';
 import PresationContainer from './PresationContainer';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faRuler, faToggleOn, faToggleOff } from '@fortawesome/free-solid-svg-icons';
 import { SearchProvider, SearchContext } from './context/SearchContext';
 import axios from 'axios';
-import MechanicCard from './MechanicCard';
+import ResultsGrid from './ResultsGrid';
 import Map from './Map';
+import DistanceFilterToggle from './DistanceFilterToggle';
+import DistanceFilter from './DistanceFilter';
+import SearchButton from './SearchButton';
 import 'leaflet/dist/leaflet.css';
 
 const SearchBar = () => {
@@ -75,56 +76,14 @@ const SearchBar = () => {
               <PickCarContainer />
               <CitySearchContainer />
               <PresationContainer />
-              <button
-                className="bg-[#1FA9B6] text-white px-4 py-2 hover:bg-[#148a94] flex items-center mt-4 md:mt-0"
-                onClick={() => handleSearchClick(context)}
-              >
-                Chercher mecanique
-                <FontAwesomeIcon icon={faSearch} size="lg" color="white" className="ml-2" />
-              </button>
+              <SearchButton onClick={() => handleSearchClick(context)} />
             </div>
-            <div className="flex items-center mt-4">
-              <FontAwesomeIcon
-                icon={filterEnabled ? faToggleOn : faToggleOff}
-                size="2x"
-                className="text-gray-600 cursor-pointer mr-2"
-                onClick={() => setFilterEnabled(!filterEnabled)}
-              />
-              <span className="text-gray-700 text-sm font-bold">
-                {filterEnabled ? 'Disable' : 'Enable'} Distance Filter
-              </span>
-            </div>
+            <DistanceFilterToggle filterEnabled={filterEnabled} setFilterEnabled={setFilterEnabled} />
             {filterEnabled && showFilter && (
-              <div className="filter-container mt-4 bg-white p-4 rounded-lg shadow-md">
-                <div className="filter-header flex items-center mb-2">
-                  <FontAwesomeIcon icon={faRuler} size="lg" className="text-gray-600 mr-2" />
-                  <label className="filter-label text-gray-700 text-sm font-bold" htmlFor="distance">
-                    Filter by distance (km):
-                  </label>
-                </div>
-                <input
-                  type="range"
-                  id="distance"
-                  name="distance"
-                  min="1"
-                  max="50"
-                  value={distanceFilter}
-                  onChange={(e) => setDistanceFilter(e.target.value)}
-                  className="filter-range w-full"
-                />
-                <div className="filter-range-marks flex justify-between text-gray-600 mt-1 text-sm">
-                  <span>1 km</span>
-                  <span>50 km</span>
-                </div>
-                <div className="filter-distance text-gray-700 mt-1 text-sm">Selected distance: {distanceFilter} km</div>
-              </div>
+              <DistanceFilter distanceFilter={distanceFilter} setDistanceFilter={setDistanceFilter} />
             )}
             {showMap && <Map mechanics={filteredResults} userLocation={userLocation} distanceFilter={distanceFilter} />}
-            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {filteredResults.map(mechanic => (
-                <MechanicCard key={mechanic._id} mechanic={mechanic} userLocation={userLocation} />
-              ))}
-            </div>
+            <ResultsGrid filteredResults={filteredResults} userLocation={userLocation} />
           </div>
         )}
       </SearchContext.Consumer>
