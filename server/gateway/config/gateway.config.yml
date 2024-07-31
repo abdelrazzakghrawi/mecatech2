@@ -1,27 +1,22 @@
-# /gateway/config/gateway.config.yml
 http:
   port: 8080
 
 apiEndpoints:
   auth:
     host: localhost
-    paths: "/api/auth/"
+    paths: "/api/auth/*"
+  search:
+    host: localhost
+    paths: "/api/search"
 
 serviceEndpoints:
   auth-service:
-    url: "http://auth-service:3002"
+    url: "http://localhost:5000"
+  search-service:
+    url: "http://localhost:5001"
 
 policies:
-  - basic-auth
-  - cors
-  - expression
-  - key-auth
-  - log
   - proxy
-  - rate-limit
-  - redirect
-  - request-transformer
-  - response-handler
 
 pipelines:
   auth:
@@ -31,3 +26,11 @@ pipelines:
       - proxy:
           - action:
               serviceEndpoint: auth-service
+
+  search:
+    apiEndpoints:
+      - search
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: search-service

@@ -5,7 +5,6 @@ import DashboardMecano from './Auth/DashboardMecano';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { useAuth } from './Auth/AuthContext';
 
-// Set the app element to ensure proper accessibility
 Modal.setAppElement('#root');
 
 const App = () => {
