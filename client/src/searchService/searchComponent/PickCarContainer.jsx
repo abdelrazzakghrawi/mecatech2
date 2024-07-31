@@ -1,11 +1,12 @@
 import React, { useState, useContext } from 'react';
-import SearchBarButton from './PickCar';
-import SearchBarModal from './PickCarModel';
+import PickCar from './PickCar';
+import PickCarModel from './PickCarModel';
 import { SearchContext } from './context/SearchContext';
 
 const PickCarContainer = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { setSelectedCar } = useContext(SearchContext);
+  const { selectedCar, setSelectedCar } = useContext(SearchContext);
+  const [carName, setCarName] = useState('');
 
   const handleOpen = () => {
     setIsOpen(true);
@@ -15,13 +16,14 @@ const PickCarContainer = () => {
     setIsOpen(false);
     if (selectedCar) {
       setSelectedCar(selectedCar);
+      setCarName(`${selectedCar.marques} ${selectedCar.model} `);
     }
   };
 
   return (
     <div className="flex-shrink-0">
-      <SearchBarButton onOpen={handleOpen} />
-      <SearchBarModal isOpen={isOpen} onClose={handleClose} />
+      <PickCar onOpen={handleOpen} carName={carName} />
+      <PickCarModel isOpen={isOpen} onClose={handleClose} />
     </div>
   );
 };
