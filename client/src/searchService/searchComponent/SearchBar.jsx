@@ -8,6 +8,7 @@ import { SearchProvider, SearchContext } from './context/SearchContext';
 import axios from 'axios';
 import MechanicCard from './MechanicCard';
 import Map from './Map';
+import 'leaflet/dist/leaflet.css';
 
 const SearchBar = () => {
   const [searchResults, setSearchResults] = useState([]);
