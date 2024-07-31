@@ -18,6 +18,7 @@ const calculateDistance = (lat1, lon1, lat2, lon2) => {
 const MechanicCard = ({ mechanic, userLocation }) => {
   const [showModal, setShowModal] = useState(false);
   const [distance, setDistance] = useState(null);
+  const [mechanicImage, setMechanicImage] = useState('');
 
   useEffect(() => {
     if (userLocation) {
@@ -26,12 +27,21 @@ const MechanicCard = ({ mechanic, userLocation }) => {
     }
   }, [userLocation, mechanic.latitude, mechanic.longitude]);
 
+  useEffect(() => {
+    if (mechanic.image_path) {
+      setMechanicImage(`http://localhost:3003/${mechanic.image_path}`);
+    } else {
+      const randomImageIndex = Math.floor(Math.random() * 20) + 1;
+      setMechanicImage(`http://localhost:3003/meca_images/${randomImageIndex}.jpeg`);
+    }
+  }, [mechanic.image_path]);
+
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
 
   return (
     <div className="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-      <img src={`http://localhost:3003/${mechanic.image_path}`} alt={mechanic['Nom Garage']} className="w-full h-48 object-cover" />
+      <img src={mechanicImage} alt={mechanic['Nom Garage']} className="w-full h-48 object-cover" />
       <div className="p-4">
         <h3 className="text-xl font-semibold">{mechanic['Nom Garage']}</h3>
         <p className="text-gray-500 mt-2">{mechanic['Téléphone']}</p>
@@ -52,7 +62,7 @@ const MechanicCard = ({ mechanic, userLocation }) => {
             <button className="absolute top-4 right-4 text-gray-600 hover:text-gray-900" onClick={handleCloseModal}>
               <FontAwesomeIcon icon={faTimes} size="lg" />
             </button>
-            <img src={`http://localhost:3003/${mechanic.image_path}`} alt={mechanic['Nom Garage']} className="w-full md:w-1/3 h-64 object-cover" />
+            <img src={mechanicImage} alt={mechanic['Nom Garage']} className="w-full md:w-1/3 h-64 object-cover" />
             <div className="p-6 flex flex-col justify-center">
               <h3 className="text-2xl font-bold">{mechanic['Nom Garage']}</h3>
               <div className="border-l-4 border-[#1FA9B6] pl-4 mt-4 space-y-2">

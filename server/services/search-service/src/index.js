@@ -22,6 +22,8 @@ connectDB();
 app.use(express.json());
 // Serve static files
 app.use('/garage_images', express.static(path.join(__dirname, 'garage_images')));
+app.use('/meca_images', express.static(path.join(__dirname, 'random_image_meca')));
+
 // Routes
 app.use('/api/auto', require('./routes/autoRoutes'));
 app.use('/api/search', require('./routes/searchRoutes'));
