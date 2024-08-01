@@ -1,0 +1,36 @@
+http:
+  port: 8080
+
+apiEndpoints:
+  auth:
+    host: localhost
+    paths: "/api/auth/*"
+  search:
+    host: localhost
+    paths: "/api/search"
+
+serviceEndpoints:
+  auth-service:
+    url: "http://localhost:5000"
+  search-service:
+    url: "http://localhost:5001"
+
+policies:
+  - proxy
+
+pipelines:
+  auth:
+    apiEndpoints:
+      - auth
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: auth-service
+
+  search:
+    apiEndpoints:
+      - search
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: search-service
