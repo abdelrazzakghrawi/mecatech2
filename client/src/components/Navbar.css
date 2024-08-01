@@ -3,7 +3,7 @@
   margin: 0;
 }
 
-body {
+.body {
   background-image: url(./assets/land.png);
   background-size: cover;
   background-repeat: no-repeat;

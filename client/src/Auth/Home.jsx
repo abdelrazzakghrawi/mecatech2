@@ -1,11 +1,10 @@
+import Navbar from "../components/Navbar";
 
 
 const Home = () => {
   return (
     <div>
-      <h1>Bienvenue sur MecaTECH</h1>
-      
-
+     <Navbar/>
     </div>
   );
 };
