@@ -70,8 +70,8 @@ const MechanicCard = ({ mechanic, userLocation }) => {
                 <p className="text-gray-700"><strong>Téléphone:</strong> {mechanic['Téléphone']}</p>
                 <p className="text-gray-700"><strong>Adresse:</strong> {mechanic['Adresse']}</p>
                 <p className="text-gray-700"><strong>Spécialités:</strong> {mechanic['Spécialités']}</p>
+                {distance && <p className="text-gray-700 mt-2">Distance: {distance} km</p>}
               </div>
-              {distance && <p className="text-gray-700 mt-2">Distance: {distance} km</p>}
               <button className="mt-6 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors duration-300" onClick={handleCloseModal}>
                 Fermer
               </button>
