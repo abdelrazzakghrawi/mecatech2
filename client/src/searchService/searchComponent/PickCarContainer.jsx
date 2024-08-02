@@ -21,7 +21,7 @@ const PickCarContainer = () => {
   };
 
   return (
-    <div className="flex-shrink-0">
+    <div className="flex-shrink-0 ">
       <PickCar onOpen={handleOpen} carName={carName} />
       <PickCarModel isOpen={isOpen} onClose={handleClose} />
     </div>

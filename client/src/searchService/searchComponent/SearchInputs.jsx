@@ -10,8 +10,8 @@ const SearchInputs = ({ onSearch }) => {
   return (
     <SearchContext.Consumer>
       {(context) => (
-        <div className="container mx-auto p-4">
-          <div className="flex flex-col md:flex-row items-center mb-4">
+        <div className="container mx-auto p-4 ">
+          <div className="flex flex-col md:flex-row items-center mb-4 ">
             <PickCarContainer />
             <CitySearchContainer />
             <PresationContainer />

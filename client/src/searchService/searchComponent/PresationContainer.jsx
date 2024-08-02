@@ -32,7 +32,7 @@ const PresationContainer = () => {
     <div className="flex-shrink-0">
       <button
         onClick={() => setIsModalOpen(true)}
-        className="bg-white text-black border-solid border-t-2 border-b-2 px-4 py-2 hover:bg-[#1FA9B6]"
+        className="bg-white text-black   px-8 py-6 hover:bg-[#1FA9B6]"
       >
         Show Categories
       </button>

@@ -15,7 +15,7 @@ const CitySelect = ({ onCityChange }) => {
       <label className="sr-only">Choisissez une ville</label>
       <select
         onChange={e => onCityChange(e.target.value)}
-        className="w-full px-4 py-2 border-2 border-r-0  focus:outline-none"
+        className="w-full px-8 py-6 border-1 border-r-0  focus:outline-none"
       >
         <option value="">Sélectionnez une ville</option>
         {cities.map((city, index) => (

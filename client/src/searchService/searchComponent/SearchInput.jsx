@@ -41,10 +41,10 @@ const SearchInput = ({ selectedCity, onQuartierChange }) => {
           type="text"
           value={query}
           onChange={e => setQuery(e.target.value)}
-          className="w-full px-4 py-2 border-2 border-l-0 focus:outline-none"
+          className="w-full px-4 py-2  border-l-0 focus:outline-none"
           placeholder="Tapez pour rechercher..."
         />
-        <button className="bg-[#1FA9B6] text-white px-4 py-2">
+        <button className="bg-[#1FA9B6] text-white px-8 py-6">
           <FontAwesomeIcon icon={faMapMarkerAlt} />
         </button>
       </div>
@@ -53,7 +53,7 @@ const SearchInput = ({ selectedCity, onQuartierChange }) => {
           {suggestions.map((s, index) => (
             <li
               key={index}
-              className="px-4 py-2 cursor-pointer hover:bg-gray-200"
+              className="px-8 py-6 cursor-pointer hover:bg-gray-200"
               onClick={() => handleSuggestionClick(s.QUARTIER)}
             >
               {s.QUARTIER}
