@@ -1,0 +1,376 @@
+.icon{
+    position: absolute;
+    padding-top: 69%;
+    padding-bottom: 70%;
+    padding-left: 25%;
+background-color: ;
+    color: #00969D;
+
+}
+
+.icon_img{
+    position: absolute;
+    padding-top: 72%;
+    padding-bottom: 70%;
+    padding-left: 15%;
+}
+.img{
+    width: 10%;
+    position: absolute;
+    padding-top: 70%;
+    padding-left: 17%;
+
+}
+.h2{
+    position: absolute;
+    margin-top: 20%;
+    margin-left: 20%;
+    color: #00969D;
+    
+
+}
+.span{
+    position: absolute;
+    padding-top: 78%;
+    padding-left: 14%;
+    color: #00529E;
+    
+
+
+}
+
+/* img meca */
+.icon_img1{
+    position: absolute;
+    padding-top: 72%;
+    padding-bottom: 70%;
+    padding-left: 33%;
+}
+.img1{
+    width: 10%;
+    position: absolute;
+    padding-top: 70%;
+    padding-left: 39%;
+
+}
+.h22{
+    position: absolute;
+    margin-top: 10%;
+    margin-left: 22%;
+    color: #00969D;
+    
+
+}
+.span3{
+    position: absolute;
+    padding-top: 78%;
+    padding-left: 36%;
+    color: #00529E;
+        font-weight: bold;
+
+
+
+}
+/* img pay */
+.icon_img2{
+    position: absolute;
+    padding-top: 72%;
+    padding-bottom: 70%;
+    padding-left: 49%;
+}
+.img2{
+    width: 10%;
+    position: absolute;
+    padding-top: 70%;
+    padding-left: 58%;
+
+}
+.h23{
+    position: absolute;
+    margin-top: 7%;
+    margin-left: 21%;
+    color: #00969D;
+    
+
+}
+.span4{
+    position: absolute;
+    padding-top: 78%;
+    padding-left: 57.5%;
+    color: #00529E;
+    font-weight: bold;
+
+    
+
+
+}
+/* img avis */
+.icon_img3{
+    position: absolute;
+    padding-top: 72%;
+    padding-bottom: 70%;
+    padding-left: 64%;
+}
+.img3{
+    width: 10%;
+    position: absolute;
+    padding-top: 70%;
+    padding-left: 76%;
+
+}
+.h24{
+    position: absolute;
+    margin-top: 5%;
+    margin-left: 21%;
+    color: #00969D;
+    
+
+}
+.span5{
+    position: absolute;
+    padding-top: 78%;
+    padding-left: 76%;
+    color: #00529E;
+    font-weight: bold;
+    
+
+
+}
+@media (max-width: 1000px) {
+    .icon{
+        position: absolute;
+        padding-top: 90%;
+        padding-bottom: 70%;
+        padding-left: 17%;
+        font-size: 10px;
+    
+        color: #00969D;
+    
+    }
+
+    .icon_img{
+        position: absolute;
+        padding-top: 98%;
+        padding-bottom: 70%;
+        padding-left: 10%;
+    }
+    .img{
+        width: 10%;
+        position: absolute;
+        padding-top: 95%;
+        padding-left: 12%;
+    
+    }
+   
+    .span{
+        position: absolute;
+        padding-top: 105%;
+        padding-left: 4%;
+        color: #00529E;
+        font-size: 13px;
+        
+    
+    
+    }
+    /* img meca */
+    .icon_img1{
+        position: absolute;
+        padding-top: 96.5%;
+        padding-bottom: 70%;
+        padding-left: 33%;
+    }
+    .img1{
+        width: 10%;
+        position: absolute;
+        padding-top: 95%;
+        padding-left: 40%;
+    
+    }
+  
+    .span3{
+        position: absolute;
+        padding-top: 105%;
+        padding-left: 33%;
+        color: #00529E;
+        font-size: 13px;
+
+        
+    
+    
+    }
+    /* img pay */
+    .icon_img2{
+        position: absolute;
+        padding-top: 96%;
+        padding-bottom: 70%;
+        padding-left: 55%;
+    }
+    .img2{
+        width: 10%;
+        position: absolute;
+        padding-top: 95%;
+        padding-left: 66%;
+    
+    }
+
+    .span4{
+        position: absolute;
+        padding-top: 105%;
+        padding-left: 62%;
+        color: #00529E;
+        font-size: 13px;
+
+    
+    
+    }
+    /* img avis */
+    .icon_img3{
+        position: absolute;
+        padding-top: 96.5%;
+        padding-bottom: 70%;
+        padding-left: 72%;
+    }
+    .img3{
+        width: 10%;
+        position: absolute;
+        padding-top: 95%;
+        padding-left: 86%;
+    
+    }
+   
+    .span5{
+        position: absolute;
+        padding-top: 105%;
+        padding-left: 83%;
+        color: #00529E;
+        font-size: 13px;
+    
+    
+    }
+
+ 
+}
+@media (max-width: 750px) {
+    .icon{
+        position: absolute;
+        padding-top: 90%;
+        padding-bottom: 70%;
+        padding-left: 12%;
+        font-size: 10px;
+    
+        color: #00969D;
+    
+    }
+ 
+
+    .icon_img{
+        position: absolute;
+        padding-top: 98%;
+        padding-bottom: 70%;
+        padding-left: 10%;
+        font-size: 10px;
+
+    }
+    .img{
+        width: 10%;
+        position: absolute;
+        padding-top: 95%;
+        padding-left: 12%;
+    
+    }
+   
+    .span{
+        position: absolute;
+        padding-top: 105%;
+        padding-left: 4%;
+        color: #00529E;
+        font-size: 10px;
+        
+    
+    
+    }
+    /* img meca */
+    .icon_img1{
+        position: absolute;
+        padding-top: 96.5%;
+        padding-bottom: 70%;
+        padding-left: 33%;
+        font-size: 10px;
+    }
+    .img1{
+        width: 10%;
+        position: absolute;
+        padding-top: 95%;
+        padding-left: 40%;
+    
+    }
+  
+    .span3{
+        position: absolute;
+        padding-top: 105%;
+        padding-left: 33%;
+        color: #00529E;
+        font-size: 10px;
+
+        
+    
+    
+    }
+    /* img pay */
+    .icon_img2{
+        position: absolute;
+        padding-top: 96%;
+        padding-bottom: 70%;
+        padding-left: 55%;
+        font-size: 10px;
+
+    }
+    .img2{
+        width: 10%;
+        position: absolute;
+        padding-top: 95%;
+        padding-left: 66%;
+    
+    }
+
+    .span4{
+        position: absolute;
+        padding-top: 105%;
+        padding-left: 62%;
+        color: #00529E;
+        font-size: 10px;
+
+    
+    
+    }
+    /* img avis */
+    .icon_img3{
+        position: absolute;
+        padding-top: 96.5%;
+        padding-bottom: 70%;
+        padding-left: 72%;
+        font-size: 10px;
+
+    }
+    .img3{
+        width: 10%;
+        position: absolute;
+        padding-top: 95%;
+        padding-left: 86%;
+    
+    }
+   
+    .span5{
+        position: absolute;
+        padding-top: 105%;
+        padding-left: 83%;
+        color: #00529E;
+        font-size: 10px;
+    
+    
+    }
+}
+
+@media (max-width: 500px) {
+    
+}

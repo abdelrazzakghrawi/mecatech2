@@ -10,8 +10,7 @@ import Footer from "./LandingPage/Footer/Footer"
 const App = () => {
   return (
     <div>
-     
-<Navbar/>
+     <Navbar/>
 <Slider/>
 <Hover/>
 <LESAVIS/>
