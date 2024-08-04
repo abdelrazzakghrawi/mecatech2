@@ -5,6 +5,8 @@ import DashboardMecano from './Auth/DashboardMecano';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { useAuth } from './Auth/AuthContext';
 import SearchBar from './searchService/searchComponent/SearchBar'
+import './App.css'
+
 Modal.setAppElement('#root');
 
 const App = () => {
