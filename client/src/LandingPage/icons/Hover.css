@@ -1,28 +1,29 @@
 .icon{
-    position: absolute;
-    padding-top: 69%;
-    padding-bottom: 30%;
-    padding-left: 23%;
+
+    text-align: center;
     color: #00969D;
 
 }
 #span{
+    
     position: absolute;
-    padding-top: 85%;
-    padding-left: 9%;
+    padding-left: 7%;
     color: #00529E;
     font-weight: bold; 
-    font-size: 20px;
+    margin-top:14%;
+    font-size: 18px;
+
 
    
 }
 
 .h2{
-    position: absolute;
     color: #00969D;
     margin-left: 13%;
-    margin-top: 80%;
     font-size: 30px;
+    margin-top: 80px;
+    position: absolute;
+
     
 
 }
@@ -31,7 +32,7 @@
     position: absolute;
     width: 18%;
     padding-left: 10%;
-    padding-top: 70%;
+    padding-bottom: 100px;
 }
 #spanhover{
 
@@ -46,9 +47,10 @@
    transition: 0.6s;
    cursor: pointer;
    white-space: nowrap;
-   padding:  50px 10px;
+   padding:  50px 8px;
    border-radius: 50px;
-   margin-top: 86.8%;
+   margin-top: 16%;
+   font-size: 12px;
 }
 #spanhover::before{
     content: "";
@@ -73,23 +75,23 @@
     padding-left: 33%;
     color: #00529E;
     font-weight: bold; 
-    margin-top: 85%;
-    font-size: 20px;
+    margin-top:14%;
+    font-size: 18px;
 
    
 }
 .imgg1{
     position: absolute;
+    padding-bottom: 100px;
     width: 18%;
     margin-left: 34%;
-    padding-top: 70%;
 
 }
 .h22{
     position: absolute;
     color: #00969D;
-    margin-left: 37%;
-    margin-top: 80%;
+    margin-left: 36%;
+    margin-top: 6%;
     font-size: 30px;
 
 
@@ -109,9 +111,10 @@
    transition: 0.6s;
    cursor: pointer;
    white-space: nowrap;
-   padding:  50px 10px;
+   padding:  50px 8px;
    border-radius: 50px;
-   margin-top: 86.8%;
+   margin-top: 16%;
+   font-size: 12px;
 }
 #spanhover1::before{
     content: "";
@@ -132,26 +135,27 @@
 /*2*/
 #span2{
     position: absolute;
-    margin-top: 85%;
+    margin-top: 14%;
     padding-left: 58%;
     color: #00529E;
     font-weight: bold; 
-    font-size: 20px;
+    font-size: 18px;
 
 }
 
 .imgg2{
+    padding-bottom: 100px;
     position: absolute;
+
     width: 18%;
     margin-left: 57%;
-    padding-top: 70%;
 
 }
 .h23{
     position: absolute;
     color: #00969D;
-    margin-left: 60%;
-    margin-top: 80%;
+    margin-left: 59%;
+    margin-top: 6%;
     font-size: 30px;
 
 }
@@ -171,9 +175,10 @@
    transition: 0.6s;
    cursor: pointer;
    white-space: nowrap;
-   padding:  50px 10px;
+   padding:  50px 8px;
    border-radius: 50px;
-   margin-top: 86.8%;
+   margin-top: 16%;
+   font-size: 12px;
 }
 #spanhover2::before{
     content: "";
@@ -194,26 +199,26 @@
 /*3*/
 #span3{
     position: absolute;
-    margin-top: 85%;
-    padding-left: 82%;
+    margin-top: 14%;
+    padding-left: 80%;
     color: #00529E;
     font-weight: bold; 
-    font-size: 20px;
+    font-size: 18px;
 
 }
 
 .imgg3{
-    position: absolute;
+    padding-bottom: 100px;
+
     width: 18%;
     margin-left: 80%;
-    padding-top: 70%;
 
 }
 .h24{
     position: absolute;
     color: #00969D;
-    margin-left: 83%;
-    margin-top: 80%;
+    margin-left: 81%;
+    margin-top: 6%;
     font-size: 30px;
 
 }
@@ -233,9 +238,11 @@
    transition: 0.6s;
    cursor: pointer;
    white-space: nowrap;
-   padding:  50px 10px;
+   padding:  50px 8px;
    border-radius: 50px;
-   margin-top: 86.8%;}
+   margin-top: 16%;
+   font-size: 12px;
+}
 #spanhover3::before{
     content: "";
     position: absolute;
