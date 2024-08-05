@@ -1,8 +1,8 @@
-.icon{
-
-    text-align: center;
+.iconL{
+   
     color: #00969D;
-
+    margin-left: 35%;
+    
 }
 #span{
     
@@ -30,7 +30,7 @@
 
 .imgg{
     position: absolute;
-    width: 18%;
+    width: 28%;
     padding-left: 10%;
     padding-bottom: 100px;
 }
@@ -199,7 +199,7 @@
 /*3*/
 #span3{
     position: absolute;
-    margin-top: 14%;
+    margin-top: -10.5%;
     padding-left: 80%;
     color: #00529E;
     font-weight: bold; 
@@ -218,7 +218,7 @@
     position: absolute;
     color: #00969D;
     margin-left: 81%;
-    margin-top: 6%;
+    margin-top: -19%;
     font-size: 30px;
 
 }
@@ -550,4 +550,4 @@
   
   
   
-  
+ 

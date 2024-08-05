@@ -7,9 +7,9 @@ import avis from './assets/avis.png'
 const Hover = () => {
   return (
     <div className='touss'>
-         <div className='icon'>
+         <div className='iconL'>
         <h1> Découvrez un univers de possibilités : Explorez nos services complets</h1>
-    </div>
+         </div>
     <div >
         <img className='imgg' src={icon} alt="" />
         <h2 className='h2' >1.</h2>
