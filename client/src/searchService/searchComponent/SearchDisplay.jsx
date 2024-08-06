@@ -3,6 +3,9 @@ import React from 'react';
 import SearchMapAndFilter from './SearchMapAndFilter';
 import SearchResults from './SearchResults';
 import  { useState } from 'react';
+import { SearchContext } from './context/SearchContext';
+import SearchSummary from './SearchSummary';
+
 
 const SearchDisplay = ({
   searchResults,
