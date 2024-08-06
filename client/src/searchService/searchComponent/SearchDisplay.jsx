@@ -2,6 +2,7 @@
 import React from 'react';
 import SearchMapAndFilter from './SearchMapAndFilter';
 import SearchResults from './SearchResults';
+import  { useState } from 'react';
 
 const SearchDisplay = ({
   searchResults,
@@ -25,6 +26,7 @@ const SearchDisplay = ({
 
     return R * 2 * Math.asin(Math.sqrt(a));
   };
+  const [isMapVisible, setIsMapVisible] = useState(showMap);
 
   const filteredResults = searchResults.filter(mechanic => {
     if (!filterEnabled || !userLocation) return true;
@@ -36,27 +38,43 @@ const SearchDisplay = ({
     );
     return distance <= distanceFilter;
   });
+  const toggleMap = () => {
+    setIsMapVisible(!isMapVisible);
+  };
 
   return (
     <>
-      {showMap && (
-        <>
-          <SearchMapAndFilter
-            searchResults={filteredResults}
-            userLocation={userLocation}
-            distanceFilter={distanceFilter}
-            setDistanceFilter={setDistanceFilter}
-            showFilter={showFilter}
-            filterEnabled={filterEnabled}
-            setFilterEnabled={setFilterEnabled}
-          />
-          <SearchResults
-            searchResults={filteredResults}
-            userLocation={userLocation}
-          />
-        </>
-      )}
-    </>
+    {showMap && (
+    <>
+    
+    <button 
+      onClick={toggleMap} 
+      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4"
+    >
+      {isMapVisible ? "Hide Map" : "Show Map"}
+    </button>
+
+    {isMapVisible && (
+      <SearchMapAndFilter
+        searchResults={filteredResults}
+        userLocation={userLocation}
+        distanceFilter={distanceFilter}
+        setDistanceFilter={setDistanceFilter}
+        showFilter={showFilter}
+        filterEnabled={filterEnabled}
+        setFilterEnabled={setFilterEnabled}
+      />
+    )}
+    
+    <SearchResults
+      searchResults={filteredResults}
+      userLocation={userLocation}
+    />
+ 
+  </>
+)}
+   </>
+  
   );
 };
 
