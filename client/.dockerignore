@@ -1,2 +1,9 @@
 node_modules
 npm-debug.log
+<<<<<<< HEAD
+=======
+Dockerfile
+.dockerignore
+.git
+.gitignore
+>>>>>>> origin/Home_Search

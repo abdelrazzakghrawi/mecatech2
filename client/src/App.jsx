@@ -4,6 +4,8 @@ import Home from './Auth/Home';
 import DashboardMecano from './Auth/DashboardMecano';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { useAuth } from './Auth/AuthContext';
+import SearchBar from './searchService/searchComponent/SearchBar'
+import './App.css'
 
 Modal.setAppElement('#root');
 
@@ -13,16 +15,20 @@ const App = () => {
 
   return (
     <Router>
+      
       <div>
-        <Navbar />
+        
         <Routes>
           <Route path="/" element={<Home />} />
           {role === 'mecano' && (
             <Route path="/dashboard-mecano" element={<DashboardMecano />} />
           )}
           {}
+        
         </Routes>
+        
       </div>
+    
     </Router>
   );
 };
