@@ -80,14 +80,14 @@ const Navbar = () => {
                     <span className="navbar-username">Bienvenue {username}</span>
                     <div className="auth-buttons">  
                       <button className="logout-button" onClick={handleLogout}>Déconnexion</button>
-                      <a href='#' className="besoin">Besoin d'aide ?</a>
+                      <a href='#' className="besoin">Besoin daide ?</a>
                     </div>
                   </div>
                 ) : (
                   <>
                     <button className="butt1" onClick={openLoginClientModal}>Espace Client</button>
                     <button className="butt2" onClick={openLoginMecanoModal}>Espace Mecano</button>
-                    <a href='#' className="besoin">Besoin d'aide ?</a>
+                    <a href='#' className="besoin">Besoin daide ?</a>
                   </>
                 )}
               </ul>
