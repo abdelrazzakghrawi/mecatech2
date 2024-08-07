@@ -1,6 +1,6 @@
 // Navbar.jsx
 import { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom'; // Importer useNavigate
+import { Link, useNavigate } from 'react-router-dom'; // Importer useNavigate
 import Modal from 'react-modal';
 import LoginClient from '../Auth/LoginClient';
 import RegisterClientModal from '../Auth/RegisterClient';
@@ -22,7 +22,7 @@ const Navbar = () => {
   const [isLoginMecanoModalOpen, setIsLoginMecanoModalOpen] = useState(false);
   const [isRegisterMecanoModalOpen, setIsRegisterMecanoModalOpen] = useState(false);
   const { user, logout } = useAuth();
-  const location = useLocation();
+  
   const navigate = useNavigate(); // Initialiser useNavigate
   const username = localStorage.getItem('username');
   const {

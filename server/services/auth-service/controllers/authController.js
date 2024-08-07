@@ -42,9 +42,10 @@ const login = async (req, res) => {
   }
 };
 
+
 // Login user with Google
 const googleLogin = async (req, res) => {
-  const { token } = req.body;
+  const { token, role } = req.body;
   try {
     const ticket = await client.verifyIdToken({
       idToken: token,
@@ -54,9 +55,16 @@ const googleLogin = async (req, res) => {
 
     let user = await User.findOne({ email });
     if (!user) {
-      user = new User({ googleId, email, username: name, role: 'client' });
+      user = new User({ googleId, email, username: name, role });
+      await user.save();
+    } else if (!user.googleId) {
+      user.googleId = googleId;
+      if (!user.role) {
+        user.role = role;
+      }
       await user.save();
     }
+
     const jwtToken = generateToken(user);
     res.json({ token: jwtToken, username: user.username, role: user.role });
   } catch (error) {

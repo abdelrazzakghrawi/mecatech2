@@ -134,12 +134,14 @@ const LoginClient = ({ isOpen, closeModal, openRegisterModal }) => {
 
             <div className="divider">ou</div>
 
-            <GoogleLogin
-              onSuccess={handleGoogleSuccess}
-              onError={handleGoogleFailure}
-              buttonText="Connexion avec Google"
-              className="google-signin"
-            />
+            <div className="google-login-wrapper">
+              <GoogleLogin
+                onSuccess={handleGoogleSuccess}
+                onError={handleGoogleFailure}
+                buttonText="Connexion avec Google"
+                className="google-signin"
+              />
+            </div>
           </form>
 
           <p className="signup-link">
