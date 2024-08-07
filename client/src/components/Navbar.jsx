@@ -1,26 +1,26 @@
 import { useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom'; // Importer useNavigate
 import Modal from 'react-modal';
 import LoginClient from '../Auth/LoginClient';
 import RegisterClientModal from '../Auth/RegisterClient';
-import LoginMecano from '../Auth/LoginMecano';  
-import RegisterMecano from '../Auth/RegisterMecano';  
+import LoginMecano from '../Auth/LoginMecano';
+import RegisterMecano from '../Auth/RegisterMecano';
 import { useAuth } from '../Auth/AuthContext';
 import './Navbar.css';
 import logo from './assets/logo.png';
 
-
-
 const Navbar = () => {
-
-
-
   const [isOpen, setIsOpen] = useState(false);
   const [isLoginClientModalOpen, setIsLoginClientModalOpen] = useState(false);
   const [isRegisterClientModalOpen, setIsRegisterClientModalOpen] = useState(false);
   const [isLoginMecanoModalOpen, setIsLoginMecanoModalOpen] = useState(false);
   const [isRegisterMecanoModalOpen, setIsRegisterMecanoModalOpen] = useState(false);
   const { user, logout } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate(); // Initialiser useNavigate
   const username = localStorage.getItem('username');
+  
+
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
@@ -33,9 +33,10 @@ const Navbar = () => {
     setIsRegisterClientModalOpen(false);
     setIsLoginMecanoModalOpen(false);
     setIsRegisterMecanoModalOpen(false);
+    navigate('/'); // Rediriger vers la page d'accueil après déconnexion
   };
 
-  // Client Modals
+  // Modals Clients
   const openLoginClientModal = () => openModal(setIsLoginClientModalOpen);
   const closeLoginClientModal = () => closeModal(setIsLoginClientModalOpen);
   const openRegisterClientModal = () => {
@@ -43,8 +44,6 @@ const Navbar = () => {
     openModal(setIsRegisterClientModalOpen);
   };
   const closeRegisterClientModal = () => closeModal(setIsRegisterClientModalOpen);
-
-
 
   // Mécano Modals
   const openLoginMecanoModal = () => openModal(setIsLoginMecanoModalOpen);
@@ -55,41 +54,41 @@ const Navbar = () => {
   };
   const closeRegisterMecanoModal = () => closeModal(setIsRegisterMecanoModalOpen);
 
+  // Déterminer la couleur de fond de la navbar en fonction de la route
+  const navbarClass = location.pathname === '/dashboard-client' ? 'navbar dashboard-navbar' : 'navbar';
+
   return (
     <div className='nav'>
       <header>
-        <div className='navbar'>
+        <div className={navbarClass}>
           <a href="/">
             <img src={logo} alt="Logo" className='logo' />
           </a>
           <ul className={`navbar-menu ${isOpen ? 'open' : ''}`}>
-  {user ? (
-    <div className="user-info">
-        <span className="navbar-username">Bienvenue {username}</span>
-      <div className="auth-buttons">  
-        <button className="logout-button" onClick={handleLogout}>Déconnexion</button>
-        <a href='#' className="besoin">Besoin daide ?</a>
-      </div>
-    </div>
-  ) : (
-    <>
-      <button className="butt1" onClick={openLoginClientModal}>Espace Client</button>
-      <button className="butt2" onClick={openLoginMecanoModal}>Espace Mecano</button>
-      <a href='#' className="besoin">Besoin daide ?</a>
-    </>
-  )}
-</ul>
+            {user ? (
+              <div className="user-info">
+                <Link to="/dashboard-client" className="navbar-username">
+                  Bienvenue {username}
+                </Link>
+                <div className="auth-buttons">
+                  <button className="logout-button" onClick={handleLogout}>Déconnexion</button>
+                  <a href="#" className="besoin">Besoin daide ?</a>
+                </div>
+              </div>
+            ) : (
+              <>
+                <button className="butt1" onClick={openLoginClientModal}>Espace Client</button>
+                <button className="butt2" onClick={openLoginMecanoModal}>Espace Mecano</button>
+                <a href="#" className="besoin">Besoin daide ?</a>
+              </>
+            )}
+          </ul>
           <div className="dropdown-button" onClick={toggleDropdown}>
             ☰
           </div>
         </div>
       </header>
-      <h1 className='h11'>
-        Un mécanicien près de chez vous ? 
-        <br />
-        Meca Tech vous le dit tout de suite !
-      </h1>
-
+    
       {/* Modals Clients */}
       <Modal
         isOpen={isLoginClientModalOpen}
@@ -121,7 +120,6 @@ const Navbar = () => {
           }}
         />
       </Modal>
-
 
       {/* Modals Mécano */}
       <Modal

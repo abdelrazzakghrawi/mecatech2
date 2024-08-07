@@ -15,6 +15,7 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(true);
       setUser(localStorage.getItem('username'));
       setRole(localStorage.getItem('role'));
+      
     }
   }, []);
 

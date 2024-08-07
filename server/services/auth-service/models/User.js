@@ -1,3 +1,4 @@
+// models/User.js
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
@@ -7,6 +8,24 @@ const UserSchema = new mongoose.Schema({
     required: [true, 'Username is required'],
     trim: true,
   },
+  name: {
+    type: String,
+    required: [false, 'Name is required'],
+    trim: true,
+  },
+  telephone: {
+    type: String,
+    trim: true,
+  },
+  civilite: {
+    type: String,
+    enum: ['Mr', 'Mme'],
+    trim: true,
+  },
+  adresse: {  // Ajout du champ adresse
+    type: String,
+    trim: true,
+  },
   email: {
     type: String,
     required: [true, 'Email is required'],
@@ -14,6 +33,13 @@ const UserSchema = new mongoose.Schema({
     trim: true,
     lowercase: true,
     match: [/\S+@\S+\.\S+/, 'Email format is invalid'],
+  },  profileImage: {
+    type: String, // Utilisez String pour stocker l'image en base64 ou l'URL
+    trim: true,
+  },
+  profileImage: {
+    type: String, // Storing the image URL
+    trim: true,
   },
   password: {
     type: String,
