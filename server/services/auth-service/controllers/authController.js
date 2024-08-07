@@ -65,4 +65,41 @@ const googleLogin = async (req, res) => {
   }
 };
 
-module.exports = { register, login, googleLogin };
+const getUserProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: 'Erreur lors de la récupération des informations utilisateur' });
+  }
+};
+
+
+// Mettre à jour les informations de l'utilisateur connecté
+const updateUserProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+
+    if (user) {
+      user.civilite = req.body.civilite || user.civilite;
+      user.nom = req.body.nom || user.nom;
+      user.username = req.body.username || user.username;
+      user.name = req.body.name || user.name;
+    
+      user.email = req.body.email || user.email;
+      user.telephone = req.body.telephone || user.telephone;
+      user.adresse = req.body.adresse || user.adresse;
+      if (req.body.motDePasse) {
+        user.password = req.body.motDePasse;
+      }
+
+      const updatedUser = await user.save();
+      res.json(updatedUser);
+    } else {
+      res.status(404).json({ message: 'Utilisateur non trouvé' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Erreur lors de la mise à jour des informations utilisateur' });
+  }
+};
+module.exports = { register, login, googleLogin, getUserProfile, updateUserProfile };

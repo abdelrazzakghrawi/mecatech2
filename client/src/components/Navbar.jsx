@@ -1,10 +1,11 @@
 // Navbar.jsx
 import { useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom'; // Importer useNavigate
 import Modal from 'react-modal';
 import LoginClient from '../Auth/LoginClient';
 import RegisterClientModal from '../Auth/RegisterClient';
-import LoginMecano from '../Auth/LoginMecano';  
-import RegisterMecano from '../Auth/RegisterMecano';  
+import LoginMecano from '../Auth/LoginMecano';
+import RegisterMecano from '../Auth/RegisterMecano';
 import { useAuth } from '../Auth/AuthContext';
 import './Navbar.css';
 import logo from './assets/logo.png';
@@ -21,6 +22,8 @@ const Navbar = () => {
   const [isLoginMecanoModalOpen, setIsLoginMecanoModalOpen] = useState(false);
   const [isRegisterMecanoModalOpen, setIsRegisterMecanoModalOpen] = useState(false);
   const { user, logout } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate(); // Initialiser useNavigate
   const username = localStorage.getItem('username');
   const {
     searchResults,
@@ -45,9 +48,10 @@ const Navbar = () => {
     setIsRegisterClientModalOpen(false);
     setIsLoginMecanoModalOpen(false);
     setIsRegisterMecanoModalOpen(false);
+    navigate('/'); // Rediriger vers la page d'accueil après déconnexion
   };
 
-  // Client Modals
+  // Modals Clients
   const openLoginClientModal = () => openModal(setIsLoginClientModalOpen);
   const closeLoginClientModal = () => closeModal(setIsLoginClientModalOpen);
   const openRegisterClientModal = () => {
@@ -64,6 +68,9 @@ const Navbar = () => {
     openModal(setIsRegisterMecanoModalOpen);
   };
   const closeRegisterMecanoModal = () => closeModal(setIsRegisterMecanoModalOpen);
+
+  // Déterminer la couleur de fond de la navbar en fonction de la route
+  const navbarClass = location.pathname === '/dashboard-client' ? 'navbar dashboard-navbar' : 'navbar';
 
   return (
     <div>
