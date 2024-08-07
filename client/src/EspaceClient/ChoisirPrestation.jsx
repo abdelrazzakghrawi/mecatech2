@@ -1,10 +1,12 @@
+import { Link } from "react-router-dom";
 
 
 const ChoisirPrestation = () => {
   return (
     <div>
-      {/* Your component code here */}
+      <Link  to='/'>
       ChoisirPrestation Content
+      </Link>
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 const Sidebar = ({ selectedSection, setSelectedSection, profileImage, setProfileImage }) => {
   const handleImageChange = (event) => {
@@ -13,6 +14,7 @@ const Sidebar = ({ selectedSection, setSelectedSection, profileImage, setProfile
   };
 
   return (
+  
     <aside className="bg-white shadow-lg rounded-lg p-4 flex flex-col items-center">
       <div className="relative mb-6">
         <img
@@ -71,17 +73,18 @@ const Sidebar = ({ selectedSection, setSelectedSection, profileImage, setProfile
         >
           MES VÉHICULES
         </a>
-        <a
-          href="#"
-          onClick={() => setSelectedSection('prestation')}
+        
+          
+        <Link  to='/'
           className={`py-2 px-4 rounded-lg ${
             selectedSection === 'prestation' ? 'bg-teal-500 text-white' : 'text-gray-600 hover:text-teal-500'
-          }`}
-        >
-          CHOISIR UNE PRESTATION
-        </a>
+          }`}>
+            CHOISIR UNE PRESTATION
+
+        </Link>
+          
         <a
-          href="#"
+          
           onClick={() => setSelectedSection('contact')}
           className={`py-2 px-4 rounded-lg ${
             selectedSection === 'contact' ? 'bg-teal-500 text-white' : 'text-gray-600 hover:text-teal-500'
