@@ -3,13 +3,17 @@ const axios = require('axios');
 const User = require('../models/User');
 
 // Générer un token JWT
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '30d' });
+const generateToken = (id, role) => {
+  return jwt.sign({ id, role }, process.env.JWT_SECRET, { expiresIn: '30d' });
 };
 
 // Connexion avec Google
 exports.googleLogin = async (req, res) => {
-  const { token } = req.body;
+  const { token, role } = req.body; // Récupérer le rôle du corps de la requête
+
+  if (!role) {
+    return res.status(400).json({ message: "Le rôle est requis." });
+  }
 
   try {
     const response = await axios.get(`https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=${token}`);
@@ -34,7 +38,7 @@ exports.googleLogin = async (req, res) => {
         username: user.username,
         email: user.email,
         role: user.role,
-        token: generateToken(user._id),
+        token: generateToken(user._id, user.role),
       });
     }
 
@@ -42,7 +46,7 @@ exports.googleLogin = async (req, res) => {
       username: email.split('@')[0],
       email,
       googleId,
-      role: 'client',
+      role, // Utiliser le rôle transmis
     });
 
     res.json({
@@ -50,7 +54,7 @@ exports.googleLogin = async (req, res) => {
       username: newUser.username,
       email: newUser.email,
       role: newUser.role,
-      token: generateToken(newUser._id),
+      token: generateToken(newUser._id, newUser.role),
     });
   } catch (error) {
     res.status(500).json({ message: "Erreur lors de l'authentification avec Google. Veuillez réessayer." });

@@ -19,7 +19,7 @@ const Navbar = () => {
           <ul className={`navbar-menu ${isOpen ? 'open' : ''}`}>
             <button className="butt1">Espace Client</button>
             <button className="butt2">Espace Mecano</button>
-            <a href='' className="besoin">Besoin D'aide ?</a>
+            <a href='' className="besoin">Besoin Daide ?</a>
           </ul>
           <div className="navbar-right">
             <img src="" alt="" />
