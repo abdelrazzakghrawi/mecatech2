@@ -1,0 +1,267 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #d4d4d4;
+    margin: 0;
+    padding: 0;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 1rem;
+    margin-bottom: 20px;
+}
+
+.navbar-logo {
+    height: 50px;
+}
+
+.logout-button {
+    background-color: #FF5722;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Top Section for Spacing */
+.top-section {
+    display: flex;
+    flex: 1;
+    padding-left: 20px;
+}
+
+/* Sidebar */
+.sidebar {
+    background-color: #ffffff;
+    padding: 1rem;
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-link {
+    text-decoration: none;
+}
+
+.logo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+
+.navigation {
+    margin-top: 20px;
+}
+
+.navigation ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.navigation li {
+    margin-bottom: 10px;
+}
+
+.navigation a {
+    text-decoration: none;
+    color: #00378A;
+}
+
+/* Content Container */
+.content-container {
+    flex: 1;
+}
+
+/* Calendar and Details */
+.calendar-and-details {
+    display: flex;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto; /* Center horizontally */
+}
+
+.calendar {
+    flex: 1;
+    margin-right: 2rem;
+    background-color: #ffffff;
+    padding: 1rem;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-table {
+    overflow-x: auto;
+}
+
+.calendar table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.calendar th, .calendar td {
+    padding: 0.5rem;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.calendar th {
+    background-color: #f4f4f4;
+}
+
+.has-appointment {
+    background-color: #ff0000;
+    color: white;
+    cursor: pointer;
+}
+
+.appointment-details {
+    flex: 2;
+    background-color: #ffffff;
+    padding: 1rem;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid #00378A;
+    margin-left: 1rem;
+    width: 100%;
+    max-width: 600px; /* Reduced width for a more compact look */
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box; /* Ensures padding is included in width */
+}
+
+.appointment-details h3 {
+    margin-top: 0;
+    color: #00378A;
+    border-bottom: 2px solid #1FA9B6;
+    padding-bottom: 0.5rem;
+}
+
+.appointment-details p {
+    margin: 0.5rem 0;
+}
+
+.appointment-details strong {
+    color: #00378A;
+}
+
+/* Button Container */
+.button-container {
+    margin-top: 1rem;
+    display: flex;
+    gap: 10px; /* Space between buttons */
+}
+
+.button-container button {
+    border: none;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    background-color: #1FA9B6; /* Default color for inactive button */
+}
+
+.button-container button.active-button {
+    font-weight: bold;
+    background-color: #00378A; /* Color for the active button */
+}
+
+.button-container button:last-child {
+    margin-right: 0; /* Remove right margin from the last button */
+}
+
+/* Historical Appointments */
+.history {
+    margin-top: 1rem;
+}
+
+.appointment-history {
+    background-color: #f9f9f9;
+    border-left: 4px solid #00378A;
+    padding: 1rem;
+    margin-bottom: 0.5rem; /* Reduced bottom margin for a more compact look */
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    max-height: 100px; /* Set max-height to limit the height of the history items */
+    overflow-y: auto; /* Add scroll if content exceeds max-height */
+}
+
+.appointment-history h3 {
+    margin: 0 0 0.5rem 0;
+    color: #00378A;
+    font-size: 1rem; /* Reduced font size */
+}
+
+.appointment-history p {
+    margin: 0.25rem 0;
+    font-size: 0.875rem; /* Reduced font size */
+}
+
+.appointment-history strong {
+    color: #1FA9B6;
+}
+
+/* Footer */
+.footer {
+    background-color: #ffffff;
+    padding: 1rem;
+    border-top: 1px solid #ddd;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.footer-section {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.footer-section:last-child {
+    margin-right: 0;
+}
+
+.footer-section h4 {
+    color: #00378A;
+}
+
+.footer-section ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.footer-section li {
+    margin-bottom: 10px;
+}
+
+.footer-bottom {
+    text-align: center;
+}
+
+.footer-logo {
+    height: 50px;
+}
+
+.mini-images img {
+    width: 30px;
+    height: 30px;
+    margin: 0 5px;
+}

@@ -1,0 +1,373 @@
+/* Réinitialisation des styles par défaut */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Style du corps */
+body {
+    height: 100%;
+    overflow-y: hidden;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f2f2f2;
+}
+
+/* Conteneur principal de l'application */
+.app-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    min-height: 100vh;
+    overflow-y: auto;
+}
+
+/* Style de la barre de navigation fixe */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #00378A !important;
+    color: #ffffff;
+    border-bottom: 2px solid #1FA9B6;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Logo de la barre de navigation */
+.navbar-logo {
+    height: 50px;
+    animation: logoBounce 2s ease-in-out infinite;
+}
+
+/* Animation de rebond du logo */
+@keyframes logoBounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+/* Bouton de déconnexion */
+.logout-button {
+    text-decoration: none;
+    color: #ffffff;
+    background-color: #ff0000 !important;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Effet de survol du bouton de déconnexion */
+.logout-button:hover {
+    background-color: #cc0000 !important;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+    transform: scale(1.05);
+}
+
+/* Effet lors du clic du bouton de déconnexion */
+.logout-button:active {
+    transform: scale(0.95);
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.4);
+}
+
+/* Section supérieure pour aligner la barre latérale et le conteneur de formulaire */
+.top-section {
+    display: flex;
+    padding-top: 80px;
+    margin: 20px;
+}
+
+/* Barre latérale */
+.sidebar {
+    width: 250px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-right: 20px;
+}
+
+/* Style des images de navigation */
+.navigation img {
+    width: 40px; /* Ajustez la taille selon vos besoins */
+    height: auto;
+    border-radius: 50%;
+    transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out;
+}
+
+.navigation img:hover {
+    transform: scale(1.1) translateY(-5px); /* Zoom et translation */
+    filter: brightness(1.2); /* Augmente la brillance */
+}
+
+/* Barre de navigation */
+.navigation ul {
+    list-style: none;
+    padding: 0;
+}
+
+.navigation ul li {
+    position: relative;
+    margin-bottom: 15px;
+    opacity: 0; /* Opacité initiale pour l'animation */
+    transform: translateX(-20px); /* Position initiale pour l'animation */
+    animation: slideIn 0.5s forwards;
+}
+
+.navigation ul li:nth-child(1) {
+    animation-delay: 0.2s;
+}
+
+.navigation ul li:nth-child(2) {
+    animation-delay: 0.4s;
+}
+
+.navigation ul li:nth-child(3) {
+    animation-delay: 0.6s;
+}
+
+.navigation ul li:nth-child(4) {
+    animation-delay: 0.8s;
+}
+
+@keyframes slideIn {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.navigation ul li:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    bottom: -7.5px;
+    left: 10px;
+    right: 10px;
+    height: 1px;
+    background-color: #1FA9B6;
+    opacity: 0.5;
+}
+
+.navigation ul li a {
+    text-decoration: none;
+    color: #00378A;
+    padding: 10px 15px;
+    border-radius: 25px;
+    display: block;
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s, transform 0.2s;
+}
+
+.navigation ul li a:hover {
+    color: #ffffff;
+    background-color: #1FA9B6;
+    transform: translateX(10px);
+}
+
+/* Image de profil */
+.profile-image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.profile-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+    border: 2px solid #1FA9B6;
+    transition: transform 0.3s;
+}
+
+.profile-image:hover {
+    transform: scale(1.05);
+}
+
+/* Conteneur de formulaire */
+.form-container {
+    flex: 1;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 1s ease-in-out;
+    margin: 20px auto;
+    max-width: 600px; /* Ajuste la largeur maximale du formulaire */
+}
+
+/* Animation de fondu en entrée */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Style du formulaire */
+.styled-form {
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.styled-form .form-group {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.input-container {
+    position: relative;
+}
+
+.input-error {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #ff0000;
+    font-size: 20px;
+    display: none; /* Caché par défaut */
+}
+
+.styled-form .form-group input,
+.styled-form .form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    background-color: #f9f9f9;
+}
+
+.styled-form .form-group input:invalid,
+.styled-form .form-group textarea:invalid {
+    border-color: #ff0000;
+}
+
+.styled-form .form-group input:valid,
+.styled-form .form-group textarea:valid {
+    border-color: #1FA9B6;
+}
+
+.styled-form .form-group input:invalid + .input-error,
+.styled-form .form-group textarea:invalid + .input-error {
+    display: block; /* Affiche le signe "X" lorsque le champ est invalide */
+}
+
+.styled-form .form-group input:valid + .input-error,
+.styled-form .form-group textarea:valid + .input-error {
+    display: none; /* Cache le signe "X" lorsque le champ est valide */
+}
+
+.styled-form .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+}
+
+.styled-form .form-group textarea {
+    height: 120px;
+    resize: vertical;
+}
+
+.styled-form .save-button {
+    background-color: #1FA9B6;
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.2s;
+    display: block;
+    margin: 0 auto;
+}
+
+.styled-form .save-button:hover {
+    background-color: #178e99;
+    transform: scale(1.05);
+}
+
+/* Style du pied de page */
+.footer {
+    background-color: #bdbdbd;
+    padding: 30px 20px;
+    text-align: center;
+    color: #000;
+}
+
+/* Style du pied de page inférieur */
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    
+}
+
+/* Style des logos dans le pied de page */
+.footer-logo {
+    height: 50px;
+    animation: logoFadeIn 1s ease-in-out;
+}
+
+/* Animation de fondu en entrée des logos du pied de page */
+@keyframes logoFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Style des images du pied de page */
+.footer-bottom img {
+    height: 30px;
+    width: auto;
+    margin: 0 10px;
+    animation: fadeIn 1s ease-in-out;
+}
+
+/* Animation de fondu en entrée */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Style du texte du pied de page */
+.footer p {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #000;
+}
