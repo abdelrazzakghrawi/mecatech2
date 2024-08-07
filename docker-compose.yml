@@ -17,6 +17,14 @@ services:
       - "5000:5000"
     networks:
       - app-network
+  client_service:
+      build:
+        context: ./server/services/client_service
+      env_file: ./server/services/client_service/.env
+      ports:
+        - "5007:5007"
+      networks:
+        - app-network
 
   frontend:
     build:

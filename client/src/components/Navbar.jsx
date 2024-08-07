@@ -69,8 +69,7 @@ const Navbar = () => {
   };
   const closeRegisterMecanoModal = () => closeModal(setIsRegisterMecanoModalOpen);
 
-  // Déterminer la couleur de fond de la navbar en fonction de la route
-  const navbarClass = location.pathname === '/dashboard-client' ? 'navbar dashboard-navbar' : 'navbar';
+  
 
   return (
     <div>
@@ -82,21 +81,23 @@ const Navbar = () => {
                 <img src={logo} alt="Logo" className='logo' />
               </a>
               <ul className={`navbar-menu ${isOpen ? 'open' : ''}`}>
-                {user ? (
-                  <div className="user-info">
-                    <span className="navbar-username">Bienvenue {username}</span>
-                    <div className="auth-buttons">  
-                      <button className="logout-button" onClick={handleLogout}>Déconnexion</button>
-                      <a href='#' className="besoin">Besoin d'aide ?</a>
-                    </div>
-                  </div>
-                ) : (
-                  <>
-                    <button className="butt1" onClick={openLoginClientModal}>Espace Client</button>
-                    <button className="butt2" onClick={openLoginMecanoModal}>Espace Mecano</button>
-                    <a href='#' className="besoin">Besoin d'aide ?</a>
-                  </>
-                )}
+              {user ? (
+              <div className="user-info">
+                <Link to="/dashboard-client" className="navbar-username">
+                  Bienvenue {username}
+                </Link>
+                <div className="auth-buttons">
+                  <button className="logout-button" onClick={handleLogout}>Déconnexion</button>
+                  <a href="#" className="besoin">Besoin daide ?</a>
+                </div>
+              </div>
+            ) : (
+              <>
+                <button className="butt1" onClick={openLoginClientModal}>Espace Client</button>
+                <button className="butt2" onClick={openLoginMecanoModal}>Espace Mecano</button>
+                <a href="#" className="besoin">Besoin daide ?</a>
+              </>
+            )}
               </ul>
               <div className="dropdown-button" onClick={toggleDropdown}>
                 ☰

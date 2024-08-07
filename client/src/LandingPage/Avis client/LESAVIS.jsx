@@ -1,6 +1,6 @@
 import  { useState, useEffect } from 'react';
 import './Slide.css';
-import logo from "../Navbar/assets/Méca_tech.png"
+import logo from "./assets/Méca_tech.png"
 import client from "./assets/client.png"
 
 
