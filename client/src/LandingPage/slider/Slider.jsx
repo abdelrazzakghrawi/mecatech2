@@ -25,7 +25,7 @@ const Slider = () => {
       <div className='h1'>
         <h1>Découvrez notre sélection de pièces détachées pour votre voiture au meilleur prix</h1>
        <br />
-        <hr />
+        <hr className='hr'/>
       </div>
       <>
         <Swiper
