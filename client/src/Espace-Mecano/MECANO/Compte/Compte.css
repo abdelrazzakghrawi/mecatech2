@@ -1,0 +1,218 @@
+.MyCompte{
+    margin-top: 60px;
+    position: absolute;
+      background-color: #E9EAEB;
+    box-shadow: -1px 15px 6px -6px ;
+    width: 800px;
+    height: 360px;
+    border-radius: 50px;
+    animation: fadeIn 0.9s;
+
+
+ 
+ }
+ .garageInfo{
+    margin-top: 60px;
+    position: absolute;
+      background-color: #E9EAEB;
+    box-shadow: -1px 15px 6px -6px ;
+    width: 400px;
+    height: 360px;
+    border-radius: 50px;
+    animation: fadeIn 0.9s;
+ }
+ .garageInfo h1{
+text-align: center;
+font-size: 25px;
+
+}
+.garageInfo h4{
+    color: black;
+    margin: 10px;
+}
+.garageInfo span{
+    margin: 50px;
+}
+.mecan{
+    position: absolute;
+    width: 15%;
+    margin-left: 75%;
+    margin-top: 30%;
+
+    border-radius: 100px;
+    transition: .2s ease-in-out;
+    
+}
+.mecan:hover{
+    cursor: pointer;
+    transform: scale(1.1);
+}
+.mecanlabel{
+    margin-left: 50%;
+    position: absolute;
+    margin-top: 35%;
+}
+ .buttadress{
+    position: absolute;
+    font-size: 15px;
+    color: white;
+    cursor: pointer;
+    border: none;
+    background-color: #00969D;
+
+    z-index: 10;
+    transition:  0.3s ease-in-out ;
+    padding: 10px 30px;
+    border-radius: 50px;
+    margin-top: 10px;
+    margin-left: 50%;
+ }
+ .buttadress:hover {
+    color: white;
+    border: none;
+    background-color: green;
+}
+.buttE{
+    position: absolute;
+    font-size: 20px;
+    color: white;
+    cursor: pointer;
+    border: none;
+    background-color: #00529E;
+
+    z-index: 10;
+    transition:  0.3s ease-in-out ;
+    padding: 10px 50px;
+    border-radius: 50px;
+    margin-top: 370px;
+    margin-left: 35%;
+ }
+ .buttE:hover {
+    color: white;
+    border: none;
+    background-color: green;
+}
+.MyCompte__title{
+    color: #00529E;
+    font-size: 30px;
+    margin-right: 30px;
+    position: absolute;
+    border-bottom: 9px solid #00529E;
+    white-space: nowrap;
+    animation: fadeIn 0.9s;
+
+}
+
+.form {
+    margin-left: 1%;
+position: absolute;
+    width: 340px;
+    
+}
+.reder{
+    width: 10%;
+    position: absolute;
+    margin-left: 5%;
+    margin-top: 8%;
+    border-radius: 30px;
+    padding: 10px;
+    border: #00529E 7px solid;
+}
+.ipadress{
+    margin-left: 50%;
+    width: 340px;
+
+}
+
+@media (max-width: 768px) {
+
+
+.MyCompte{
+    margin-top: 60px;
+    position: absolute;
+      background-color: #E9EAEB;
+    box-shadow: -1px 15px 6px -6px ;
+    width: 380px;
+    height: 650px;
+    border-radius: 50px;
+    animation: fadeIn 0.9s;
+
+
+ 
+ }
+
+ .buttadress{
+    position: absolute;
+    font-size: 10px;
+    color: white;
+    cursor: pointer;
+    border: none;
+    background-color: #00969D;
+
+    z-index: 10;
+    transition:  0.3s ease-in-out ;
+    padding: 10px 40px;
+    border-radius: 50px;
+    margin-top: 8px;
+    margin-left: 10%;
+ }
+ .buttadress:hover {
+    color: white;
+    border: none;
+    background-color: green;
+}
+.buttE{
+    position: absolute;
+    font-size: 20px;
+    color: white;
+    cursor: pointer;
+    border: none;
+    background-color: #00529E;
+
+    z-index: 10;
+    transition:  0.3s ease-in-out ;
+    padding: 10px 50px;
+    border-radius: 50px;
+    margin-top: 670px;
+    margin-left: 25%;
+ }
+ .buttE:hover {
+    color: white;
+    border: none;
+    background-color: green;
+}
+.MyCompte__title{
+    color: #00529E;
+    font-size: 30px;
+    margin-right: 30px;
+    position: absolute;
+    border-bottom: 9px solid #00529E;
+    white-space: nowrap;
+    animation: fadeIn 0.9s;
+
+}
+
+.form {
+    margin-left: 10%;
+position: absolute;
+    width: 300px;
+    
+}
+.reder{
+    width: 10%;
+    position: absolute;
+    margin-left: 5%;
+    margin-top: 8%;
+    border-radius: 30px;
+    padding: 10px;
+    border: #00529E 7px solid;
+}
+.ipadress{
+    margin-left: 10%;
+    margin-top: 80%;
+    width: 300px;
+
+}
+
+
+}

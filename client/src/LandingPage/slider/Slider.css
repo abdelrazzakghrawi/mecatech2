@@ -42,10 +42,12 @@
 .h1{
     text-align: center;
 }
-hr{
+.hr{
     border-radius: 50%;
     border: 3px solid #00969D;
     margin-bottom: 20px;
+    width: 50%;
+    margin-left: 25%;
 
 }
 .details{

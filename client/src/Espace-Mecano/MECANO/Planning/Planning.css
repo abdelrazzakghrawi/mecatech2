@@ -1,0 +1,586 @@
+.Planning{
+    margin-top: 60px;
+    position: absolute;
+      background-color: #E9EAEB;
+    box-shadow: -1px 15px 6px -6px ;
+    width: 800px;
+    height: 350px;
+    border-radius: 50px;
+    animation: fadeIn 0.9s;
+ }
+ .Planning__title{
+    color: #00529E;
+    font-size: 30px;
+    margin-right: 30px;
+    position: absolute;
+    border-bottom: 9px solid #00529E;
+    white-space: nowrap;
+    animation: fadeIn 0.9s;
+
+}
+.forme1{
+    margin-left: 2%;
+    margin-top:7%;
+
+    position: absolute;
+        width:160px;
+}
+.time1{
+    position: absolute;
+    
+}
+.paramt{
+    position: absolute;
+    margin-left: 25%;
+    margin-top: 10px;
+    font-size: 30px;
+    font-weight: bold;
+
+}
+.forme2{
+    margin-left: 25%;
+    margin-top:7%;
+
+    position: absolute;
+    width:160px;
+}
+.forme3{
+    margin-left: 50%;
+    margin-top:7%;
+
+    position: absolute;
+    width:170px;
+}
+.slach{
+    position: absolute;
+    margin-top:8%;
+    margin-left:47%;
+    font-size: 40px;
+    color: black;
+
+}
+.forme4{
+    margin-left: 75%;
+    margin-top:7%;
+
+    position: absolute;
+    width:160px;
+}
+.clientnum{
+    position: absolute;
+    margin-top: 17%;
+    margin-left: 20px;
+}
+.clientde{
+    position: absolute;
+    margin-top: 20%;
+    color: black;
+    margin-left: 20px;
+}
+.forme5{
+    margin-left: 2%;
+    margin-top:24%;
+
+    position: absolute;
+        width:200px;
+}
+.clientconfi{
+    position: absolute;
+    margin-top: 32%;
+    margin-left: 20px;
+}
+.Lun{
+    margin-left: 7%;
+    margin-top:37%;
+font-weight: bold;
+    position: absolute;
+        width:200px;
+}
+.form7{
+    margin-left: 9%;
+    margin-top:36.5%;
+    height: 6%;
+    width: 10%;
+
+    position: absolute;
+}
+.Mar{
+    margin-left: 18%;
+    margin-top:37%;
+    font-weight: bold;
+
+    position: absolute;
+        width:200px;
+}
+.form8{
+    margin-left: 20%;
+    margin-top:36.5%;
+    height: 6%;
+    width: 10%;
+
+    position: absolute;
+}
+.Mer{
+    margin-left: 28%;
+    margin-top:37%;
+    font-weight: bold;
+
+    position: absolute;
+        width:200px;
+}
+.form9{
+    margin-left: 30%;
+    margin-top:36.5%;
+    height: 6%;
+    width: 10%;
+
+    position: absolute;
+}
+.Jeu{
+    margin-left: 38%;
+    margin-top:37%;
+    font-weight: bold;
+
+    position: absolute;
+        width:200px;
+}
+.form10{
+    margin-left: 39%;
+    margin-top:36.5%;
+    height: 6%;
+    width: 10%;
+
+    position: absolute;
+}
+.Ven{
+    margin-left: 48%;
+    margin-top:37%;
+    font-weight: bold;
+
+    position: absolute;
+        width:200px;
+}
+.form11{
+    margin-left: 50%;
+    margin-top:36.5%;
+    height: 6%;
+    width: 10%;
+
+    position: absolute;
+}
+.Sam{
+    margin-left: 58%;
+    margin-top:37%;
+    font-weight: bold;
+
+    position: absolute;
+        width:200px;
+}
+.form12{
+    margin-left: 60%;
+    margin-top:36.5%;
+    height: 6%;
+    width: 10%;
+
+    position: absolute;
+}
+.Dim{
+    margin-left: 68%;
+    margin-top:37%;
+    font-weight: bold;
+
+    position: absolute;
+        width:200px;
+}
+.form13{
+    margin-left: 70%;
+    margin-top:36.5%;
+    height: 6%;
+    width: 10%;
+
+    position: absolute;
+}
+.Indisponibilités{
+    margin-top: 450px;
+    position: absolute;
+      background-color: #E9EAEB;
+    box-shadow: -1px 15px 6px -6px ;
+    width: 800px;
+    height: 130px;
+    border-radius: 50px;
+    animation: fadeIn 0.9s;
+}
+.Indisponibilités_title{
+    position: absolute;
+    margin-left: 5%;
+    margin-top: 1%;
+    font-size: 20px;
+    font-weight: bold;
+
+}
+.Indisponibilités_dec{
+    color: black;
+    position: absolute;
+    margin-left: 5%;
+    margin-top: 4.5%;
+    font-size: 15px;
+
+}
+.Indisponibilités_ajouter{
+    color: black;
+    position: absolute;
+    margin-left: 5%;
+    margin-top: 11%;
+    font-weight: bold;
+    font-size: 15px;
+
+}
+.form14{
+    margin-left: 45%;
+    margin-top: 50px;
+
+    position: absolute;
+    width:160px;
+}
+.form15{
+    margin-left: 75%;
+    margin-top: 50px;
+
+    position: absolute;
+    width:160px;
+}
+.au{
+    position: absolute;
+    margin-left: 69%;
+    margin-top: 90px;
+    color: black;
+    font-weight: bold;
+    font-size: 15px;
+
+
+}
+
+.buttEn{
+    position: absolute;
+    font-size: 20px;
+    color: white;
+    cursor: pointer;
+    border: none;
+    background-color: #00529E;
+
+    z-index: 10;
+    transition:  0.3s ease-in-out ;
+    padding: 10px 50px;
+    border-radius: 50px;
+    margin-top: 160px;
+    margin-left: 35%;
+ }
+ .buttEn:hover {
+    color: white;
+    border: none;
+    background-color: green;
+}
+
+
+
+
+/*  */
+
+
+
+
+
+
+
+
+@media (max-width: 768px) {
+
+
+.Planning{
+    margin-top: 60px;
+    position: absolute;
+      background-color: #E9EAEB;
+    box-shadow: -1px 15px 6px -6px ;
+    width: 380px;
+    height: 570px;
+    border-radius: 50px;
+    animation: fadeIn 0.9s;
+ }
+ .Planning__title{
+    color: #00529E;
+    font-size: 30px;
+    margin-right: 30px;
+    position: absolute;
+    border-bottom: 9px solid #00529E;
+    white-space: nowrap;
+    animation: fadeIn 0.9s;
+
+}
+
+
+.forme1{
+    margin-left: 1;
+    margin-top:17%;
+
+    position: absolute;
+        width:170px;
+}
+.time1{
+    position: absolute;
+    
+}
+.paramt{
+    position: absolute;
+    margin-left: 10%;
+    margin-top: 10px;
+    font-size: 20px;
+    font-weight: bold;
+
+}
+.forme2{
+    margin-left: 50%;
+    margin-top:17%;
+
+    position: absolute;
+    width:170px;
+}
+.forme3{
+    margin-left: 2%;
+    margin-top:47%;
+
+    position: absolute;
+    width:170px;
+}
+.slach{
+    position: absolute;
+    margin-top:35%;
+    margin-left:47%;
+    font-size: 40px;
+    color: black;
+
+}
+.forme4{
+    margin-left: 50%;
+    margin-top:47%;
+
+    position: absolute;
+        width:170px;
+}
+.clientnum{
+    position: absolute;
+    margin-top: 67%;
+    margin-left: 20px;
+}
+.clientde{
+    position: absolute;
+    margin-top: 75%;
+    color: black;
+    margin-left: 20px;
+}
+.forme5{
+    margin-left: 2%;
+    margin-top:90%;
+
+    position: absolute;
+        width:200px;
+}
+.clientconfi{
+    position: absolute;
+    margin-top: 110%;
+    margin-left: 20px;
+}
+.Lun{
+    margin-left: 7%;
+    margin-top:125%;
+    font-weight: bold;
+    position: absolute;
+        width:200px;
+}
+.form7{
+    margin-left: 20%;
+    margin-top:125%;
+    height: 4%;
+    width: 10%;
+
+    position: absolute;
+}
+.Mar{
+    margin-left: 30%;
+    margin-top:125%;
+    font-weight: bold;
+
+    position: absolute;
+        width:200px;
+}
+.form8{
+    margin-left: 42%;
+    margin-top:125%;
+    height: 4%;
+    width: 10%;
+
+    position: absolute;
+}
+.Mer{
+    margin-left: 52%;
+    margin-top:125%;
+    font-weight: bold;
+
+    position: absolute;
+        width:200px;
+}
+.form9{
+    margin-left: 62%;
+    margin-top:125%;
+    height: 4%;
+    width: 10%;
+
+    position: absolute;
+}
+.Jeu{
+    margin-left: 72%;
+    margin-top:125%;
+    font-weight: bold;
+
+    position: absolute;
+        width:200px;
+}
+.form10{
+    margin-left: 82%;
+    margin-top:125%;
+    height: 4%;
+    width: 10%;
+
+    position: absolute;
+}
+.Ven{
+    margin-left: 7%;
+    margin-top:135%;
+    font-weight: bold;
+
+    position: absolute;
+        width:200px;
+}
+.form11{
+    margin-left: 20%;
+     margin-top:135%;
+    height: 4%;
+    width: 10%;
+
+    position: absolute;
+}
+.Sam{
+    margin-left: 30%;
+    margin-top:135%;
+    font-weight: bold;
+
+    position: absolute;
+        width:200px;
+}
+.form12{
+    margin-left: 42%;
+    margin-top:135%;
+    height: 4%;
+    width: 10%;
+
+    position: absolute;
+}
+.Dim{
+    margin-left: 52%;
+    margin-top:135%;
+    font-weight: bold;
+
+    position: absolute;
+        width:200px;
+}
+.form13{
+    margin-left: 62%;
+    margin-top:135%;
+    height: 4%;
+    width: 10%;
+
+    position: absolute;
+}
+
+/* 
+ */
+
+.Indisponibilités{
+    margin-top: 690px;
+    position: absolute;
+      background-color: #E9EAEB;
+    box-shadow: -1px 15px 6px -6px ;
+    width: 380px;
+    height: 230px;
+    border-radius: 50px;
+    animation: fadeIn 0.9s;
+}
+.Indisponibilités_title{
+    position: absolute;
+    margin-left: 5%;
+    margin-top: 4%;
+    font-size: 20px;
+    font-weight: bold;
+
+}
+.Indisponibilités_dec{
+    color: black;
+    position: absolute;
+    margin-left: 2%;
+    margin-top: 14%;
+    font-size: 11px;
+
+}
+.Indisponibilités_ajouter{
+    color: black;
+    position: absolute;
+    margin-left: 5%;
+    margin-top: 25%;
+    font-weight: bold;
+    font-size: 14px;
+
+}
+.form14{
+    margin-left: 2%;
+    margin-top: 120px;
+    position: absolute;
+        width:150px;
+}
+.form15{
+    margin-left: 58%;
+    margin-top: 120px;
+    position: absolute;
+        width:150px;
+}
+.au{
+    position: absolute;
+    margin-left: 48%;
+    margin-top: 150px;
+    color: black;
+    font-weight: bold;
+    font-size: 15px;
+
+
+}
+
+.buttEn{
+    position: absolute;
+    font-size: 20px;
+    color: white;
+    cursor: pointer;
+    border: none;
+    background-color: #00529E;
+
+    z-index: 10;
+    transition:  0.3s ease-in-out ;
+    padding: 10px 50px;
+    border-radius: 50px;
+    margin-top: 260px;
+    margin-left: 25%;
+ }
+ .buttEn:hover {
+    color: white;
+    border: none ;
+    background-color: green;
+}
+
+}

@@ -1,0 +1,210 @@
+.Prestation{
+  margin-top: 60px;
+  position: absolute;
+  background-color: #E9EAEB;
+  box-shadow: -1px 15px 6px -6px ;
+  width: 800px;
+  height: 130px;
+  border-radius: 50px;
+  animation: fadeIn 0.9s;
+}
+.Prestation__title{
+  color: #00529E;
+  font-size: 30px;
+  margin-right: 30px;
+  position: absolute;
+  border-bottom: 9px solid #00529E;
+  white-space: nowrap;
+  animation: fadeIn 0.9s;
+
+}
+.Prestation_methode{
+  position: absolute;
+  margin-left: 5%;
+  margin-top: 2%;
+
+  font-size: 20px;
+  font-weight: bold;
+}
+.methode1{
+  margin-top:10%;
+  margin-left: 1%;
+  height:19%;
+  width: 10%;
+
+  position: absolute;
+}
+.imageme1{
+  position: absolute;
+  width: 109px;
+  height: 102px;
+  left: 50px;
+  top: 45px;
+}
+.Espèces{
+  /* Espèces */
+
+position: absolute;
+width: 178px;
+height: 26px;
+left: 130px;
+top: 90px;
+
+font-weight: bold;
+font-size: 16px;
+/* or 281% */
+
+color: black;
+
+}
+
+.carte{
+  /* Espèces */
+
+position: absolute;
+width: 178px;
+height: 26px;
+left: 360px;
+top: 90px;
+
+font-weight: bold;
+font-size: 16px;
+/* or 281% */
+
+color: black;
+
+}
+.methode2{
+  margin-top:10%;
+  margin-left: 30%;
+  height:19%;
+  width: 10%;
+
+  position: absolute;}
+
+  .imageme2{
+    
+    position: absolute;
+    width: 109px;
+    height: 102px;
+    left: 270px;
+    top: 45px;
+
+  }
+  .cheque{
+    /* Espèces */
+  
+  position: absolute;
+  width: 178px;
+  height: 26px;
+  left: 590px;
+  top: 90px;
+  
+  font-weight: bold;
+  font-size: 16px;
+  /* or 281% */
+  
+  color: black;
+  
+  }
+  .methode3{
+    margin-top:10%;
+    margin-left: 55%;
+    height:19%;
+    width: 10%;
+  
+    position: absolute;}
+  
+    .imageme3{
+      
+      position: absolute;
+      width: 175px;
+      height: 175px;
+      left: 450px;
+      top: 5px;
+  
+    }
+    .service-table{
+      position: absolute;
+      top: 130%;
+      left: 1%;
+      width: 100%;
+    }
+      /* Service table columns styling */
+      .service-table-columns {
+          display: grid;
+          grid-template-columns: repeat(1, 1fr); /* Deux colonnes */
+          gap: 1rem;
+          
+      }
+    
+      .service-category {
+          background-color: #ffffff;
+          border-radius: 8px;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          padding: 10px;
+          cursor: pointer;
+          transition:  0.3s;
+          width: 99%; /* Ajuste la largeur pour qu'elle ne dépasse pas la largeur de la colonne */
+          box-sizing: border-box; /* Inclut le padding et la bordure dans la largeur totale */
+      
+        }
+    
+      .service-category:hover {
+          background-color: #f0f0f0;
+      }
+    
+      .service-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          
+      }
+    
+      .service-icon {
+          font-size: 1.5rem;
+      }
+    
+      .service-title {
+          font-weight: bold;
+          font-size: 20px;
+      }
+    
+      .expand-icon {
+          font-size: 1.2rem;
+      }
+    
+      /* Styling for the expanded service options */
+      .service-options {
+          margin-top: 0.5rem;
+          padding-top: 0.5rem;
+          font-size: 20px;
+          border-top: 1px solid #e0e0e0;
+          animation: fadeIn 0.9s;
+
+      }
+      .labelll{
+        padding-left: 20px;
+
+      }
+    
+      .buttPRE{
+        font-size: 20px;
+        color: white;
+        cursor: pointer;
+        border: none;
+        background-color: #00529E;
+    
+        z-index: 10;
+        transition:  0.3s ease-in-out ;
+        padding: 10px 50px;
+        border-radius: 50px;
+        margin-left: 300%;
+     }
+     .buttPRE:hover {
+        color: white;
+        border: none;
+        background-color: green;
+    }
+    
+    

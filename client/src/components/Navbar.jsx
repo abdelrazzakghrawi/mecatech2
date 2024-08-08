@@ -1,6 +1,5 @@
-// Navbar.jsx
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // Importer useNavigate
+import { Link, useNavigate } from 'react-router-dom';
 import Modal from 'react-modal';
 import LoginClient from '../Auth/LoginClient';
 import RegisterClientModal from '../Auth/RegisterClient';
@@ -23,8 +22,10 @@ const Navbar = () => {
   const [isRegisterMecanoModalOpen, setIsRegisterMecanoModalOpen] = useState(false);
   const { user, logout } = useAuth();
   
-  const navigate = useNavigate(); // Initialiser useNavigate
+  const navigate = useNavigate();
   const username = localStorage.getItem('username');
+  const role = localStorage.getItem('role');
+
   const {
     searchResults,
     showMap,
@@ -48,7 +49,7 @@ const Navbar = () => {
     setIsRegisterClientModalOpen(false);
     setIsLoginMecanoModalOpen(false);
     setIsRegisterMecanoModalOpen(false);
-    navigate('/'); // Rediriger vers la page d'accueil après déconnexion
+    navigate('/');
   };
 
   // Modals Clients
@@ -69,8 +70,6 @@ const Navbar = () => {
   };
   const closeRegisterMecanoModal = () => closeModal(setIsRegisterMecanoModalOpen);
 
-  
-
   return (
     <div>
       <div className='body'>
@@ -81,23 +80,29 @@ const Navbar = () => {
                 <img src={logo} alt="Logo" className='logo' />
               </a>
               <ul className={`navbar-menu ${isOpen ? 'open' : ''}`}>
-              {user ? (
-              <div className="user-info">
-                <Link to="/dashboard-client" className="navbar-username">
-                  Bienvenue {username}
-                </Link>
-                <div className="auth-buttons">
-                  <button className="logout-button" onClick={handleLogout}>Déconnexion</button>
-                  <a href="#" className="besoin">Besoin daide ?</a>
-                </div>
-              </div>
-            ) : (
-              <>
-                <button className="butt1" onClick={openLoginClientModal}>Espace Client</button>
-                <button className="butt2" onClick={openLoginMecanoModal}>Espace Mecano</button>
-                <a href="#" className="besoin">Besoin daide ?</a>
-              </>
-            )}
+                {user ? (
+                  <div className="user-info">
+                    {role === 'client' ? (
+                      <Link to="/dashboard-client" className="navbar-username">
+                        Bienvenue {username}
+                      </Link>
+                    ) : (
+                      <Link to="/dashboard-mecano" className="navbar-username">
+                        Bienvenue {username}
+                      </Link>
+                    )}
+                    <div className="auth-buttons">
+                      <button className="logout-button" onClick={handleLogout}>Déconnexion</button>
+                      <a href="#" className="besoin">Besoin d'aide ?</a>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <button className="butt1" onClick={openLoginClientModal}>Espace Client</button>
+                    <button className="butt2" onClick={openLoginMecanoModal}>Espace Mecano</button>
+                    <a href="#" className="besoin">Besoin d'aide ?</a>
+                  </>
+                )}
               </ul>
               <div className="dropdown-button" onClick={toggleDropdown}>
                 ☰
@@ -179,25 +184,24 @@ const Navbar = () => {
           <SearchProvider>
             <div className="container mx-auto p-4">
               <SearchInputs onSearch={handleSearchClick} />
-             
             </div>
           </SearchProvider>
         </div>
       </div>
-     <div className="container mx-auto p-4" >
-     <SearchProvider>
-      <SearchDisplay
-                searchResults={searchResults}
-                userLocation={userLocation}
-                distanceFilter={distanceFilter}
-                setDistanceFilter={setDistanceFilter}
-                showFilter={showFilter}
-                filterEnabled={filterEnabled}
-                setFilterEnabled={setFilterEnabled}
-                showMap={showMap}
-              />
-      </SearchProvider>
-     </div>
+      <div className="container mx-auto p-4" >
+        <SearchProvider>
+          <SearchDisplay
+            searchResults={searchResults}
+            userLocation={userLocation}
+            distanceFilter={distanceFilter}
+            setDistanceFilter={setDistanceFilter}
+            showFilter={showFilter}
+            filterEnabled={filterEnabled}
+            setFilterEnabled={setFilterEnabled}
+            showMap={showMap}
+          />
+        </SearchProvider>
+      </div>
     </div>
   );
 };

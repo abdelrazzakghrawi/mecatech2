@@ -1,12 +1,10 @@
 // App.js
 import Modal from 'react-modal';
-import Navbar from './components/Navbar';
 import Home from './Auth/Home';
-import DashboardMecano from './Auth/DashboardMecano';
+import Espacemeca from '../src/Espace-Mecano/Espacemeca';
 import DashboardClient from './EspaceClient/DashboardClient'; // Importez le composant DashboardClient
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { useAuth } from './Auth/AuthContext';
-import SearchBar from './searchService/searchComponent/SearchBar'
 import './App.css'
 
 Modal.setAppElement('#root');
@@ -24,8 +22,10 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           {role === 'mecano' && (
-            <Route path="/dashboard-mecano" element={<DashboardMecano />} />
+            <Route path="/dashboard-mecano" element={<Espacemeca/>} />
           )}
+                      <Route path="/dashboard-mecano" element={<Espacemeca/>} />
+
           {role === 'client' && (
             <Route path="/dashboard-client" element={<DashboardClient />} />
           )}

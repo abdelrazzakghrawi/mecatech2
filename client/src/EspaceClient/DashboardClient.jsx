@@ -5,8 +5,9 @@ import MesRendezVous from './MesRendezVous';
 import MesVehicules from './MesVehicules';
 import ChoisirPrestation from './ChoisirPrestation';
 import ContactezNous from './ContactezNous';
-import Footer from './Footer/Footer'; // Importez le composant Footer
 import axios from 'axios';
+import Navbar from '../Espace-Mecano/Navbar/Navbar';
+import Footer from "../Espace-Mecano/Footer/Footer"
 
 const DashboardClient = () => {
   const [selectedSection, setSelectedSection] = useState('monCompte');
@@ -50,6 +51,7 @@ const DashboardClient = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-[#F1F1F1]">
+      <Navbar/>
       <div className="flex flex-1 overflow-hidden">
         <div className="w-64 ml-4 mt-4">
           <Sidebar
@@ -61,7 +63,7 @@ const DashboardClient = () => {
         </div>
         <main className="flex-1 p-6 overflow-y-auto">{renderContent()}</main>
       </div>
-      <Footer />
+      <Footer/>
     </div>
   );
 };

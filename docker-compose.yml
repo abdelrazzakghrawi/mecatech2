@@ -26,6 +26,15 @@ services:
       networks:
         - app-network
 
+  mecanique_service:
+      build:
+        context: ./server/services/mecanique_service
+      env_file: ./server/services/mecanique_service/.env
+      ports:
+        - "5001:5001"
+      networks:
+        - app-network
+
   frontend:
     build:
       context: ./client

@@ -1,0 +1,118 @@
+.Document{
+    margin-top: 70px;
+    position: absolute;
+      background-color: #E9EAEB;
+    box-shadow: -1px 15px 6px -6px ;
+    width: 800px;
+    height: 120px;
+    border-radius: 50px;
+    animation: fadeIn 0.9s;
+ }
+ .Document__title{
+    color: #00529E;
+    
+    font-size: 30px;
+    margin-right: 30px;
+    position: absolute;
+    border-bottom: 9px solid #00529E;
+    white-space: nowrap;
+    animation: fadeIn 0.9s;
+
+}
+.Document_telecharger{
+    position: absolute;
+    margin-left: 4%;
+    margin-top: 1%;
+    font-weight: bold;
+    font-size: 17px;
+}
+.Document_Attention{
+    position: absolute;
+    margin-left: 4%;
+    margin-top: 4%;
+    font-size: 15px;
+    color: black;
+
+}
+.Document2{
+    margin-top: 220px;
+    position: absolute;
+    
+      background-color: #E9EAEB;
+    box-shadow: -1px 15px 6px -6px ;
+    width: 240px;
+    height: 190px;
+    border-radius: 50px;
+    animation: fadeIn 0.9s;
+}
+.imagedocument2{
+    position: absolute;
+    margin-top: 40%;
+    margin-left: 15%;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+      background-color: #E9EAEB;
+}
+.Document3{
+    position: absolute;
+    margin-top: 220px;
+    margin-left: 450px;
+      background-color: #E9EAEB;
+    box-shadow: -1px 15px 6px -6px ;
+    width: 240px;
+    height: 190px;
+    border-radius: 50px;
+    animation: fadeIn 0.9s;
+    
+}
+.imagedocument3{
+    position: absolute;
+    margin-top: 40%;
+    margin-left: 15%;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    
+      background-color: #E9EAEB;
+}
+.file1{
+    position: absolute;
+    height: 30%;
+    margin-top: 12%;
+    color: #00529E;
+    width: 30%;
+    margin-left: 35%;
+
+}
+.file2{
+    position: absolute;
+    height: 30%;
+    margin-top: 12%;
+    color: #00529E;
+    width: 30%;
+    margin-left: 35%;
+
+}
+.Document__submit{
+    position: absolute;
+    font-size: 20px;
+    color: white;
+    cursor: pointer;
+    border: none;
+    background-color: #00529E;
+
+    z-index: 10;
+    transition:  0.3s ease-in-out ;
+    padding: 10px 50px;
+    border-radius: 50px;
+    margin-top: 90%;
+    margin-left: 60%;
+ }
+ .Document__submit:hover {
+    color: white;
+    border: none;
+    background-color: green;
+}
+
