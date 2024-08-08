@@ -46,6 +46,8 @@ const LoginClient = ({ isOpen, closeModal, openRegisterModal }) => {
       } catch (err) {
         setError('Erreur de connexion. Veuillez réessayer.');
       }
+
+      
     },
   });
 

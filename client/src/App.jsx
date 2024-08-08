@@ -1,12 +1,13 @@
 // App.js
 import Modal from 'react-modal';
-import Navbar from './components/Navbar';
+
 import Home from './Auth/Home';
 import DashboardMecano from './Auth/DashboardMecano';
 import DashboardClient from './EspaceClient/DashboardClient'; // Importez le composant DashboardClient
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { useAuth } from './Auth/AuthContext';
-import SearchBar from './searchService/searchComponent/SearchBar'
+import VerifyEmail from './Auth/VerifyEmail/VerifyEmail';
+
 import './App.css'
 
 Modal.setAppElement('#root');
@@ -29,6 +30,7 @@ const App = () => {
           {role === 'client' && (
             <Route path="/dashboard-client" element={<DashboardClient />} />
           )}
+           <Route path="/verify-email/:token" element={<VerifyEmail />} />
         </Routes>
         
       </div>

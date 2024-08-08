@@ -34,12 +34,14 @@ const RegisterClientModal = ({ isOpen, closeModal, openLoginModal }) => {
     }),
     onSubmit: async (values) => {
       try {
-        await axios.post('http://localhost:5000/api/auth/register', {
+        const response = await axios.post('http://localhost:5000/api/auth/register', {
           username: values.username,
           email: values.email,
           password: values.password,
           role: 'client',
         });
+        // Stocker le userId dans le localStorage
+        localStorage.setItem('userId', response.data.userId);
         closeModal();
         openLoginModal();
       } catch (error) {
@@ -48,13 +50,11 @@ const RegisterClientModal = ({ isOpen, closeModal, openLoginModal }) => {
       }
     },
   });
-
-  
   const handleGoogleSuccess = async (response) => {
     console.log('Google login success:', response);
     try {
       const token = response.credential;
-      const res = await axios.post('http://localhost:5000/api/auth/google/google-login', { token });
+      const res = await axios.post('http://localhost:5000/api/auth/google-login', { token, role: 'client' });
       console.log('Server response:', res.data);
       closeModal(); // Close the modal
       login(token, res.data.username, 'client'); // Store user info in AuthContext
@@ -64,6 +64,7 @@ const RegisterClientModal = ({ isOpen, closeModal, openLoginModal }) => {
       setError("Erreur lors de l'authentification avec Google. Veuillez réessayer.");
     }
   };
+
   const handleGoogleFailure = (response) => {
     console.log('Google Sign-In a échoué', response);
     setError("Erreur lors de l'authentification avec Google. Veuillez réessayer.");
@@ -129,14 +130,13 @@ const RegisterClientModal = ({ isOpen, closeModal, openLoginModal }) => {
             <button type="submit" className="submit-button">Sinscrire</button>
             <div className="divider">ou</div>
             <div className="google-login-wrapper">
-  <GoogleLogin
-    onSuccess={handleGoogleSuccess}
-    onError={handleGoogleFailure}
-    buttonText="Connexion avec Google"
-    className="google-signin"
-  />
-</div>
-
+              <GoogleLogin
+                onSuccess={handleGoogleSuccess}
+                onError={handleGoogleFailure}
+                buttonText="Connexion avec Google"
+                className="google-signin"
+              />
+            </div>
           </form>
           <p className="login-link">
             Vous avez déjà un compte ? <button type="button" onClick={() => { closeModal(); openLoginModal(); }} className="link">Connectez-vous ici</button>

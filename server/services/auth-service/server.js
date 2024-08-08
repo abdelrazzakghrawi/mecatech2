@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const passport = require('passport');
 
+
 dotenv.config();
 connectDB();
 
@@ -22,5 +23,6 @@ app.use('/api/auth', authRoutes);
 app.use('/api/auth/google-login', googleAuthRoutes); 
 app.use('/api/auth/google', googleAuthRoutes);// Ajoutez cette ligne pour la route Google
 app.use('/api/auth/me',authRoutes);
+app.use('/api/auth', authRoutes);
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
