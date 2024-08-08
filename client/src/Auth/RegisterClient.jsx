@@ -130,13 +130,14 @@ const RegisterClientModal = ({ isOpen, closeModal, openLoginModal }) => {
             <button type="submit" className="submit-button">Sinscrire</button>
             <div className="divider">ou</div>
             <div className="google-login-wrapper">
-              <GoogleLogin
-                onSuccess={handleGoogleSuccess}
-                onError={handleGoogleFailure}
-                buttonText="Connexion avec Google"
-                className="google-signin"
-              />
-            </div>
+  <GoogleLogin
+    onSuccess={handleGoogleSuccess}
+    onError={handleGoogleFailure}
+    buttonText="Connexion avec Google"
+    className="google-signin"
+  />
+</div>
+
           </form>
           <p className="login-link">
             Vous avez déjà un compte ? <button type="button" onClick={() => { closeModal(); openLoginModal(); }} className="link">Connectez-vous ici</button>
