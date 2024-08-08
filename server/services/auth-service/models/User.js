@@ -54,10 +54,15 @@ const UserSchema = new mongoose.Schema({
   role: {
     type: String,
     enum: ['client', 'mecano'],
-    required: [true, 'Role is required'],
+    required: false, // Rendre le champ facultatif
   },
-  resetPasswordToken: String,
-  resetPasswordExpires: Date,
+  
+
+  emailVerificationToken: String,
+  emailVerified: {
+    type: Boolean,
+    default: false,
+  },
 }, {
   timestamps: true
 });
