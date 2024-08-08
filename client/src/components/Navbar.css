@@ -15,7 +15,7 @@ header {
 
 .h11 {
   position: absolute;
-  padding: 80px;
+  margin: 80px;
   color: white;
   font-size: 290%;
 }
@@ -227,7 +227,7 @@ ul {
   }
 }
 .search {
-  margin-top: 13%;
+  margin-top: 12%;
   padding-bottom: 3%;  
   margin-left: 10%;
 }
