@@ -15,49 +15,42 @@ const PickCarModel = ({ isOpen, onClose }) => {
       setSelectedModel('');
       setSelectedYears('');
       setDetails({});
-    }
-  }, [isOpen]);
-
-  const handleMarqueClick = () => {
-    if (marques.length === 0) {
       fetchMarques()
         .then(data => setMarques(data))
         .catch(error => console.error('Error fetching marques:', error));
     }
-  };
+  }, [isOpen]);
 
-  const handleMarqueChange = (e) => {
-    const marque = e.target.value;
-    setSelectedMarque(marque);
-    setSelectedModel('');
-    setSelectedYears('');
-    setDetails({});
-    if (marque) {
-      fetchModels(marque)
+  useEffect(() => {
+    if (selectedMarque) {
+      fetchModels(selectedMarque)
         .then(data => setModels(data))
         .catch(error => console.error('Error fetching models:', error));
     } else {
       setModels([]);
     }
+  }, [selectedMarque]);
+
+  useEffect(() => {
+    if (selectedMarque && selectedModel && selectedYears) {
+      fetchDetails(selectedMarque, selectedModel, selectedYears)
+        .then(data => setDetails(data))
+        .catch(error => console.error('Error fetching details:', error));
+    } else {
+      setDetails({});
+    }
+  }, [selectedModel, selectedYears]);
+
+  const handleMarqueChange = (e) => {
+    setSelectedMarque(e.target.value);
+    setSelectedModel('');
+    setSelectedYears('');
   };
 
   const handleModelChange = (e) => {
     const [model, years] = e.target.value.split(' / ');
     setSelectedModel(model);
     setSelectedYears(years);
-    if (selectedMarque && model && years) {
-      fetchDetails(selectedMarque, model, years)
-        .then(data => setDetails(data))
-        .catch(error => console.error('Error fetching details:', error));
-    }
-  };
-
-  const handleModelClick = () => {
-    if (selectedMarque && models.length === 0) {
-      fetchModels(selectedMarque)
-        .then(data => setModels(data))
-        .catch(error => console.error('Error fetching models:', error));
-    }
   };
 
   const handleCloseModal = () => {
@@ -68,17 +61,17 @@ const PickCarModel = ({ isOpen, onClose }) => {
   const handleClose = () => {
     if (selectedModel && selectedYears && selectedMarque) {
       const selectedCar = { model: selectedModel, years: selectedYears, marques: selectedMarque };
-      onClose(selectedCar); // Pass the selected car object
+      onClose(selectedCar);
     } else {
-      alert('Veuillez sélectionner un modèle et une année avant de valider'); // Display an alert
-      onClose(null); // Pass null if no car is selected
+      alert('Veuillez sélectionner un modèle et une année avant de valider');
+      onClose(null);
     }
   };
 
   return (
     isOpen && (
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[1000]">
-        <div className="bg-white pb-8 pl- shadow-lg w-full max-w-md relative">
+        <div className="bg-white pb-8 shadow-lg w-full max-w-md relative">
           <button
             onClick={handleCloseModal}
             className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
@@ -88,12 +81,11 @@ const PickCarModel = ({ isOpen, onClose }) => {
           <div className="text-2xl font-semibold mb-6 text-center bg-teal-500 text-white py-4">
             Sélectionnez le modèle de votre véhicule
           </div>
-          <div className="mb-6 mr-2 ml-2">
+          <div className="mb-6 mx-2">
             <label className="block mb-2 font-medium">Choisissez un constructeur</label>
             <select
               value={selectedMarque}
               onChange={handleMarqueChange}
-              onClick={handleMarqueClick}
               className="w-full px-4 py-2 border"
             >
               <option value="" className="text-gray-500">Marques les plus populaires</option>
@@ -102,12 +94,11 @@ const PickCarModel = ({ isOpen, onClose }) => {
               ))}
             </select>
           </div>
-          <div className="mb-6 mr-2 ml-2">
+          <div className="mb-6 mx-2">
             <label className="block mb-2 font-medium">Choisissez un modèle</label>
             <select
               value={`${selectedModel} / ${selectedYears}`}
               onChange={handleModelChange}
-              onClick={handleModelClick}
               className="w-full px-4 py-2 border"
               disabled={!selectedMarque}
             >
@@ -118,7 +109,7 @@ const PickCarModel = ({ isOpen, onClose }) => {
             </select>
           </div>
           {Object.keys(details).length > 0 && (
-            <div className="mb-6 mr-2 ml-2">
+            <div className="mb-6 mx-2">
               <label className="block mb-2 font-medium">Choisissez une motorisation</label>
               <select className="w-full px-4 py-2 border">
                 <option value="" className="text-gray-500">Sélectionnez une motorisation</option>
