@@ -1,3 +1,5 @@
+require('dotenv').config(); // Charger les variables d'environnement
+
 const express = require('express');
 const mongoose = require('mongoose');
 const multer = require('multer');
@@ -27,6 +29,10 @@ const upload = multer({ storage: storage });
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
+}).then(() => {
+    console.log('Connecté à MongoDB');
+}).catch((error) => {
+    console.error('Erreur de connexion à MongoDB:', error.message);
 });
 
 // Modèle pour les garages
