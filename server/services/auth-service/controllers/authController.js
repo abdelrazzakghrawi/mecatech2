@@ -111,7 +111,6 @@ const getUserProfile = async (req, res) => {
   }
 };
 
-
 // Mettre à jour les informations de l'utilisateur connecté
 const updateUserProfile = async (req, res) => {
   try {
