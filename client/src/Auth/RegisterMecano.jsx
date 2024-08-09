@@ -32,17 +32,19 @@ const RegisterMecanoModal = ({ isOpen, closeModal, openLoginModal }) => {
     }),
     onSubmit: async (values) => {
       try {
-        await axios.post('http://localhost:5000/api/auth/register', {
+        const response = await axios.post('http://localhost:5000/api/auth/register', {
           username: values.username,
           email: values.email,
           password: values.password,
           phone: values.phone,
           role: 'mecano',
         });
-        closeModal(); // Close the register modal
-        openLoginModal(); // Open the login modal
+        localStorage.setItem('userId', response.data.userId);
+        closeModal();
+        openLoginModal();
       } catch (error) {
-        setError('Erreur lors de l\'inscription. Veuillez réessayer.');
+        console.error('Error during registration:', error.response?.data || error.message);
+        setError(error.response?.data?.message || "Erreur lors de l'inscription. Veuillez réessayer.");
       }
     },
   });

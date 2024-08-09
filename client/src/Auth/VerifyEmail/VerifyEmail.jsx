@@ -19,7 +19,7 @@ const VerifyEmail = () => {
         setMessage('Votre email a été vérifié avec succès!');
         // Supprimer l'ID après la vérification
         localStorage.removeItem('userId');
-        setTimeout(() => navigate('/'), 5000); 
+        setTimeout(() => navigate('/'), 3000); 
       } catch (error) {
         setMessage('Erreur lors de la vérification de l\'email.');
       }
