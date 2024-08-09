@@ -20,7 +20,7 @@ connectDB();
 
 // Middleware
 app.use(express.json());
-
+app.use('/api', require('./routes/planningRoutes'));  // Register planning routes
 app.use('/api/planning', require('./routes/planningRoutes'));
 app.use('/api/planning', require('./routes/planningRoutes'));
 
