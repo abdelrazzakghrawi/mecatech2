@@ -18,35 +18,6 @@ const auth = async (req, res, next) => {
   }
 };
 
-// Ajouter un véhicule
-const addVehicle = async (req, res) => {
-  try {
-    const { modele, nom, plaque, dateMiseEnCirculation } = req.body;
-    const vehicle = new Vehicle({
-      modele,
-      nom,
-      plaque,
-      dateMiseEnCirculation,
-      photo: req.file ? req.file.path : '',
-      user: req.user._id,
-    });
-    await vehicle.save();
-    res.status(201).json(vehicle);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
-
-// Récupérer les véhicules de l'utilisateur
-const getUserVehicles = async (req, res) => {
-  try {
-    const vehicles = await Vehicle.find({ user: req.user._id });
-    res.json(vehicles);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
-
 
 
 // Soumettre le formulaire de contact
@@ -69,5 +40,34 @@ const submitContactForm = async (req, res) => {
     res.status(400).json({ error: 'Erreur lors de l\'envoi du message.' });
   }
 };
+// Ajouter un véhicule
+const addVehicle = async (req, res) => {
+  try {
+    const { modele, nom, plaque, dateMiseEnCirculation } = req.body;
+    const vehicle = new Vehicle({
+      modele,
+      nom,
+      plaque,
+      dateMiseEnCirculation,
+      photo: req.file ? req.file.path : '',
+      user: req.user._id, // Associe le véhicule à l'utilisateur connecté
+    });
+    await vehicle.save();
+    res.status(201).json(vehicle);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+// Récupérer les véhicules de l'utilisateur
+const getUserVehicles = async (req, res) => {
+  try {
+    const vehicles = await Vehicle.find({ user: req.user._id }); // Filtrer par `userId`
+    res.json(vehicles);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 
 module.exports = { addVehicle, getUserVehicles,  submitContactForm,auth };

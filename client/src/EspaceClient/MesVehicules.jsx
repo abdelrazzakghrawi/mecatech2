@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-
 const MesVehicules = () => {
   const [formData, setFormData] = useState({
     modele: '',
@@ -23,6 +22,7 @@ const MesVehicules = () => {
   const handlePhotoChange = (e) => {
     setPhoto(e.target.files[0]);
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
   
@@ -72,74 +72,74 @@ const MesVehicules = () => {
       }
     }
   };
-   
+
   return (
-    <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-7xl mx-auto">
-      <h2 className="text-3xl font-bold text-teal-600 mb-6">Ajouter un véhicule</h2>
+    <div className="bg-[#E9EAEB] shadow-lg rounded-xl w-[850px] h-auto p-10 mx-auto my-10 relative">
+      <h2 className="text-3xl font-semibold text-[#00378A] mb-8 border-b-4 border-[#00378A] inline-block pb-1">
+        Ajouter un véhicule
+      </h2>
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="flex items-center space-x-4">
-          <div className="flex-shrink-0">
-            <label className="block text-gray-600 mb-2">Photo du véhicule</label>
-            <input
-              type="file"
-              onChange={handlePhotoChange}
-              className="block text-gray-700 border border-gray-300 rounded-lg p-2 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-teal-600 file:bg-teal-50 hover:file:bg-teal-100"
-            />
-            <span className="text-gray-500 text-sm">{photo ? photo.name : 'No file chosen'}</span>
-          </div>
+        <div className="relative">
+          <label className="block text-[#00378A] text-sm font-semibold mb-2">Photo du véhicule</label>
+          <input
+            type="file"
+            onChange={handlePhotoChange}
+            className="block w-full text-[#00378A] border border-gray-300 rounded-lg p-2 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-[#00378A] file:bg-[#E9EAEB] hover:file:bg-[#D3E1E6]"
+          />
+          <span className="text-gray-500 text-sm">{photo ? photo.name : 'Aucun fichier choisi'}</span>
         </div>
 
         <div>
-          <label className="block text-gray-600 mb-2">Modèle du véhicule *</label>
+          <label className="block text-[#00378A] text-sm font-semibold mb-2">Modèle du véhicule *</label>
           <input
             type="text"
             name="modele"
             value={formData.modele}
             onChange={handleChange}
-            className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1FA9B6]"
             required
           />
         </div>
 
         <div>
-          <label className="block text-gray-600 mb-2">Nom du véhicule *</label>
+          <label className="block text-[#00378A] text-sm font-semibold mb-2">Nom du véhicule *</label>
           <input
             type="text"
             name="nom"
             value={formData.nom}
             onChange={handleChange}
-            className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1FA9B6]"
             required
           />
         </div>
 
         <div>
-          <label className="block text-gray-600 mb-2">Plaque d'immatriculation *</label>
+          <label className="block text-[#00378A] text-sm font-semibold mb-2">Plaque d'immatriculation *</label>
           <input
             type="text"
             name="plaque"
             value={formData.plaque}
             onChange={handleChange}
-            className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1FA9B6]"
             required
           />
         </div>
 
         <div>
-          <label className="block text-gray-600 mb-2">Date de mise en circulation *</label>
+          <label className="block text-[#00378A] text-sm font-semibold mb-2">Date de mise en circulation *</label>
           <input
             type="date"
             name="dateMiseEnCirculation"
             value={formData.dateMiseEnCirculation}
             onChange={handleChange}
-            className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1FA9B6]"
             required
           />
         </div>
 
         <button
           type="submit"
-          className="mt-6 bg-teal-500 text-white py-3 px-6 rounded-lg shadow hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500"
+          className="mt-6 w-full bg-[#00378A] text-white py-3 px-6 rounded-full shadow-md hover:bg-[#002c6d] focus:outline-none focus:ring-2 focus:ring-[#00378A]"
         >
           Ajouter
         </button>
