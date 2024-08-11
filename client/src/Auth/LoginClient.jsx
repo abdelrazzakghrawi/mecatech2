@@ -29,18 +29,19 @@ const LoginClient = ({ isOpen, closeModal, openRegisterModal }) => {
     onSubmit: async (values) => {
       try {
         const { data } = await axios.post('http://localhost:5000/api/auth/login', values);
-
+    
         if (data.role !== 'client') {
           setError('Accès refusé pour les utilisateurs avec le rôle mécano');
           return;
         }
-
+    
         localStorage.setItem('token', data.token);
         localStorage.setItem('username', data.username);
         localStorage.setItem('role', data.role);
-
-        login(data.token, data.username, data.role);
-
+        localStorage.setItem('_id', data._id);  // Stocker `userId`
+    
+        login(data.token, data.username, data.role, data._id);  // Passer `userId` à `login`
+    
         closeModal();
         navigate('/');
       } catch (err) {
@@ -60,15 +61,28 @@ const LoginClient = ({ isOpen, closeModal, openRegisterModal }) => {
     try {
       const token = response.credential;
       const res = await axios.post('http://localhost:5000/api/auth/google/google-login', { token });
+      
+      const { token: jwtToken, username, _id, role } = res.data;
+  
       console.log('Server response:', res.data);
-      closeModal(); // Close the modal
-      login(token, res.data.username, 'client'); // Store user info in AuthContext
-      navigate('/'); // Redirect to the application homepage after successful login
+      closeModal(); // Fermer la modal
+      
+      // Stocker les informations dans le localStorage
+      localStorage.setItem('authToken', jwtToken);
+      localStorage.setItem('username', username);
+      localStorage.setItem('role', role);
+      localStorage.setItem('_id', _id);  // Stocker `userId`
+  
+      // Appeler la fonction `login` avec tous les paramètres nécessaires
+      login(jwtToken, username, role, _id); 
+  
+      navigate('/'); // Redirection après connexion réussie
     } catch (error) {
       console.error('Error during Google login:', error);
       setError("Erreur lors de l'authentification avec Google. Veuillez réessayer.");
     }
   };
+  
 
   const handleGoogleFailure = (response) => {
     console.log('Google Sign-In a échoué', response);
