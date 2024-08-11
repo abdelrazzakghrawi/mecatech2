@@ -39,7 +39,7 @@ const RegisterMecanoModal = ({ isOpen, closeModal, openLoginModal }) => {
           phone: values.phone,
           role: 'mecano',
         });
-        localStorage.setItem('userId', response.data.userId);
+        localStorage.setItem('_id', response.data.userId);
         closeModal();
         openLoginModal();
       } catch (error) {
