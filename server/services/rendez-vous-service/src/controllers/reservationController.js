@@ -150,7 +150,7 @@ const getReservationByMecaniqueId = async (req, res) => {
         // Map through reservations and fetch client details for each reservation
         const reservationsWithClientDetails = await Promise.all(
             reservations.map(async (reservation) => {
-                const clientDetails = await axios.get(`http://localhost:5000/api/auth/details/${reservation.client_id}`);
+                const clientDetails = await axios.get(`http://auth-service:5000/api/auth/details/${reservation.client_id}`);
                 return {
                     reservation,
                     clientDetails: clientDetails.data
