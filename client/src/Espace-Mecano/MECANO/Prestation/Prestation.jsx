@@ -6,6 +6,7 @@ import carte from "../assets/carte.png";
 import cheque from "../assets/cheque.png";
 import Swal from "sweetalert2"
 import "./Prestation.css";
+import { useAuth } from '../../../Auth/AuthContext';
 
 const iconMapping = {
     'Vidange': '🛢️',
@@ -31,12 +32,13 @@ const iconMapping = {
     'Diagnostic Électronique': '💻',
 };
 
-const Prestation = ({ garageId, onFinish }) => {
+const Prestation = () => {
     const [expandedServiceId, setExpandedServiceId] = useState(null);
     const [prestations, setPrestations] = useState({});
     const [selectedcompétances, setSelectedcompétances] = useState([]);
     const [selectedMethodesPaiement, setSelectedMethodesPaiement] = useState([]);
     const [errorMessage, setErrorMessage] = useState(''); // État pour gérer le message d'erreur
+    const { userId } = useAuth(); // Utiliser userId du contexte d'authentification
 
     useEffect(() => {
         const fetchPrestations = async () => {
@@ -76,24 +78,38 @@ const Prestation = ({ garageId, onFinish }) => {
             }
         });
     };
+    useEffect(() => {
+        const fetchPrestations = async () => {
+            try {
+                const response = await axios.get('http://localhost:5001/services');
+                setPrestations(response.data);
+            } catch (error) {
+                console.error('Erreur lors de la récupération des prestations', error);
+            }
+        };
+
+        const fetchSavedPrestations = async () => {
+            try {
+                const response = await axios.get(`http://localhost:5001/api/prestations/${userId}`);
+                setSelectedcompétances(response.data.compétances);
+                setSelectedMethodesPaiement(response.data.methodesPaiement);
+            } catch (error) {
+                console.error('Erreur lors de la récupération des prestations enregistrées', error);
+            }
+        };
+
+        fetchPrestations();
+        fetchSavedPrestations();
+    }, [userId]);
 
     const handleSubmit = async () => {
-        if (!garageId) {
-            Swal.fire({
-              icon: "error",
-              title: "Oops...",
-              text: "Veuillez enregistrer les informations de ton compte avant de continuer.!",
-            });
-            return;
-        }
-
         try {
             const selectedCategories = Object.keys(prestations).filter(category =>
                 prestations[category].some(option => selectedcompétances.includes(option))
             );
 
             await axios.post('http://localhost:5001/api/prestations', {
-                id: garageId,
+                userId, // Utiliser userId au lieu de garageId
                 compétances: selectedCategories,
                 methodesPaiement: selectedMethodesPaiement,
             });
@@ -101,12 +117,15 @@ const Prestation = ({ garageId, onFinish }) => {
               icon: "success",
               title: "Prestations enregistrées avec succès",
             });
-            if (onFinish) onFinish();
         } catch (error) {
             console.error('Erreur lors de l\'envoi des prestations', error);
+            Swal.fire({
+              icon: "error",
+              title: "Erreur",
+              text: "Une erreur est survenue lors de l'enregistrement des prestations.",
+            });
         }
     };
-
     const transformedServicesData = Object.entries(prestations)
         .filter(([category, items]) => !items.every(item => !isNaN(item)))
         .map(([category, items]) => ({
@@ -118,7 +137,7 @@ const Prestation = ({ garageId, onFinish }) => {
     return (
         <div>
             <div className="Prestation__title">Mes prestations & tarifs</div>
-            {errorMessage && <div className="error-message">{errorMessage}</div>} {/* Message d'erreur */}
+            {errorMessage && <div className="error-message">{errorMessage}</div>}
             <button className="buttPRE" type="button" onClick={handleSubmit}>Enregistrer</button>
 
             <div className="Prestation">
@@ -130,6 +149,7 @@ const Prestation = ({ garageId, onFinish }) => {
                         className="methode1"
                         type="checkbox"
                         value="Espèces"
+                        checked={selectedMethodesPaiement.includes("Espèces")}
                         onChange={handleMethodesPaiementChange}
                     />
                 </Box>
@@ -140,6 +160,7 @@ const Prestation = ({ garageId, onFinish }) => {
                         className="methode2"
                         type="checkbox"
                         value="Carte"
+                        checked={selectedMethodesPaiement.includes("Carte")}
                         onChange={handleMethodesPaiementChange}
                     />
                 </Box>
@@ -150,6 +171,7 @@ const Prestation = ({ garageId, onFinish }) => {
                         className="methode3"
                         type="checkbox"
                         value="Chéque"
+                        checked={selectedMethodesPaiement.includes("Chéque")}
                         onChange={handleMethodesPaiementChange}
                     />
                 </Box>
@@ -171,6 +193,7 @@ const Prestation = ({ garageId, onFinish }) => {
                                                     type="checkbox"
                                                     id={`option-${service.category}-${idx}`}
                                                     value={option}
+                                                    checked={selectedcompétances.includes(option)}
                                                     onChange={handlecompétancesChange}
                                                 />
                                                 <label className="labelll" htmlFor={`option-${service.category}-${idx}`}>{option}</label>

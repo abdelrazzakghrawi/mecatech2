@@ -1,4 +1,4 @@
-require('dotenv').config(); // Charger les variables d'environnement
+require('dotenv').config();
 
 const express = require('express');
 const mongoose = require('mongoose');
@@ -9,12 +9,11 @@ const cors = require('cors');
 const app = express();
 const port = 5001;
 
-// Configuration CORS
 app.use(cors({ origin: 'http://localhost:5173' }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use('/uploads', express.static('uploads'));
 
-// Configurer multer pour gérer les images
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, 'uploads/');
@@ -25,7 +24,6 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-// Connexion à MongoDB
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -35,7 +33,6 @@ mongoose.connect(process.env.MONGO_URI, {
     console.error('Erreur de connexion à MongoDB:', error.message);
 });
 
-// Modèle pour les garages
 const GarageSchema = new mongoose.Schema({
     Ville: String,
     nomGarage: String,
@@ -46,14 +43,13 @@ const GarageSchema = new mongoose.Schema({
     image_path: String,
     compétances: String,
     methodesPaiement: String,
-    Spécialités: String
+    Spécialités: String,
+    userId: String
 });
 const Garage = mongoose.model('mecanique_details', GarageSchema);
 
-// Nom de la base de données
 const dbName = 'Mecano';
 
-// Fonction pour récupérer les marques
 async function getCarBrands() {
     const client = new MongoClient(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -69,7 +65,6 @@ async function getCarBrands() {
     }
 }
 
-// Fonction pour récupérer les services
 async function getServices() {
     const client = new MongoClient(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -79,7 +74,7 @@ async function getServices() {
 
         const db = client.db(dbName);
         const collection = db.collection('Prestations');
-        const services = await collection.find({}, { projection: { _id: 0 } }).toArray(); // Exclure _id
+        const services = await collection.find({}, { projection: { _id: 0 } }).toArray();
         const result = {};
 
         services.forEach(service => {
@@ -101,60 +96,91 @@ async function getServices() {
     }
 }
 
-// Route pour les informations initiales
+app.get('/api/initial-info/:userId', async (req, res) => {
+    const { userId } = req.params;
+    try {
+        const garage = await Garage.findOne({ userId });
+        if (!garage) return res.status(404).json({ message: 'Garage non trouvé' });
+        if (garage.image_path) {
+            garage.image_path = `http://localhost:5001/${garage.image_path}`;
+        }
+        res.json(garage);
+    } catch (error) {
+        res.status(500).json({ message: 'Erreur lors de la récupération des informations initiales', error });
+    }
+});
+app.get('/api/prestations/:userId', async (req, res) => {
+    const { userId } = req.params;
+    try {
+        const garage = await Garage.findOne({ userId });
+        if (!garage) {
+            return res.status(404).json({ message: 'Garage non trouvé' });
+        }
+        const compétances = garage.compétances ? garage.compétances.split(',') : [];
+        const methodesPaiement = garage.methodesPaiement ? garage.methodesPaiement.split(',') : [];
+        res.json({ compétances, methodesPaiement });
+    } catch (error) {
+        res.status(500).json({ message: 'Erreur lors de la récupération des prestations', error });
+    }
+});
 app.post('/api/initial-info', upload.single('image_path'), async (req, res) => {
-    const { Ville, nomGarage, Telephone, Adresse, latitude, longitude } = req.body;
+    const { Ville, nomGarage, Telephone, Adresse, latitude, longitude, userId } = req.body;
     const image_path = req.file ? req.file.path : '';
 
     try {
-        const garage = new Garage({
-            Ville,
-            nomGarage,
-            Telephone,
-            Adresse,
-            latitude,
-            longitude,
-            image_path
-        });
-        await garage.save();
+        const garage = await Garage.findOneAndUpdate(
+            { userId },
+            {
+                Ville,
+                nomGarage,
+                Telephone,
+                Adresse,
+                latitude,
+                longitude,
+                image_path
+            },
+            { upsert: true, new: true }
+        );
+
         res.status(201).json({ id: garage._id });
     } catch (error) {
         res.status(500).json({ message: 'Erreur lors de la création des informations initiales', error });
     }
 });
 
-// Route pour les prestations
 app.post('/api/prestations', async (req, res) => {
-    const { id, compétances, methodesPaiement } = req.body;
+    const { userId, compétances, methodesPaiement } = req.body;
     try {
-        const garage = await Garage.findByIdAndUpdate(id, {
-            compétances: compétances.join(','), // Stocker en tant que chaîne de caractères
-            methodesPaiement: methodesPaiement.join(',') // Stocker en tant que chaîne de caractères
-        }, { new: true });
+        const garage = await Garage.findOneAndUpdate(
+            { userId },
+            {
+                compétances: compétances.join(','),
+                methodesPaiement: methodesPaiement.join(',')
+            },
+            { upsert: true, new: true }
+        );
 
-        if (!garage) return res.status(404).json({ message: 'Garage non trouvé' });
         res.json(garage);
     } catch (error) {
         res.status(500).json({ message: 'Erreur lors de la mise à jour des prestations', error });
     }
 });
 
-// Route pour les Spécialités
 app.post('/api/marques', async (req, res) => {
-    const { id, Spécialités } = req.body;
+    const { userId, Spécialités } = req.body;
     try {
-        const garage = await Garage.findByIdAndUpdate(id, {
-            Spécialités: Spécialités.join(',') // Stocker en tant que chaîne de caractères
-        }, { new: true });
+        const garage = await Garage.findOneAndUpdate(
+            { userId },
+            { Spécialités: Spécialités.join(',') },
+            { upsert: true, new: true }
+        );
 
-        if (!garage) return res.status(404).json({ message: 'Garage non trouvé' });
         res.json(garage);
     } catch (error) {
         res.status(500).json({ message: 'Erreur lors de la mise à jour des Spécialités', error });
     }
 });
 
-// Route pour les marques
 app.get('/brands', async (req, res) => {
     try {
         const brands = await getCarBrands();
@@ -164,7 +190,6 @@ app.get('/brands', async (req, res) => {
     }
 });
 
-// Route pour les services
 app.get('/services', async (req, res) => {
     try {
         const data = await getServices();

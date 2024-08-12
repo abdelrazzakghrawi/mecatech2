@@ -67,6 +67,7 @@ import axios from "axios";
 import { TextField } from "@mui/material";
 import { CircleX, Search } from "lucide-react";
 import Swal from "sweetalert2";
+import { useAuth } from "../../../Auth/AuthContext";
 const iconMappin = {
     "ABARTH": <img style={{width:"42px"}} src={image56} alt="" />,
     "ALFA ROMEO": <img style={{width:"42px"}} src={image58} alt="" />,
@@ -133,11 +134,14 @@ const iconMappin = {
     "VW": <img style={{width:"42px"}} src={image30} alt="" />,
   };
 
-const Marque = ({  garageId, onFinish }) => {
+const Marque = () => {
   const [Spécialités, setSpécialités] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedSpécialités, setSelectedSpécialités] = useState([]);
+  const { userId } = useAuth(); // Utiliser userId du contexte d'authentification
 
+
+ 
   useEffect(() => {
     const fetchSpécialités = async () => {
       try {
@@ -181,31 +185,29 @@ const Marque = ({  garageId, onFinish }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!garageId) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Veuillez enregistrer les informations de ton compte avant de continuer.!"
-});
-      return;
-  }
 
     try {
-      await axios.post('http://localhost:5001/api/marques', { id: garageId, Spécialités: selectedSpécialités });
+      await axios.post('http://localhost:5001/api/marques', { 
+        userId, // Utiliser userId au lieu de garageId
+        Spécialités: selectedSpécialités 
+      });
       Swal.fire({
         icon: "success",
         title: "Marques enregistrées avec succès",
       });
-      onFinish();
     } catch (error) {
       console.error('Erreur lors de l\'enregistrement des Spécialités:', error);
+      Swal.fire({
+        icon: "error",
+        title: "Erreur",
+        text: "Une erreur est survenue lors de l'enregistrement des marques.",
+      });
     }
   };
 
   const handleRemoveAll = () => {
     setSelectedSpécialités([]);
   };
-
   return (
     <div>
       <div className="marque-container">

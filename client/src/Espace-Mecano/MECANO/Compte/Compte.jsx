@@ -1,12 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import "./Compte.css";
 import { TextField, Box, InputAdornment } from '@mui/material';
 import { CircleAlert, CircleCheck } from 'lucide-react';
 import axios from 'axios';
 import mecano from "../assets/mecano.png";
 import Swal from 'sweetalert2';
+import { useAuth } from '../../../Auth/AuthContext'; // Assure-toi que le chemin est correct
 
 const Compte = ({ setGarageId, setImageURL }) => {
+  const { userId } = useAuth(); // Récupérer l'ID utilisateur depuis le contexte
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
   const [ipadresse, setIpadresse] = useState("");
@@ -27,6 +29,37 @@ const Compte = ({ setGarageId, setImageURL }) => {
     Telephone: true,
   });
 
+  useEffect(() => {
+    const fetchGarageInfo = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5001/api/initial-info/${userId}`);
+        const data = response.data;
+        setFormData({
+          Ville: data.Ville || '',
+          nomGarage: data.nomGarage || '',
+          Telephone: data.Telephone || '',
+          Adresse: data.Adresse || '',
+        });
+        setLatitude(data.latitude || '');
+        setLongitude(data.longitude || '');
+        if (data.image_path) {
+          setImage(data.image_path);
+          setimg(data.image_path);
+          setImageURL(data.image_path); // Passer l'URL de l'image au composant parent
+        }
+        if (data.id) {
+          setGarageId(data.id); // Mettre à jour l'ID du garage
+        }
+      } catch (error) {
+        console.error('Erreur lors de la récupération des informations du garage', error);
+      }
+    };
+
+    if (userId) {
+      fetchGarageInfo();
+    }
+  }, [userId, setImageURL, setGarageId]);
+
   const handleIpChange = (event) => {
     setIpadresse(event.target.value);
   };
@@ -38,14 +71,14 @@ const Compte = ({ setGarageId, setImageURL }) => {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    const reader = new FileReader();
-    setImage(file);
-    reader.onload = () => {
-      setimg(reader.result);
-      setImageURL(reader.result); // Passer l'URL de l'image à Linkk
-    };
-
     if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const newImageURL = event.target.result;
+        setImage(file);
+        setimg(newImageURL);
+        setImageURL(newImageURL); // Passer l'URL de l'image au composant parent
+      };
       reader.readAsDataURL(file);
     }
   };
@@ -64,13 +97,19 @@ const Compte = ({ setGarageId, setImageURL }) => {
     form.append('Adresse', formData.Adresse);
     form.append('latitude', latitude);
     form.append('longitude', longitude);
-    form.append('image_path', image_path);
+    if (image_path instanceof File) {
+      form.append('image_path', image_path);
+    }
+    form.append('userId', userId);
 
     try {
       const response = await axios.post('http://localhost:5001/api/initial-info', form, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
-      setGarageId(response.data.id);
+      setGarageId(response.data.id); // Mettre à jour l'ID du garage
+      if (response.data.image_path) {
+        setImageURL(response.data.image_path); // Mettre à jour l'URL de l'image après l'enregistrement
+      }
       Swal.fire({
         icon: "success",
         title: "Information de Ton Compte enregistrées avec succès",
@@ -82,16 +121,13 @@ const Compte = ({ setGarageId, setImageURL }) => {
 
   const handleGetGeoInfo = async () => {
     try {
-      const response = await axios.get(`http://ip-api.com/json/${ipadresse}`);
-      setGeoInfo({
-        Ville: response.data.Ville,
-        lat: response.data.lat,
-        lon: response.data.lon
-      });
-      setLatitude(response.data.lat);
-      setLongitude(response.data.lon);
+      const response = await fetch(`http://ip-api.com/json/${ipadresse}`);
+      const data = await response.json();
+      setGeoInfo(data);
+      setLatitude(data.lat);
+      setLongitude(data.lon);
     } catch (error) {
-      console.error(error);
+      console.error('Erreur lors de la récupération des informations géographiques', error);
     }
   };
 
