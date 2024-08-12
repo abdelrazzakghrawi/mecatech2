@@ -6,7 +6,7 @@ const vehicleSchema = new mongoose.Schema({
   plaque: { type: String, required: true, unique: true },
   dateMiseEnCirculation: { type: Date, required: true },
   photo: { type: String },
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: false }, // Associe le véhicule à l'utilisateur
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // Ajout du champ `user`
 });
 
 const Vehicle = mongoose.model('Vehicle', vehicleSchema);
