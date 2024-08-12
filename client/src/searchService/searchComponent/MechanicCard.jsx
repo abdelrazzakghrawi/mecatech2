@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarAlt, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import MechanicModal from './MechanicModal';
+import ReservationModal from './ReservationModal';
 
 const calculateDistance = (lat1, lon1, lat2, lon2) => {
   if (!lat1 || !lon1 || !lat2 || !lon2) return null;
@@ -18,8 +19,11 @@ const calculateDistance = (lat1, lon1, lat2, lon2) => {
 
 const MechanicCard = ({ mechanic, userLocation }) => {
   const [showModal, setShowModal] = useState(false);
+  const [showReservationModal, setShowReservationModal] = useState(false);
   const [distance, setDistance] = useState(null);
   const [mechanicImage, setMechanicImage] = useState('');
+
+  const clientId = localStorage.getItem('user.id');
 
   useEffect(() => {
     if (userLocation) {
@@ -38,6 +42,7 @@ const MechanicCard = ({ mechanic, userLocation }) => {
   }, [mechanic.image_path]);
 
   const handleShowModal = () => setShowModal(true);
+  const handleShowReservationModal = () => setShowReservationModal(true);
 
   return (
     <div className="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
@@ -49,7 +54,10 @@ const MechanicCard = ({ mechanic, userLocation }) => {
           <button className="bg-[#1FA9B6] text-white px-4 py-2 rounded hover:bg-[#1c8a9b] transition-colors duration-300" onClick={handleShowModal}>
             Détails <FontAwesomeIcon icon={faInfoCircle} className="ml-2" />
           </button>
-          <button className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors duration-300">
+          <button
+            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors duration-300"
+            onClick={handleShowReservationModal}
+          >
             Réservation <FontAwesomeIcon icon={faCalendarAlt} className="ml-2" />
           </button>
         </div>
@@ -58,6 +66,10 @@ const MechanicCard = ({ mechanic, userLocation }) => {
 
       {showModal && (
         <MechanicModal mechanic={mechanic} mechanicImage={mechanicImage} distance={distance} handleClose={() => setShowModal(false)} />
+      )}
+      
+      {showReservationModal && (
+        <ReservationModal mechanicId={mechanic._id} clientId={clientId} handleClose={() => setShowReservationModal(false)} />
       )}
     </div>
   );
