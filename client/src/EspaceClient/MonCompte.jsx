@@ -1,4 +1,3 @@
-// MonCompte.jsx
 import { useState, useEffect } from 'react';
 import { useAuth } from '../Auth/AuthContext';
 import axios from 'axios';
@@ -11,7 +10,7 @@ const MonCompte = () => {
     username: '',
     email: '',
     telephone: '',
-    adresse: '', // Ajout du champ adresse
+    adresse: '',
   });
 
   useEffect(() => {
@@ -24,7 +23,7 @@ const MonCompte = () => {
           },
         };
         try {
-          const response = await axios.get('http://localhost:5000/api/auth/me', config); // Assurez-vous que l'URL correspond à celle du backend
+          const response = await axios.get('http://localhost:5000/api/auth/me', config);
           const userData = response.data;
           setFormData({
             civilite: userData.civilite || '',
@@ -32,7 +31,7 @@ const MonCompte = () => {
             username: userData.username || '',
             email: userData.email || '',
             telephone: userData.telephone || '',
-            adresse: userData.adresse || '', // Charger l'adresse de l'utilisateur
+            adresse: userData.adresse || '',
           });
         } catch (error) {
           console.error('Erreur lors de la récupération des données utilisateur:', error);
@@ -62,7 +61,7 @@ const MonCompte = () => {
       },
     };
     try {
-      await axios.put('http://localhost:5000/api/auth/me', formData, config); // Assurez-vous que l'URL correspond à celle du backend
+      await axios.put('http://localhost:5000/api/auth/me', formData, config);
       console.log('Informations mises à jour avec succès');
     } catch (error) {
       console.error('Erreur lors de la mise à jour des informations:', error);
@@ -70,80 +69,104 @@ const MonCompte = () => {
   };
 
   return (
-    <div className="bg-white shadow-lg rounded-lg p-10 w-full max-w-7xl mx-auto">
-      <h2 className="text-3xl font-bold text-teal-600 mb-6">Mes informations personnelles</h2>
+    <div className="bg-[#E9EAEB] shadow-lg rounded-2xl w-[850px] h-auto p-10 mx-auto my-10 relative">
+      <h2 className="text-3xl font-semibold text-[#00378A]  mb-8 border-b-4 border-[#00378A] inline-block pb-1">
+        Mon compte
+      </h2>
       <form onSubmit={handleSubmit}>
-        {/* Ligne pour le champ civilité */}
-        <div className="mb-6">
-          <select
-            name="civilite"
-            value={formData.civilite}
-            onChange={handleChange}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-          >
-            <option value="">Civilité</option>
-            <option value="Mr">Mr</option>
-            <option value="Mme">Mme</option>
-          </select>
-        </div>
-        {/* Autres champs */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+          {/* Civilité */}
+          <div className="relative">
+            <label className="block text-[#00378A] text-sm font-semibold mb-2">Civilité</label>
+            <select
+              name="civilite"
+              value={formData.civilite}
+              onChange={handleChange}
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1FA9B6]"
+            >
+              <option value="">Choisir</option>
+              <option value="Mr">Mr</option>
+              <option value="Mme">Mme</option>
+            </select>
+            <div className="absolute top-2 right-2 text-red-500">*</div>
+          </div>
+
+          {/* Prénom */}
+          <div className="relative">
+            <label className="block text-[#00378A] text-sm font-semibold mb-2">Prénom</label>
             <input
               type="text"
               name="username"
               placeholder="Prénom"
               value={formData.username}
               onChange={handleChange}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1FA9B6]"
             />
+            <div className="absolute top-2 right-2 text-red-500">*</div>
           </div>
-          <div>
+
+          {/* Nom */}
+          <div className="relative">
+            <label className="block text-[#00378A] text-sm font-semibold mb-2">Nom</label>
             <input
               type="text"
               name="name"
               placeholder="Nom"
               value={formData.name}
               onChange={handleChange}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1FA9B6]"
             />
+            <div className="absolute top-2 right-2 text-red-500">*</div>
           </div>
-          <div>
+
+          {/* Email */}
+          <div className="relative">
+            <label className="block text-[#00378A] text-sm font-semibold mb-2">Email</label>
             <input
               type="email"
               name="email"
               placeholder="Email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1FA9B6]"
             />
+            <div className="absolute top-2 right-2 text-red-500">*</div>
           </div>
-          <div>
+
+          {/* Téléphone */}
+          <div className="relative">
+            <label className="block text-[#00378A] text-sm font-semibold mb-2">Téléphone</label>
             <input
               type="text"
               name="telephone"
               placeholder="Téléphone"
               value={formData.telephone}
               onChange={handleChange}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1FA9B6]"
             />
+            <div className="absolute top-2 right-2 text-red-500">*</div>
           </div>
-          <div className="md:col-span-2">
+
+          {/* Adresse */}
+          <div className="relative md:col-span-2">
+            <label className="block text-[#00378A] text-sm font-semibold mb-2">Adresse</label>
             <input
               type="text"
-              name="adresse" // Champ adresse
+              name="adresse"
               placeholder="Adresse"
               value={formData.adresse}
               onChange={handleChange}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1FA9B6]"
             />
+            <div className="absolute top-2 right-2 text-red-500">*</div>
           </div>
         </div>
+
         <button
           type="submit"
-          className="mt-6 bg-[#1fa9b6] text-white py-3 px-6 rounded-lg shadow hover:bg-[#1a8d9a] focus:outline-none focus:ring-2 focus:ring-[#1fa9b6]"
+          className="mt-8 w-full bg-[#00378A] text-white py-3 px-6 rounded-full shadow-md hover:bg-[#002c6d] focus:outline-none focus:ring-2 focus:ring-[#00378A]"
         >
-          VALIDER MES INFORMATIONS
+          Enregistrer
         </button>
       </form>
     </div>

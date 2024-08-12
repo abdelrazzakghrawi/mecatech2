@@ -1,25 +1,28 @@
-const jwt = require('jsonwebtoken');
 const axios = require('axios');
 
+// Middleware d'authentification
 const auth = async (req, res, next) => {
   try {
     const token = req.header('Authorization')?.replace('Bearer ', '');
+
     if (!token) {
-      return res.status(401).json({ error: 'No token provided' });
+      return res.status(401).json({ error: 'No token provided.' });
     }
 
-    // Vérifiez le token en utilisant la clé secrète
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    
-    // Optionnel : vous pouvez également vérifier le token avec un service externe
-    // const response = await axios.get(`${process.env.AUTH_SERVICE_URL}/verify`, {
-    //   headers: { Authorization: `Bearer ${token}` },
-    // });
+    const response = await axios.get(process.env.AUTH_SERVICE_URL, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
-    req.user = decoded;
+    console.log('Auth Response:', response.data); // Log pour vérifier la réponse
+    req.user = response.data;
+
+    if (!req.user || !req.user._id) {
+      return res.status(401).json({ error: 'Invalid user data.' });
+    }
+
     next();
   } catch (error) {
-    console.error('Erreur d\'authentification:', error.message);
+    console.error('Auth Error:', error.message || error.response?.data || error); // Log détaillé
     res.status(401).json({ error: 'Unauthorized' });
   }
 };

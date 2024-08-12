@@ -34,43 +34,43 @@ const ContactezNous = () => {
   };
 
   return (
-    <div className="bg-white shadow-lg rounded-lg p-6 max-w-4xl mx-auto">
-      <h1 className="text-4xl font-bold text-teal-600 mb-6">Contactez-nous</h1>
-      <p className="text-lg mb-4">
+    <div className="bg-[#E9EAEB] shadow-lg rounded-2xl p-6 max-w-4xl mx-auto mt-8">
+      <h1 className="text-3xl font-semibold text-[#00378A] mb-8 border-b-4 border-[#00378A] inline-block pb-1">Contactez-nous</h1>
+      <p className="text-lg mb-4 text-[#00378A]">
         Merci de remplir le formulaire ci-dessous afin que notre équipe puisse vous répondre dans les plus brefs délais.
         Vous pouvez également nous contacter :
       </p>
-      <p className="text-lg mb-6">
-        Par Email via <a href="mailto:info@goodmecano.com" className="text-teal-500 hover:underline">mecatech@gmail.com</a><br />
+      <p className="text-lg mb-6 text-[#00378A]">
+        Par Email via <a href="mailto:info@goodmecano.com" className="text-[#1FA9B6] hover:underline">mecatech@gmail.com</a><br />
         Via notre fenêtre de Chat en bas à droite ;-)
       </p>
       
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label className="block text-gray-600 mb-2" htmlFor="sujet">Sujet de la demande *</label>
+          <label className="block text-[#00378A] mb-2 font-medium" htmlFor="sujet">Sujet de la demande *</label>
           <input
             type="text"
             name="sujet"
             value={formData.sujet}
             onChange={handleChange}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+            className="w-full p-3 border border-[#00378A] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1FA9B6]"
             required
           />
         </div>
         <div>
-          <label className="block text-gray-600 mb-2" htmlFor="message">Message *</label>
+          <label className="block text-[#00378A] mb-2 font-medium" htmlFor="message">Message *</label>
           <textarea
             name="message"
             value={formData.message}
             onChange={handleChange}
             rows="6"
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+            className="w-full p-3 border border-[#00378A] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1FA9B6]"
             required
           ></textarea>
         </div>
         <button
           type="submit"
-          className="bg-teal-500 text-white py-3 px-6 rounded-lg shadow hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500"
+          className="bg-[#00378A] text-white py-3 px-6 rounded-lg shadow hover:bg-[#1FA9B6] focus:outline-none focus:ring-2 focus:ring-[#00378A]"
         >
           Envoyer
         </button>
