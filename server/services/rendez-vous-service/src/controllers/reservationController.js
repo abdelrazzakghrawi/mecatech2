@@ -1,5 +1,6 @@
 const Planning = require('../models/planingModel');
 const Reservation = require('../models/reservationModel');
+const axios = require('axios');
 
 // Create a new reservation
 const createReservation = async (req, res) => {
@@ -134,8 +135,40 @@ const deleteReservation = async (req, res) => {
   }
 };
 
+const getReservationByMecaniqueId = async (req, res) => {
+    try {
+        const { mecanique_id } = req.params;
+
+        // Fetch reservations by mecanique_id
+        const reservations = await Reservation.find({ mecanique_id });
+
+        // If no reservations found, return an empty array
+        if (reservations.length === 0) {
+            return res.json({ message: 'No reservations found', reservations: [] });
+        }
+
+        // Map through reservations and fetch client details for each reservation
+        const reservationsWithClientDetails = await Promise.all(
+            reservations.map(async (reservation) => {
+                const clientDetails = await axios.get(`http://localhost:5000/api/auth/details/${reservation.client_id}`);
+                return {
+                    reservation,
+                    clientDetails: clientDetails.data
+                };
+            })
+        );
+
+        // Return the combined results
+        res.json(reservationsWithClientDetails);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error fetching reservations', error: error.message });
+    }
+};
+
 module.exports = {
   createReservation,
   updateReservation,
-  deleteReservation
+  deleteReservation, 
+  getReservationByMecaniqueId
 };

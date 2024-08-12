@@ -24,6 +24,7 @@ app.use('/api', require('./routes/planningRoutes'));  // Register planning route
 app.use('/api/planning', require('./routes/planningRoutes'));
 app.use('/api/planning', require('./routes/planningRoutes'));
 app.use('/api', require('./routes/reservationRoutes'));
+app.use('/api/reservations', require('./routes/reservationRoutes'));
 
 
 // Start server
