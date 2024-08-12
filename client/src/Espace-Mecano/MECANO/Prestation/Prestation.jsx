@@ -179,8 +179,8 @@ const Prestation = () => {
                 <div className="service-table">
                     <div className="service-table-columns">
                         {transformedServicesData.map((service) => (
-                            <div key={service.category} className={`service-category ${expandedServiceId === service.category ? 'expanded' : ''}`}>
-                                <div className="service-header" onClick={() => toggleExpand(service.category)}>
+                            <div key={service.category}      className={`service-category ${expandedServiceId === service.category ? 'expanded' : ''} ${selectedcompétances.includes(service.category) ? 'saved-category' : ''}`}
+                            ><div className="service-header" onClick={() => toggleExpand(service.category)}>
                                     <span className="service-icon">{service.icon}</span>
                                     <span className="service-title">{service.category}</span>
                                     <span className="expand-icon">{expandedServiceId === service.category ? '-' : '+'}</span>

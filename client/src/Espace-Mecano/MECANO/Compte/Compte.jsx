@@ -43,9 +43,9 @@ const Compte = ({ setGarageId, setImageURL }) => {
         setLatitude(data.latitude || '');
         setLongitude(data.longitude || '');
         if (data.image_path) {
-          setImage(data.image_path);
-          setimg(data.image_path);
-          setImageURL(data.image_path); // Passer l'URL de l'image au composant parent
+          setImage(data.image_path||'');
+          setimg(data.image_path||'');
+          setImageURL(data.image_path||''); // Passer l'URL de l'image au composant parent
         }
         if (data.id) {
           setGarageId(data.id); // Mettre à jour l'ID du garage

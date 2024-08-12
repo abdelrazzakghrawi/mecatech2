@@ -18,6 +18,10 @@
   animation: fadeIn 0.9s;
 
 }
+.saved-category {
+  background-color: #0d2c3a;  /* Light blue background */
+  border: 3px solid #1890ff;  /* Blue left border */
+}
 .Prestation_methode{
   position: absolute;
   margin-left: 5%;

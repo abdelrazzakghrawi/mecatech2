@@ -147,13 +147,22 @@ const Marque = () => {
       try {
         const response = await axios.get('http://localhost:5001/brands');
         setSpécialités(response.data);
+
       } catch (error) {
         console.error('Erreur lors de la récupération des Spécialités:', error);
       }
     };
-
+    fetchSavedMarques(); // Nouvelle fonction pour récupérer les marques enregistrées
     fetchSpécialités();
   }, []);
+  const fetchSavedMarques = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5001/api/marques/${userId}`);
+      setSelectedSpécialités(response.data.Spécialités || []);
+    } catch (error) {
+      console.error('Erreur lors de la récupération des marques enregistrées:', error);
+    }
+  }
 
   const filteredSpécialités = Spécialités.filter((marque) =>
     marque.toLowerCase().includes(searchTerm.toLowerCase())
@@ -188,13 +197,15 @@ const Marque = () => {
 
     try {
       await axios.post('http://localhost:5001/api/marques', { 
-        userId, // Utiliser userId au lieu de garageId
+        userId,
         Spécialités: selectedSpécialités 
       });
       Swal.fire({
         icon: "success",
         title: "Marques enregistrées avec succès",
       });
+      // Optionnel : Rafraîchir les marques enregistrées après la soumission
+      fetchSavedMarques();
     } catch (error) {
       console.error('Erreur lors de l\'enregistrement des Spécialités:', error);
       Swal.fire({
@@ -204,6 +215,7 @@ const Marque = () => {
       });
     }
   };
+
 
   const handleRemoveAll = () => {
     setSelectedSpécialités([]);

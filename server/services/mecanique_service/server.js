@@ -109,6 +109,19 @@ app.get('/api/initial-info/:userId', async (req, res) => {
         res.status(500).json({ message: 'Erreur lors de la récupération des informations initiales', error });
     }
 });
+app.get('/api/marques/:userId', async (req, res) => {
+    const { userId } = req.params;
+    try {
+        const garage = await Garage.findOne({ userId });
+        if (!garage) {
+            return res.status(404).json({ message: 'Garage non trouvé' });
+        }
+        const Spécialités = garage.Spécialités ? garage.Spécialités.split(',') : [];
+        res.json({ Spécialités });
+    } catch (error) {
+        res.status(500).json({ message: 'Erreur lors de la récupération des spécialités', error });
+    }
+});
 app.get('/api/prestations/:userId', async (req, res) => {
     const { userId } = req.params;
     try {
