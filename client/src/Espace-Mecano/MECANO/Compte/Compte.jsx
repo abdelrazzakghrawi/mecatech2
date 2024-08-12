@@ -23,10 +23,10 @@ const Compte = ({ setGarageId, setImageURL }) => {
   });
 
   const [errors, setErrors] = useState({
-    nomGarage: true,
-    Adresse: true,
-    Ville: true,
-    Telephone: true,
+    nomGarage: false,
+    Adresse: false,
+    Ville: false,
+    Telephone: false,
   });
 
   useEffect(() => {
@@ -43,13 +43,20 @@ const Compte = ({ setGarageId, setImageURL }) => {
         setLatitude(data.latitude || '');
         setLongitude(data.longitude || '');
         if (data.image_path) {
-          setImage(data.image_path||'');
-          setimg(data.image_path||'');
-          setImageURL(data.image_path||''); // Passer l'URL de l'image au composant parent
+          setImage(data.image_path || '');
+          setimg(data.image_path || '');
+          setImageURL(data.image_path || ''); // Passer l'URL de l'image au composant parent
         }
         if (data.id) {
           setGarageId(data.id); // Mettre à jour l'ID du garage
         }
+        // Mettre à jour les erreurs en fonction des données récupérées
+        setErrors({
+          nomGarage: !!data.nomGarage,
+          Adresse: !!data.Adresse,
+          Ville: !!data.Ville,
+          Telephone: !!data.Telephone,
+        });
       } catch (error) {
         console.error('Erreur lors de la récupération des informations du garage', error);
       }
@@ -60,13 +67,17 @@ const Compte = ({ setGarageId, setImageURL }) => {
     }
   }, [userId, setImageURL, setGarageId]);
 
-  const handleIpChange = (event) => {
-    setIpadresse(event.target.value);
-  };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    validateField(name, value);
+  };
+
+  const validateField = (name, value) => {
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: !!value.trim(), // Met à jour l'état d'erreur en fonction du contenu du champ
+    }));
   };
 
   const handleImageChange = (e) => {
@@ -149,7 +160,7 @@ const Compte = ({ setGarageId, setImageURL }) => {
                 sx: { borderRadius: 10, boxShadow: '-1px 6px 6px -6px ' },
                 endAdornment: (
                   <InputAdornment position="end">
-                    {errors.nomGarage ? <CircleAlert color="red" /> : <CircleCheck color="green" />}
+                    {errors.nomGarage ? <CircleCheck color="green" /> : <CircleAlert color="red" />}
                   </InputAdornment>
                 ),
               }}
@@ -166,7 +177,7 @@ const Compte = ({ setGarageId, setImageURL }) => {
                 sx: { borderRadius: 10, boxShadow: '-1px 6px 6px -6px ' },
                 endAdornment: (
                   <InputAdornment position="end">
-                    {errors.Adresse ? <CircleAlert color="red" /> : <CircleCheck color="green" />}
+                    {errors.Adresse ? <CircleCheck color="green" /> : <CircleAlert color="red" />}
                   </InputAdornment>
                 ),
               }}
@@ -183,7 +194,7 @@ const Compte = ({ setGarageId, setImageURL }) => {
                 sx: { borderRadius: 10, boxShadow: '-1px 6px 6px -6px ' },
                 endAdornment: (
                   <InputAdornment position="end">
-                    {errors.Ville ? <CircleAlert color="red" /> : <CircleCheck color="green" />}
+                    {errors.Ville ? <CircleCheck color="green" /> : <CircleAlert color="red" />}
                   </InputAdornment>
                 ),
               }}
@@ -201,7 +212,7 @@ const Compte = ({ setGarageId, setImageURL }) => {
                 sx: { borderRadius: 10, boxShadow: '-1px 6px 6px -6px ' },
                 endAdornment: (
                   <InputAdornment position="end">
-                    {errors.Telephone ? <CircleAlert color="red" /> : <CircleCheck color="green" />}
+                    {errors.Telephone ? <CircleCheck color="green" /> : <CircleAlert color="red" />}
                   </InputAdornment>
                 ),
               }}
@@ -224,27 +235,43 @@ const Compte = ({ setGarageId, setImageURL }) => {
               name="latitude"
               value={latitude}
               required
-              onChange={handleChange}
+              onChange={(e) => {
+                setLatitude(e.target.value);
+                validateField('latitude', e.target.value);
+              }}
               fullWidth
               margin="normal"
               InputProps={{
                 sx: { borderRadius: 10, boxShadow: '-1px 6px 6px -6px ' },
+                endAdornment: (
+                  <InputAdornment position="end">
+                    {latitude ? <CircleCheck color="green" /> : <CircleAlert color="red" />}
+                  </InputAdornment>
+                ),
               }}
             />
             <TextField
               label="Longitude"
               name="longitude"
               value={longitude}
-              onChange={handleChange}
               required
+              onChange={(e) => {
+                setLongitude(e.target.value);
+                validateField('longitude', e.target.value);
+              }}
               fullWidth
               margin="normal"
               InputProps={{
                 sx: { borderRadius: 10, boxShadow: '-1px 6px 6px -6px ' },
+                endAdornment: (
+                  <InputAdornment position="end">
+                    {longitude ? <CircleCheck color="green" /> : <CircleAlert color="red" />}
+                  </InputAdornment>
+                ),
               }}
             />
-          </div>
-          <button className="buttadress" type="button" onClick={handleGetGeoInfo}>Obtenir les informations de Votre localisation</button>
+          </div>            <button className="buttadress" type="button" onClick={handleGetGeoInfo}>Obtenir les informations de Votre localisation</button>
+
         </div>
       </form>
     </div>

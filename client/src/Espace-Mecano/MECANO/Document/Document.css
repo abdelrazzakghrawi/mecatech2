@@ -40,15 +40,15 @@
     
       background-color: #E9EAEB;
     box-shadow: -1px 15px 6px -6px ;
-    width: 240px;
-    height: 190px;
+    width: 340px;
+    height: 200px;
     border-radius: 50px;
     animation: fadeIn 0.9s;
 }
 .imagedocument2{
     position: absolute;
-    margin-top: 40%;
-    margin-left: 15%;
+    margin-top: 30%;
+    margin-left: 20%;
     font-size: 20px;
     font-weight: bold;
     border: none;
@@ -60,16 +60,16 @@
     margin-left: 450px;
       background-color: #E9EAEB;
     box-shadow: -1px 15px 6px -6px ;
-    width: 240px;
-    height: 190px;
+    width: 340px;
+    height: 200px;
     border-radius: 50px;
     animation: fadeIn 0.9s;
     
 }
 .imagedocument3{
     position: absolute;
-    margin-top: 40%;
-    margin-left: 15%;
+    margin-top: 30%;
+    margin-left: 20%;
     font-size: 20px;
     font-weight: bold;
     border: none;
@@ -107,8 +107,7 @@
     transition:  0.3s ease-in-out ;
     padding: 10px 50px;
     border-radius: 50px;
-    margin-top: 90%;
-    margin-left: 60%;
+    margin-top: 70%;
  }
  .Document__submit:hover {
     color: white;
@@ -116,3 +115,31 @@
     background-color: green;
 }
 
+.inputpiece{
+    margin-top:150px;
+    margin-left: 20px;
+}
+.inputpiece{
+    margin-top:150px;
+    margin-left: 20px;
+}
+.docs{
+    position: absolute;
+    margin-top:450px;
+    margin-left: 250px;
+    white-space: nowrap;
+    font-size: 30px;
+    background-color: #E9EAEB;
+    width: 300px;
+    text-align: center;
+    height: 150px;
+    padding: 10px;
+    font-weight: bold;
+    box-shadow: -1px 15px 6px -6px ;
+    border-radius: 50px;
+    animation: fadeIn 0.9s;
+}
+.docs a{
+    color: #00529E;
+    cursor: pointer;
+}
