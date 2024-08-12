@@ -1,4 +1,4 @@
-import  { useState } from 'react';
+import { useState } from 'react';
 import Modal from 'react-modal';
 import PropTypes from 'prop-types';
 import { useFormik } from 'formik';
@@ -8,13 +8,13 @@ import { MdEmail } from 'react-icons/md';
 import { RiLockPasswordFill } from 'react-icons/ri';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../Auth/AuthContext'; // Import useAuth
+import { useAuth } from '../Auth/AuthContext';
 import './Auth.css/RegisterMecano.css';
 
 const RegisterMecanoModal = ({ isOpen, closeModal, openLoginModal }) => {
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
   const { login } = useAuth();
 
   const formik = useFormik({
@@ -22,27 +22,30 @@ const RegisterMecanoModal = ({ isOpen, closeModal, openLoginModal }) => {
       username: '',
       email: '',
       password: '',
-      phone: '',
+      confirmPassword: '', // Ajout de confirmPassword
     },
     validationSchema: Yup.object({
       username: Yup.string().required('Champ requis'),
       email: Yup.string().email('Email invalide').required('Champ requis'),
       password: Yup.string().required('Champ requis').min(6, 'Le mot de passe doit contenir au moins 6 caractères'),
-      phone: Yup.string().required('Champ requis'),
+      confirmPassword: Yup.string() // Ajout de la validation pour confirmPassword
+        .oneOf([Yup.ref('password'), null], 'Les mots de passe ne correspondent pas')
+        .required('Champ requis'),
     }),
     onSubmit: async (values) => {
       try {
-        await axios.post('http://localhost:5000/api/auth/register', {
+        const response = await axios.post('http://localhost:5000/api/auth/register', {
           username: values.username,
           email: values.email,
           password: values.password,
-          phone: values.phone,
           role: 'mecano',
         });
-        closeModal(); // Close the register modal
-        openLoginModal(); // Open the login modal
+        localStorage.setItem('_id', response.data.userId);
+        closeModal();
+        openLoginModal();
       } catch (error) {
-        setError('Erreur lors de l\'inscription. Veuillez réessayer.');
+        console.error('Error during registration:', error.response?.data || error.message);
+        setError(error.response?.data?.message || "Erreur lors de l'inscription. Veuillez réessayer.");
       }
     },
   });
@@ -51,20 +54,20 @@ const RegisterMecanoModal = ({ isOpen, closeModal, openLoginModal }) => {
     console.log('Google login success:', response);
     try {
       const token = response.credential;
-      const role = 'mecano'; // Set the role to 'mecano' for this modal
-      console.log('Google token:', token); // Log the Google token
+      const role = 'mecano';
+      console.log('Google token:', token);
 
       const res = await axios.post('http://localhost:5000/api/auth/google-login', { token, role });
       console.log('Server response:', res.data);
-      closeModal(); // Close the modal
-      login(res.data.token, res.data.username, res.data.role); // Store user info in AuthContext with the provided role
-      navigate('/dashboard-mecano'); // Redirect to the application homepage after successful login
+      closeModal();
+      login(res.data.token, res.data.username, res.data.role);
+      navigate('/dashboard-mecano');
     } catch (error) {
       console.error('Error during Google login:', error);
       setError("Erreur lors de l'authentification avec Google. Veuillez réessayer.");
     }
   };
-  
+
   const handleGoogleFailure = (response) => {
     console.log('Google Sign-In a échoué', response);
     setError("Erreur lors de l'authentification avec Google. Veuillez réessayer.");
@@ -132,18 +135,24 @@ const RegisterMecanoModal = ({ isOpen, closeModal, openLoginModal }) => {
               <div className="error">{formik.errors.password}</div>
             ) : null}
 
-            <label className="label">Téléphone</label>
+            <label className="label">Confirmer le mot de passe</label> {/* Ajout du champ confirmer le mot de passe */}
             <div className="input-group">
-              <span className="icon">📞</span>
+              <span className="icon"><RiLockPasswordFill className="icon-style" /></span>
               <input
-                type="text"
-                {...formik.getFieldProps('phone')}
+                type={showPassword ? 'text' : 'password'}
+                {...formik.getFieldProps('confirmPassword')}
                 className="input"
-                placeholder="Entrez votre numéro de téléphone"
+                placeholder="Confirmez votre mot de passe"
               />
+              <span
+                onClick={() => setShowPassword(!showPassword)}
+                className="show-password-icon"
+              >
+                {showPassword ? '🙈' : '👁️'}
+              </span>
             </div>
-            {formik.touched.phone && formik.errors.phone ? (
-              <div className="error">{formik.errors.phone}</div>
+            {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
+              <div className="error">{formik.errors.confirmPassword}</div>
             ) : null}
 
             <button type="submit" className="submit-button">Sinscrire</button>

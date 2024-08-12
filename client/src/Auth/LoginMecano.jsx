@@ -28,20 +28,25 @@ const LoginMecanoModal = ({ isOpen, closeModal, openRegisterModal }) => {
     onSubmit: async (values) => {
       try {
         const { data } = await axios.post('http://localhost:5000/api/auth/login', values);
-
+  
         if (data.role !== 'mecano') {
           setError('Accès refusé pour les utilisateurs avec le rôle client');
           return;
         }
-
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('username', data.username);
-        localStorage.setItem('role', data.role);
-
-        login(data.token, data.username, data.role);
-
-        closeModal();
-        navigate('/dashboard-mecano');
+  
+        const { token, username, role, _id } = data;
+  
+        // Stocker les informations dans le localStorage
+        localStorage.setItem('token', token);
+        localStorage.setItem('username', username);
+        localStorage.setItem('role', role);
+        localStorage.setItem('_id', _id);  // Stocker l'ID utilisateur
+  
+        // Appeler la fonction `login` avec tous les paramètres nécessaires
+        login(token, username, role, _id);
+  
+        closeModal(); // Fermer la modal
+        navigate('/dashboard-mecano'); // Redirection vers le tableau de bord des mécaniciens après la connexion
       } catch (error) {
         setError('Erreur de connexion. Veuillez réessayer.');
       }
@@ -58,20 +63,31 @@ const LoginMecanoModal = ({ isOpen, closeModal, openRegisterModal }) => {
       const token = response.credential;
       const res = await axios.post('http://localhost:5000/api/auth/google/google-login', { token });
       console.log('Server response:', res.data);
-
+  
       if (res.data.role !== 'mecano') {
         setError('Accès refusé pour les utilisateurs avec le rôle client');
         return;
       }
-
-      closeModal(); // Close the modal
-      login(token, res.data.username, 'mecano'); // Store user info in AuthContext
-      navigate('/dashboard-mecano'); // Redirect to the mecano dashboard after successful login
+  
+      const { token: jwtToken, username, role, _id } = res.data;
+  
+      // Stocker les informations dans le localStorage
+      localStorage.setItem('token', jwtToken);
+      localStorage.setItem('username', username);
+      localStorage.setItem('role', role);
+      localStorage.setItem('_id', _id);  // Stocker l'ID utilisateur
+  
+      // Appeler la fonction `login` avec tous les paramètres nécessaires
+      login(jwtToken, username, role, _id);
+  
+      closeModal(); // Fermer la modal
+      navigate('/dashboard-mecano'); // Redirection vers le tableau de bord des mécaniciens après la connexion
     } catch (error) {
       console.error('Error during Google login:', error);
       setError("Erreur lors de l'authentification avec Google. Veuillez réessayer.");
     }
   };
+  
 
   const handleGoogleFailure = (response) => {
     console.log('Google Sign-In a échoué', response);

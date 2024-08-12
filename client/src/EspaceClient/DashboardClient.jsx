@@ -50,7 +50,7 @@ const DashboardClient = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#F1F1F1]">
+    <div className="flex flex-col min-h-screen bg-[#FFFFF]">
       <Navbar/>
       <div className="flex flex-1 overflow-hidden">
         <div className="w-64 ml-4 mt-4">

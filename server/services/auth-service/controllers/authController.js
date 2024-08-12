@@ -65,11 +65,12 @@ const login = async (req, res) => {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
     const token = generateToken(user);
-    res.json({ token, username: user.username, role: user.role });
+    res.json({ token, username: user.username, role: user.role, _id: user._id });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 
 // Login user with Google
@@ -95,12 +96,13 @@ const googleLogin = async (req, res) => {
     }
 
     const jwtToken = generateToken(user);
-    res.json({ token: jwtToken, username: user.username, role: user.role });
+    res.json({ token: jwtToken, username: user.username, role: user.role, _id: user._id });
   } catch (error) {
     console.error('Google authentication failed:', error);
     res.status(400).json({ message: 'Google authentication failed' });
   }
 };
+
 
 const getUserProfile = async (req, res) => {
   try {
@@ -121,7 +123,6 @@ const getUserById = async (req, res) => {
     res.status(500).json({ message: 'Erreur lors de la récupération des informations utilisateur' });
   }
 };
-
 
 // Mettre à jour les informations de l'utilisateur connecté
 const updateUserProfile = async (req, res) => {
