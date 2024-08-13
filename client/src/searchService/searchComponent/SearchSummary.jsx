@@ -22,7 +22,7 @@ const SearchSummary = () => {
   };
 
   return (
-    <div className="bg-gradient-to-r from-[#1FA9B6] to-[#148a94] p-4 rounded-lg shadow-md mb-4 text-white">
+    <div style={{width:"87%"}} className="  bg-gradient-to-r from-[#1FA9B6]   to-[#148a94] p-4  shadow-md mb-4 text-white">
       <h2 className="text-xl font-semibold mb-3">Search Summary</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         <div className="bg-white bg-opacity-20 p-3 rounded-md flex items-center">
