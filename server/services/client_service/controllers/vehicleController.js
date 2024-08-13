@@ -1,8 +1,6 @@
 const axios = require('axios');
 const Vehicle = require('../models/Vehicle');
-const Contact = require('../models/Contact'); // Ajoutez cette ligne
-
-
+const Contact = require('../models/Contact');
 
 // Middleware d'authentification
 const auth = async (req, res, next) => {
@@ -17,37 +15,6 @@ const auth = async (req, res, next) => {
     res.status(401).json({ error: 'Unauthorized' });
   }
 };
-
-// Ajouter un véhicule
-const addVehicle = async (req, res) => {
-  try {
-    const { modele, nom, plaque, dateMiseEnCirculation } = req.body;
-    const vehicle = new Vehicle({
-      modele,
-      nom,
-      plaque,
-      dateMiseEnCirculation,
-      photo: req.file ? req.file.path : '',
-      user: req.user._id,
-    });
-    await vehicle.save();
-    res.status(201).json(vehicle);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
-
-// Récupérer les véhicules de l'utilisateur
-const getUserVehicles = async (req, res) => {
-  try {
-    const vehicles = await Vehicle.find({ user: req.user._id });
-    res.json(vehicles);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
-
-
 
 // Soumettre le formulaire de contact
 const submitContactForm = async (req, res) => {
@@ -70,4 +37,42 @@ const submitContactForm = async (req, res) => {
   }
 };
 
-module.exports = { addVehicle, getUserVehicles,  submitContactForm,auth };
+// Ajouter un véhicule
+// Ajouter un véhicule
+const addVehicle = async (req, res) => {
+  try {
+    const { modele, nom, plaque, dateMiseEnCirculation } = req.body;
+
+    // Vérification que req.user existe bien et contient l'_id
+    if (!req.user || !req.user._id) {
+      return res.status(400).json({ error: 'User information is missing or invalid.' });
+    }
+
+    const vehicle = new Vehicle({
+      modele,
+      nom,
+      plaque,
+      dateMiseEnCirculation,
+      photo: req.file ? req.file.path : '',
+      user: req.user._id, // Associe le véhicule à l'utilisateur connecté
+    });
+
+    await vehicle.save();
+    res.status(201).json(vehicle);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+
+// Récupérer les véhicules de l'utilisateur
+const getUserVehicles = async (req, res) => {
+  try {
+    const vehicles = await Vehicle.find({ user: req.user._id }); // Filtrer par `userId`
+    res.json(vehicles);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+module.exports = { addVehicle, getUserVehicles, submitContactForm, auth };

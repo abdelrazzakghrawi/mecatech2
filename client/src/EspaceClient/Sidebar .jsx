@@ -14,18 +14,17 @@ const Sidebar = ({ selectedSection, setSelectedSection, profileImage, setProfile
   };
 
   return (
-  
-    <aside className="bg-white shadow-lg rounded-lg p-4 flex flex-col items-center">
-      <div className="relative mb-6">
+    <aside className="bg-[#E9EAEB] shadow-lg rounded-2xl p-6 flex flex-col items-center w-[280px] h-[500px] mt-[18%] ml-[90px] text-[#00959d] font-sans">
+      <div className="relative mb-4">
         <img
           src={profileImage || "/path-to-default-image.png"}
           alt="Profile"
-          className="rounded-full w-24 h-24 bg-gray-200"
+          className="rounded-full w-16 h-16 bg-gray-200"
         />
         {selectedSection === 'monCompte' && (
-          <div className="absolute bottom-0 right-0 bg-teal-500 p-1 rounded-full cursor-pointer">
+          <div className="absolute bottom-0 right-0 bg-[#1FA9B6] p-1 rounded-full cursor-pointer">
             <svg
-              className="text-white w-6 h-6"
+              className="text-white w-4 h-4"
               fill="currentColor"
               viewBox="0 0 24 24"
               onClick={() => document.getElementById('fileInput').click()}
@@ -44,55 +43,52 @@ const Sidebar = ({ selectedSection, setSelectedSection, profileImage, setProfile
         accept="image/*"
         onChange={handleImageChange}
       />
-      <h2 className="text-xl font-semibold mb-4">Particulier</h2>
-      <nav className="flex flex-col text-sm space-y-3 w-full">
+      <h2 className="text-lg font-semibold mb-4 text-[#00959d]">Particulier</h2>
+      <nav className="flex flex-col text-sm space-y-2 w-full">
         <a
           href="#"
           onClick={() => setSelectedSection('monCompte')}
-          className={`py-2 px-4 rounded-lg ${
-            selectedSection === 'monCompte' ? 'bg-teal-500 text-white' : 'text-gray-600 hover:text-teal-500'
+          className={`py-2 px-4 flex items-center rounded-lg ${
+            selectedSection === 'monCompte' ? 'bg-[#00378A] text-white' : 'text-[#00959d] hover:text-[#00378A]'
           }`}
         >
-          MON COMPTE
+          <span className="mr-2">🏠</span> MON COMPTE
         </a>
         <a
           href="#"
           onClick={() => setSelectedSection('rendezVous')}
-          className={`py-2 px-4 rounded-lg ${
-            selectedSection === 'rendezVous' ? 'bg-teal-500 text-white' : 'text-gray-600 hover:text-teal-500'
+          className={`py-2 px-4 flex items-center rounded-lg ${
+            selectedSection === 'rendezVous' ? 'bg-[#00378A] text-white' : 'text-[#00959d] hover:text-[#00378A]'
           }`}
         >
-          MES RENDEZ-VOUS
+          <span className="mr-2">📅</span> MES RENDEZ-VOUS
         </a>
         <a
           href="#"
           onClick={() => setSelectedSection('vehicules')}
-          className={`py-2 px-4 rounded-lg ${
-            selectedSection === 'vehicules' ? 'bg-teal-500 text-white' : 'text-gray-600 hover:text-teal-500'
+          className={`py-2 px-4 flex items-center rounded-lg ${
+            selectedSection === 'vehicules' ? 'bg-[#00378A] text-white' : 'text-[#00959d] hover:text-[#00378A]'
           }`}
         >
-          MES VÉHICULES
+          <span className="mr-2">🚗</span> MES VÉHICULES
         </a>
-        
-          
-        <Link  to='/'
-          className={`py-2 px-4 rounded-lg ${
-            selectedSection === 'prestation' ? 'bg-teal-500 text-white' : 'text-gray-600 hover:text-teal-500'
-          }`}>
-            CHOISIR UNE PRESTATION
-
+        <Link
+          to="/"
+          className={`py-2 px-4 flex items-center rounded-lg ${
+            selectedSection === 'prestation' ? 'bg-[#00378A] text-white' : 'text-[#00959d] hover:text-[#00378A]'
+          }`}
+        >
+          <span className="mr-2">➕</span> CHOISIR UNE PRESTATION
         </Link>
-          
         <a
-          
+          href="#"
           onClick={() => setSelectedSection('contact')}
-          className={`py-2 px-4 rounded-lg ${
-            selectedSection === 'contact' ? 'bg-teal-500 text-white' : 'text-gray-600 hover:text-teal-500'
+          className={`py-2 px-4 flex items-center rounded-lg ${
+            selectedSection === 'contact' ? 'bg-[#00378A] text-white' : 'text-[#00959d] hover:text-[#00378A]'
           }`}
         >
-          CONTACTEZ-NOUS
+          <span className="mr-2">📞</span> CONTACTEZ-NOUS
         </a>
-      
       </nav>
     </aside>
   );

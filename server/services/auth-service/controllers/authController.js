@@ -112,6 +112,17 @@ const getUserProfile = async (req, res) => {
     res.status(500).json({ message: 'Erreur lors de la récupération des informations utilisateur' });
   }
 };
+const getUserById = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId).select('-password');
+    if (!user) {
+      return res.status(404).json({ message: 'Utilisateur non trouvé' });
+    }
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: 'Erreur lors de la récupération des informations utilisateur' });
+  }
+};
 
 // Mettre à jour les informations de l'utilisateur connecté
 const updateUserProfile = async (req, res) => {
@@ -162,4 +173,4 @@ const verifyEmail = async (req, res) => {
 };
 
 
-module.exports = { register, login, googleLogin, getUserProfile, updateUserProfile, verifyEmail };
+module.exports = { register, login, googleLogin, getUserProfile, updateUserProfile, verifyEmail , getUserById };

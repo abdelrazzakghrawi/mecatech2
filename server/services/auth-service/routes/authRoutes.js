@@ -1,5 +1,5 @@
 const express = require('express');
-const { register, login, googleLogin ,getUserProfile, updateUserProfile,verifyEmail } = require('../controllers/authController');
+const { register, login, googleLogin ,getUserProfile, updateUserProfile,verifyEmail , getUserById} = require('../controllers/authController');
 const router = express.Router();
 const { protect } = require('../utils/passport');
 
@@ -13,6 +13,6 @@ router.get('/verify-email/:userId', verifyEmail);
 router.route('/me')
 .get(protect, getUserProfile)
 .put(protect, updateUserProfile);
-
+router.get('/details/:userId', getUserById);
 
 module.exports = router;

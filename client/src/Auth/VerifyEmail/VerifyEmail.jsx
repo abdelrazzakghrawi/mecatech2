@@ -7,7 +7,8 @@ const VerifyEmail = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const userId = localStorage.getItem('userId');
+    const userId = localStorage.getItem('_id');
+
     if (!userId) {
       setMessage("Aucun ID d'utilisateur trouvé.");
       return;
@@ -18,7 +19,7 @@ const VerifyEmail = () => {
         await axios.get(`http://localhost:5000/api/auth/verify-email/${userId}`);
         setMessage('Votre email a été vérifié avec succès!');
         // Supprimer l'ID après la vérification
-        localStorage.removeItem('userId');
+        localStorage.removeItem('_id'); // Correction ici
         setTimeout(() => navigate('/'), 3000); 
       } catch (error) {
         setMessage('Erreur lors de la vérification de l\'email.');

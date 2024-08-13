@@ -13,58 +13,93 @@ const MesRendezVous = () => {
   };
 
   return (
-    <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-7xl mx-auto">
-      <h2 className="text-3xl font-bold text-teal-600 mb-6">Mes rendez-vous</h2>
+    <div className="bg-[#E9EAEB] shadow-lg rounded-xl w-[800px] h-[520px] p-6 mx-auto my-10 animate-fadeIn">
+      <h2 className="text-3xl font-bold text-[#00378A] mb-6 border-b-4 border-[#00378A] inline-block">
+        Mes rendez-vous
+      </h2>
 
       <div className="mb-6">
-        <span className="block text-lg font-semibold mb-2">FILTRER PAR</span>
+        <span className="block text-lg font-semibold mb-2 text-[#00378A]">Filtrer par</span>
         <div className="flex flex-wrap gap-2 mb-4">
           <button
-            className={`px-4 py-2 rounded-lg text-sm font-medium ${filter === 'tous' ? 'bg-teal-500 text-white' : 'bg-gray-200 text-gray-800'}`}
+            className={`px-4 py-2 rounded-lg text-sm font-medium ${
+              filter === 'tous'
+                ? 'bg-[#00378A] text-white'
+                : 'bg-[#E0E3E8] text-[#00378A] hover:bg-[#00378A] hover:text-white'
+            }`}
             onClick={() => handleFilterChange('tous')}
           >
-            TOUS LES RENDEZ-VOUS
+            Tous les rendez-vous
           </button>
           <button
-            className={`px-4 py-2 rounded-lg text-sm font-medium ${filter === 'en attente' ? 'bg-teal-500 text-white' : 'bg-gray-200 text-gray-800'}`}
+            className={`px-4 py-2 rounded-lg text-sm font-medium ${
+              filter === 'en attente'
+                ? 'bg-[#00378A] text-white'
+                : 'bg-[#E0E3E8] text-[#00378A] hover:bg-[#00378A] hover:text-white'
+            }`}
             onClick={() => handleFilterChange('en attente')}
           >
-            RENDEZ-VOUS EN ATTENTE
+            Rendez-vous en attente
           </button>
           <button
-            className={`px-4 py-2 rounded-lg text-sm font-medium ${filter === 'confirmés' ? 'bg-teal-500 text-white' : 'bg-gray-200 text-gray-800'}`}
+            className={`px-4 py-2 rounded-lg text-sm font-medium ${
+              filter === 'confirmés'
+                ? 'bg-[#00378A] text-white'
+                : 'bg-[#E0E3E8] text-[#00378A] hover:bg-[#00378A] hover:text-white'
+            }`}
             onClick={() => handleFilterChange('confirmés')}
           >
-            RENDEZ-VOUS CONFIRMÉS
+            Rendez-vous confirmés
           </button>
           <button
-            className={`px-4 py-2 rounded-lg text-sm font-medium ${filter === 'annulés' ? 'bg-teal-500 text-white' : 'bg-gray-200 text-gray-800'}`}
+            className={`px-4 py-2 rounded-lg text-sm font-medium ${
+              filter === 'annulés'
+                ? 'bg-[#00378A] text-white'
+                : 'bg-[#E0E3E8] text-[#00378A] hover:bg-[#00378A] hover:text-white'
+            }`}
             onClick={() => handleFilterChange('annulés')}
           >
-            RENDEZ-VOUS ANNULÉS
+            Rendez-vous annulés
           </button>
           <button
-            className={`px-4 py-2 rounded-lg text-sm font-medium ${filter === 'passés' ? 'bg-teal-500 text-white' : 'bg-gray-200 text-gray-800'}`}
+            className={`px-4 py-2 rounded-lg text-sm font-medium ${
+              filter === 'passés'
+                ? 'bg-[#00378A] text-white'
+                : 'bg-[#E0E3E8] text-[#00378A] hover:bg-[#00378A] hover:text-white'
+            }`}
             onClick={() => handleFilterChange('passés')}
           >
-            RENDEZ-VOUS PASSÉS
+            Rendez-vous passés
           </button>
         </div>
       </div>
 
       <ul className="space-y-4">
         {rendezVous.length === 0 ? (
-          <li className="text-gray-600">Aucune intervention disponible dans votre historique</li>
+          <li className="text-gray-600">Aucun rendez-vous disponible dans votre historique</li>
         ) : (
           rendezVous
             .filter((rdv) => filter === 'tous' || rdv.statut === filter)
             .map((rdv) => (
-              <li key={rdv.id} className="flex justify-between items-center p-4 border border-gray-200 rounded-lg shadow-sm">
-                <span className="text-gray-700">{rdv.date}</span>
+              <li
+                key={rdv.id}
+                className="flex justify-between items-center p-4 border border-[#00378A] rounded-lg bg-white shadow-sm"
+              >
+                <span className="text-[#00378A] font-medium">{rdv.date}</span>
                 <span
-                  className={`px-3 py-1 rounded-lg text-sm font-medium ${rdv.statut === 'confirmé' ? 'bg-green-100 text-green-800' : rdv.statut === 'en attente' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'}`}
+                  className={`px-3 py-1 rounded-lg text-sm font-medium ${
+                    rdv.statut === 'confirmé'
+                      ? 'bg-green-100 text-green-800'
+                      : rdv.statut === 'en attente'
+                      ? 'bg-yellow-100 text-yellow-800'
+                      : 'bg-red-100 text-red-800'
+                  }`}
                 >
-                  {rdv.statut === 'confirmé' ? 'Rendez-vous confirmé' : rdv.statut === 'en attente' ? 'Rendez-vous en attente de confirmation' : 'Rendez-vous annulé'}
+                  {rdv.statut === 'confirmé'
+                    ? 'Rendez-vous confirmé'
+                    : rdv.statut === 'en attente'
+                    ? 'Rendez-vous en attente de confirmation'
+                    : 'Rendez-vous annulé'}
                 </span>
                 <div className="flex space-x-2">
                   <button
