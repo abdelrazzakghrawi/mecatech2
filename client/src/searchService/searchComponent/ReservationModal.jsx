@@ -21,20 +21,25 @@ const ReservationModal = ({ mechanicId, clientId, handleClose }) => {
       setError('Please select a date and time slot.');
       return;
     }
-
+  
     const reservationData = {
       mecanique_id: mechanicId,
       client_id: clientId,
       date: selectedDate,
       time_slot: selectedTimeSlot,
     };
-
+  
     axios.post('http://localhost:3007/api/reservations', reservationData)
       .then(() => {
         alert('Reservation successful!');
         handleClose();
       })
-      .catch(() => setError('Failed to make a reservation. Please try again.'));
+      .catch((error) => {
+        // Check if the error response exists and has a data property with a message
+        const errorMessage = error.response?.data?.message || 'Failed to make a reservation.';
+        setError(errorMessage);
+        console.error('Reservation error:', error); // Log the full error for debugging
+      });
   };
 
   const renderWorkingDays = () => {
