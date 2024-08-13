@@ -5,10 +5,10 @@ import { CircleAlert, CircleCheck } from 'lucide-react';
 import axios from 'axios';
 import mecano from "../assets/mecano.png";
 import Swal from 'sweetalert2';
-import { useAuth } from '../../../Auth/AuthContext'; // Assure-toi que le chemin est correct
 
 const Compte = ({ setGarageId, setImageURL }) => {
-  const { userId } = useAuth(); // Récupérer l'ID utilisateur depuis le contexte
+  const userId = localStorage.getItem('userId');
+
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
   const [ipadresse, setIpadresse] = useState("");

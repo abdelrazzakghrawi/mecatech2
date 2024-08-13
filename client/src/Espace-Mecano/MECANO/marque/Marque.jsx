@@ -67,7 +67,6 @@ import axios from "axios";
 import { TextField } from "@mui/material";
 import { CircleX, Search } from "lucide-react";
 import Swal from "sweetalert2";
-import { useAuth } from "../../../Auth/AuthContext";
 const iconMappin = {
     "ABARTH": <img style={{width:"42px"}} src={image56} alt="" />,
     "ALFA ROMEO": <img style={{width:"42px"}} src={image58} alt="" />,
@@ -138,7 +137,7 @@ const Marque = () => {
   const [Spécialités, setSpécialités] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedSpécialités, setSelectedSpécialités] = useState([]);
-  const { userId } = useAuth(); // Utiliser userId du contexte d'authentification
+  const userId = localStorage.getItem('userId');
 
 
  
