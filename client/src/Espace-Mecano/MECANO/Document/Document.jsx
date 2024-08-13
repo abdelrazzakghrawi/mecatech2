@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useAuth } from '../../../Auth/AuthContext'; // Assurez-vous que le chemin est correct
 import { FilePlus } from 'lucide-react';
 import "./Document.css"
 import Swal from 'sweetalert2';
 const Document = () => {
-    const { userId } = useAuth(); // Récupérer l'ID utilisateur depuis le contexte
+    const userId = localStorage.getItem('userId');
     const [files, setFiles] = useState({
         pieceIdentite: null,
         diplome: null
