@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes, faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import dayjs from 'dayjs';
+import { faTimes, faCalendarAlt, faCheckCircle, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
 const ReservationModal = ({ mechanicId, clientId, handleClose }) => {
   const [planning, setPlanning] = useState(null);
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTimeSlot, setSelectedTimeSlot] = useState('');
   const [error, setError] = useState('');
+  const [message, setMessage] = useState({ type: '', content: '' });
 
   useEffect(() => {
     axios.get(`http://localhost:3007/api/planning/${mechanicId}`)
@@ -18,7 +19,7 @@ const ReservationModal = ({ mechanicId, clientId, handleClose }) => {
 
   const handleReservation = () => {
     if (!selectedDate || !selectedTimeSlot) {
-      setError('Please select a date and time slot.');
+      setMessage({ type: 'error', content: 'Please select a date and time slot.' });
       return;
     }
   
@@ -31,14 +32,15 @@ const ReservationModal = ({ mechanicId, clientId, handleClose }) => {
   
     axios.post('http://localhost:3007/api/reservations', reservationData)
       .then(() => {
-        alert('Reservation successful!');
-        handleClose();
+        setMessage({ type: 'success', content: 'Reservation successful!' });
+        setTimeout(() => {
+          handleClose();
+        }, 2000);
       })
       .catch((error) => {
-        // Check if the error response exists and has a data property with a message
         const errorMessage = error.response?.data?.message || 'Failed to make a reservation.';
-        setError(errorMessage);
-        console.error('Reservation error:', error); // Log the full error for debugging
+        setMessage({ type: 'error', content: errorMessage });
+        console.error('Reservation error:', error);
       });
   };
 
@@ -121,12 +123,20 @@ const ReservationModal = ({ mechanicId, clientId, handleClose }) => {
                   </button>
                 </div>
               </div>
-              {error && <p className="text-red-600 font-bold mt-4 text-center">{error}</p>}
+              {message.content && (
+                <div className={`text-center p-3 rounded-lg ${
+                  message.type === 'error' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'
+                }`}>
+                  <FontAwesomeIcon icon={message.type === 'error' ? faExclamationTriangle : faCheckCircle} className="mr-2" />
+                  {message.content}
+                </div>
+              )}
               <button
-                className="w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition-colors duration-300"
+                className="w-full bg-[#1FA9B6] text-white py-3 rounded-lg hover:bg-[#178e9a] transition-colors duration-300 flex items-center justify-center"
                 onClick={handleReservation}
               >
-                Réserver <FontAwesomeIcon icon={faCalendarAlt} className="ml-2" />
+                <FontAwesomeIcon icon={faCalendarAlt} className="mr-2" />
+                Réserver
               </button>
             </div>
           ) : (
