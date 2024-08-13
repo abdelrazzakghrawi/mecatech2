@@ -23,7 +23,8 @@ const MechanicCard = ({ mechanic, userLocation }) => {
   const [distance, setDistance] = useState(null);
   const [mechanicImage, setMechanicImage] = useState('');
 
-  const clientId = localStorage.getItem('user.id');
+  const clientId = localStorage.getItem('_id');
+  console.log(clientId);
 
   useEffect(() => {
     if (userLocation) {
