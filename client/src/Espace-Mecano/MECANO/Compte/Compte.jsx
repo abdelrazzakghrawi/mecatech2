@@ -7,7 +7,7 @@ import mecano from "../assets/mecano.png";
 import Swal from 'sweetalert2';
 
 const Compte = ({ setGarageId, setImageURL }) => {
-  const userId = localStorage.getItem('userId');
+  const userId = localStorage.getItem('_id');
 
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");

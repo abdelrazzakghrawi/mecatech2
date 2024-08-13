@@ -4,7 +4,7 @@ import { FilePlus } from 'lucide-react';
 import "./Document.css"
 import Swal from 'sweetalert2';
 const Document = () => {
-    const userId = localStorage.getItem('userId');
+    const userId = localStorage.getItem('_id');
     const [files, setFiles] = useState({
         pieceIdentite: null,
         diplome: null

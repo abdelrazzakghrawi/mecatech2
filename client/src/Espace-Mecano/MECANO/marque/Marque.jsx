@@ -137,7 +137,7 @@ const Marque = () => {
   const [Spécialités, setSpécialités] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedSpécialités, setSelectedSpécialités] = useState([]);
-  const userId = localStorage.getItem('userId');
+  const userId = localStorage.getItem('_id');
 
 
  

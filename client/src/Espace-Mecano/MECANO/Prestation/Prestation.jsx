@@ -38,7 +38,7 @@ const Prestation = () => {
     const [selectedcompétances, setSelectedcompétances] = useState([]);
     const [selectedMethodesPaiement, setSelectedMethodesPaiement] = useState([]);
     const [errorMessage, setErrorMessage] = useState(''); // État pour gérer le message d'erreur
-    const userId = localStorage.getItem('userId');
+    const userId = localStorage.getItem('_id');
 
     useEffect(() => {
         const fetchPrestations = async () => {

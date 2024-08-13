@@ -18,7 +18,7 @@ const Planning = () => {
     const [dateFin, setDateFin] = useState('');
 
     // Supposons que l'ID du mécanique est stocké quelque part (par exemple, dans le localStorage)
-    const mecaniqueId = localStorage.getItem('userId');
+    const mecaniqueId = localStorage.getItem('_id');
 
     useEffect(() => {
         fetchPlanning();
