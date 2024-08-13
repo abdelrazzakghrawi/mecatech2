@@ -260,7 +260,7 @@ font-weight: bold;
 
 }
 
-.buttEn{
+.buttEnEn{
     position: absolute;
     font-size: 20px;
     color: white;
@@ -272,8 +272,7 @@ font-weight: bold;
     transition:  0.3s ease-in-out ;
     padding: 10px 50px;
     border-radius: 50px;
-    margin-top: 160px;
-    margin-left: 35%;
+    margin-left: 550px;
  }
  .buttEn:hover {
     color: white;

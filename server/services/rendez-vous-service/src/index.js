@@ -9,7 +9,7 @@ const path = require('path');
 
 
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin: "http://localhost:5173", 
 };
 
 const app = express();
@@ -29,4 +29,4 @@ app.use('/api/reservations', require('./routes/reservationRoutes'));
 
 // Start server
 const PORT = process.env.PORT || 3007;
-app.listen(PORT, () => console.log(`Search Service running on port ${PORT}`));
+app.listen(PORT, () => console.log(`rendez vous Service running on port ${PORT}`));
