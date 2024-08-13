@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarAlt, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import MechanicModal from './MechanicModal';
 import ReservationModal from './ReservationModal';
+import LoginClient from '../../Auth/LoginClient'; // Import the LoginClient component
+import { useAuth } from '../../Auth/AuthContext';
 
 const calculateDistance = (lat1, lon1, lat2, lon2) => {
   if (!lat1 || !lon1 || !lat2 || !lon2) return null;
@@ -22,7 +24,9 @@ const MechanicCard = ({ mechanic, userLocation }) => {
   const [showReservationModal, setShowReservationModal] = useState(false);
   const [distance, setDistance] = useState(null);
   const [mechanicImage, setMechanicImage] = useState('');
+  const [showLoginModal, setShowLoginModal] = useState(false); // State for login modal
 
+  const { isAuthenticated } = useAuth(); // Access authentication status
   const clientId = localStorage.getItem('_id');
   console.log(clientId);
 
@@ -41,10 +45,23 @@ const MechanicCard = ({ mechanic, userLocation }) => {
       setMechanicImage(`http://localhost:3003/meca_images/${randomImageIndex}.jpeg`);
     }
   }, [mechanic.image_path]);
+  
 
   const handleShowModal = () => setShowModal(true);
-  const handleShowReservationModal = () => setShowReservationModal(true);
 
+  const handleShowReservationModal = () => {
+    if (isAuthenticated) {
+      setShowReservationModal(true);
+    } else {
+      setShowLoginModal(true); // Show login modal if not authenticated
+    }
+  };
+
+   // Handle successful login
+   const handleLoginSuccess = () => {
+    setShowLoginModal(false); // Close the login modal
+    setShowReservationModal(true); // Show reservation modal after login
+  };
   return (
     <div className="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
       <img src={mechanicImage} alt={mechanic['Nom Garage']} className="w-full h-48 object-cover" />
@@ -68,9 +85,18 @@ const MechanicCard = ({ mechanic, userLocation }) => {
       {showModal && (
         <MechanicModal mechanic={mechanic} mechanicImage={mechanicImage} distance={distance} handleClose={() => setShowModal(false)} />
       )}
-      
+
       {showReservationModal && (
         <ReservationModal mechanicId={mechanic._id} clientId={clientId} handleClose={() => setShowReservationModal(false)} />
+      )}
+
+      {showLoginModal && (
+        <LoginClient
+          isOpen={showLoginModal}
+          closeModal={() => setShowLoginModal(false)}
+          openRegisterModal={() => {/* Handle open register modal */}}
+          onLoginSuccess={handleLoginSuccess} // Handle login success
+        />
       )}
     </div>
   );
