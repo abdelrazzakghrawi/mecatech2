@@ -115,14 +115,14 @@ const Prestation = () => {
             });
             Swal.fire({
               icon: "success",
-              title: "Prestations enregistrées avec succès",
+              title: "Prestations enregistrées avec succès👌",
             });
         } catch (error) {
             console.error('Erreur lors de l\'envoi des prestations', error);
             Swal.fire({
               icon: "error",
               title: "Erreur",
-              text: "Une erreur est survenue lors de l'enregistrement des prestations.",
+              text: "Une erreur est survenue lors de l'enregistrement des prestations ✖✖✖ ",
             });
         }
     };

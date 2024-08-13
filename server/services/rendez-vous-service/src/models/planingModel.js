@@ -24,13 +24,12 @@ const PlanningSchema = new Schema({
   },
   max_clients_par_jour: {
     type: Number,
-    required: true,
     min: 1 // Minimum number of clients
   },
   indisponibilites: [
     {
-      debut: { type: Date, required: true },
-      fin: { type: Date, required: true }
+      debut: { type: Date, required: false },
+      fin: { type: Date, required: false }
     }
   ]
 }, {

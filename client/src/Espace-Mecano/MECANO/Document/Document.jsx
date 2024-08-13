@@ -54,7 +54,7 @@ const Document = () => {
             setDocuments(response.data);
             Swal.fire({
               icon: "success",
-              title: "Information de Ton Compte enregistrées avec succès",
+              title: "Information de Ton Compte enregistrées avec succès👌",
             });
         } catch (error) {
             console.error('Erreur lors du téléchargement des documents', error);

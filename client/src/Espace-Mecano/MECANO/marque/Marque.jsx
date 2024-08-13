@@ -202,7 +202,7 @@ const Marque = () => {
       });
       Swal.fire({
         icon: "success",
-        title: "Marques enregistrées avec succès",
+        title: "Marques enregistrées avec succès👌",
       });
       // Optionnel : Rafraîchir les marques enregistrées après la soumission
       fetchSavedMarques();
@@ -211,7 +211,7 @@ const Marque = () => {
       Swal.fire({
         icon: "error",
         title: "Erreur",
-        text: "Une erreur est survenue lors de l'enregistrement des marques.",
+        text: "Une erreur est survenue lors de l'enregistrement des marques ✖✖✖.",
       });
     }
   };

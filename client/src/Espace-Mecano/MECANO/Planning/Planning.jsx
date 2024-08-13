@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import "./Planning.css";
 import { TextField, Box, MenuItem } from '@mui/material';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const Planning = () => {
     const [planning, setPlanning] = useState(null);
@@ -44,7 +45,7 @@ const Planning = () => {
         } catch (error) {
             console.error("Erreur lors de la récupération du planning:", error);
         }
-    };
+    }; 
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -65,11 +66,17 @@ const Planning = () => {
           } else {
               await axios.post('http://localhost:3007/api/planning', planningData);  // Assurez-vous que l'URL soit correcte
           }
-          alert("Planning sauvegardé avec succès!");
+          Swal.fire({
+            icon: "success",
+            title: "Planning sauvegardé avec succès👌",
+          });
           fetchPlanning(); // Recharger le planning après la sauvegarde
       } catch (error) {
-          console.error("Erreur lors de la sauvegarde du planning:", error);
-          alert("Erreur lors de la sauvegarde du planning.");
+        Swal.fire({
+            icon: "error",
+            title: "Erreur",
+            text: "Une erreur est survenue lors de l'enregistrement des Plannings ✖✖✖.",
+          });
       }
       
     };

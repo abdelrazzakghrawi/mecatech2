@@ -123,7 +123,7 @@ const Compte = ({ setGarageId, setImageURL }) => {
       }
       Swal.fire({
         icon: "success",
-        title: "Information de Ton Compte enregistrées avec succès",
+        title: "Information de Ton Compte enregistrées avec succès👌",
       });
     } catch (error) {
       console.error('Erreur lors de l\'envoi des données', error);
