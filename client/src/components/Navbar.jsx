@@ -7,7 +7,7 @@ import LoginMecano from '../Auth/LoginMecano';
 import RegisterMecano from '../Auth/RegisterMecano';
 import { useAuth } from '../Auth/AuthContext';
 import './Navbar.css';
-import logo from './assets/logo.png';
+import Méca_tech from './assets/Méca_tech.png';
 import { SearchProvider } from '../searchService/searchComponent/context/SearchContext';
 import useSearch from '../searchService/hooks/useSearch';
 import SearchInputs from '../searchService/searchComponent/SearchInputs';
@@ -77,7 +77,7 @@ const Navbar = () => {
           <header>
             <div className='navbar'>
               <a href="/">
-                <img src={logo} alt="Logo" className='logo' />
+                <img src={Méca_tech} alt="Logo" className='logo' />
               </a>
               <ul className={`navbar-menu ${isOpen ? 'open' : ''}`}>
                 {user ? (

@@ -24,7 +24,7 @@ const Navbar = () => {
     <div className='navvv'>
       <header className={` ${isOpen ? 'navbaropen' : 'header'}`}>
         <div className='navbar2'>
-          <a href="/">
+          <a >
             <img src={logo} alt="Logo" className='logo2' />
           </a>  
           <ul className={`navba-menu2 ${isOpen ? 'open2' : ''}`}>

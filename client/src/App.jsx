@@ -7,6 +7,7 @@ import DashboardClient from './EspaceClient/DashboardClient'; // Importez le com
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { useAuth } from './Auth/AuthContext';
 import VerifyEmail from './Auth/VerifyEmail/VerifyEmail';
+import Animation from "../src/Animation/Animation"
 
 import './App.css'
 
@@ -21,7 +22,7 @@ const App = () => {
     <Router>
       
       <div>
-        
+        <Animation/>
         <Routes>
           <Route path="/" element={<Home />} />
           {role === 'mecano' && (
