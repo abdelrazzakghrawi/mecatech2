@@ -131,7 +131,7 @@ const Linkk = () => {
             <span style={{ fontSize: "30px", position: "absolute", marginLeft: "31.5%", marginTop: "2%" }}>/</span>
             <CircleX style={{ marginLeft: "270px", marginTop: "20px", color: "red", position: "absolute" }} /> <span style={{ color: "red", marginLeft: "300px", marginTop: "23px", position: "absolute" }}>Rendez-Vous Annuler</span>
             <span style={{ fontSize: "30px", position: "absolute", marginLeft: "58%", marginTop: "2%" }}>/</span>
-            <Hourglass style={{ marginLeft: "480px", marginTop: "20px", color: "orange", position: "absolute" }} /> <span style={{ color: "orange", marginLeft: "510px", marginTop: "23px", position: "absolute" }}>Rendez-Vous Annuler</span>
+            <Hourglass style={{ marginLeft: "480px", marginTop: "20px", color: "orange", position: "absolute" }} /> <span style={{ color: "orange", marginLeft: "510px", marginTop: "23px", position: "absolute" }}>Rendez-Vous En Attente</span>
           </div>
           <Rendezvous />
         </div>}
