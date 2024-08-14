@@ -36,7 +36,7 @@ mongoose.connect(process.env.MONGO_URI, {
     console.error('Erreur de connexion à MongoDB:', error.message);
 });
 
-// Définition du schéma et du modèle Mongoose
+// Définition du schéma et du modèle Mongoose pour Garage
 const GarageSchema = new mongoose.Schema({
     Ville: String,
     nomGarage: String,
@@ -49,10 +49,21 @@ const GarageSchema = new mongoose.Schema({
     methodesPaiement: String,
     Spécialités: String,
     userId: String,
-    pieceIdentite: String,  // Chemin du fichier pièce d'identité
-    diplome: String          // Chemin du fichier diplôme
+    pieceIdentite: String,
+    diplome: String
 });
 const Garage = mongoose.model('mecanique_details', GarageSchema);
+
+// Définition du schéma et du modèle Mongoose pour Contact
+const ContactSchema = new mongoose.Schema({
+  _id: String,
+  nomComplet: String,
+  adresse: String,
+  ville: String,
+  tel: String,
+  message: String
+});
+const Contact = mongoose.model('contactez_nous', ContactSchema);
 
 const dbName = 'Mecano';
 
@@ -215,7 +226,6 @@ app.post('/api/upload-documents/:userId', upload.fields([
             diplome: diplome ? diplome[0].path : undefined
         };
 
-        // Met à jour les chemins des fichiers pour le garage correspondant
         const garage = await Garage.findOneAndUpdate(
             { userId },
             { $set: updateData },
@@ -261,6 +271,28 @@ app.get('/services', async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: 'Erreur lors de la récupération des services', error });
     }
+});
+
+// Nouvelle route pour enregistrer les informations de contact
+app.post('/api/contact', async (req, res) => {
+  try {
+    const { _id, nomComplet, adresse, ville, tel, message } = req.body;
+    
+    const newContact = new Contact({
+      _id,
+      nomComplet,
+      adresse,
+      ville,
+      tel,
+      message
+    });
+
+    await newContact.save();
+    res.status(201).json({ message: 'Contact enregistré avec succès' });
+  } catch (error) {
+    console.error('Erreur lors de l\'enregistrement du contact:', error);
+    res.status(500).json({ message: 'Erreur lors de l\'enregistrement du contact' });
+  }
 });
 
 app.listen(port, () => {
