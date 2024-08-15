@@ -13,6 +13,7 @@ const ReservationModal = ({ mechanicId, clientId, handleClose }) => {
 
   useEffect(() => {
     axios.get(`http://localhost:3007/api/planning/${mechanicId}`)
+   
       .then(response => setPlanning(response.data))
       .catch(() => setError('Failed to load planning data.'));
   }, [mechanicId]);
