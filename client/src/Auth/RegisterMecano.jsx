@@ -61,6 +61,7 @@ const RegisterMecanoModal = ({ isOpen, closeModal, openLoginModal }) => {
       console.log('Server response:', res.data);
       closeModal();
       login(res.data.token, res.data.username, res.data.role);
+      localStorage.setItem('authToken', res.data.token);
       navigate('/dashboard-mecano');
     } catch (error) {
       console.error('Error during Google login:', error);

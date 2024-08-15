@@ -79,7 +79,7 @@ const LoginMecanoModal = ({ isOpen, closeModal, openRegisterModal }) => {
   
       // Appeler la fonction `login` avec tous les paramètres nécessaires
       login(jwtToken, username, role, _id);
-  
+      localStorage.setItem('authToken', res.data.token);
       closeModal(); // Fermer la modal
       navigate('/dashboard-mecano'); // Redirection vers le tableau de bord des mécaniciens après la connexion
     } catch (error) {

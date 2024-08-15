@@ -57,7 +57,8 @@
         const res = await axios.post('http://localhost:5000/api/auth/google-login', { token, role: 'client' });
         console.log('Server response:', res.data);
         closeModal(); // Close the modal
-        login(token, res.data.username, 'client'); // Store user info in AuthContext
+        login(token, res.data.username, 'client');
+        localStorage.setItem('authToken', res.data.token); // Store user info in AuthContext
         navigate('/'); // Redirect to the application homepage after successful login
       } catch (error) {
         console.error('Error during Google login:', error);
