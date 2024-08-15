@@ -77,7 +77,6 @@ const Linkk = () => {
     <div className="profile">
       <div>
         {imageURL && <img className="mecano" src={imageURL} alt="Image de Garage" />}
-        <p></p> 
       </div>
       <div className="tous">
         <div onClick={handleClick} className={`compte ${showCompte ? 'active' : ''}`}>
@@ -138,7 +137,10 @@ const Linkk = () => {
         {showDocuments && <Document />}
         {showContact && <Contactez_Nous />}
       </div>
+      <p></p> 
+
       </div>
+      
     </div>
   );
 };
