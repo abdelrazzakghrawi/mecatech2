@@ -38,6 +38,7 @@ mongoose.connect(process.env.MONGO_URI, {
 
 // Définition du schéma et du modèle Mongoose pour Garage
 const GarageSchema = new mongoose.Schema({
+    _id: String, // userId devient l'_id principal
     Ville: String,
     nomGarage: String,
     Telephone: String,
@@ -48,10 +49,10 @@ const GarageSchema = new mongoose.Schema({
     compétances: String,
     methodesPaiement: String,
     Spécialités: String,
-    userId: String,
     pieceIdentite: String,
     diplome: String
-});
+}, { _id: false }); // Désactive la génération automatique de l'_id
+
 const Garage = mongoose.model('mecanique_details', GarageSchema);
 
 // Définition du schéma et du modèle Mongoose pour Contact
@@ -109,7 +110,7 @@ async function getServices() {
 app.get('/api/initial-info/:userId', async (req, res) => {
     const { userId } = req.params;
     try {
-        const garage = await Garage.findOne({ userId });
+        const garage = await Garage.findById(userId);
         if (!garage) return res.status(404).json({ message: 'Garage non trouvé' });
         if (garage.image_path) {
             garage.image_path = `http://localhost:5001/${garage.image_path}`;
@@ -124,7 +125,7 @@ app.get('/api/initial-info/:userId', async (req, res) => {
 app.get('/api/marques/:userId', async (req, res) => {
     const { userId } = req.params;
     try {
-        const garage = await Garage.findOne({ userId });
+        const garage = await Garage.findById(userId);
         if (!garage) {
             return res.status(404).json({ message: 'Garage non trouvé' });
         }
@@ -139,7 +140,7 @@ app.get('/api/marques/:userId', async (req, res) => {
 app.get('/api/prestations/:userId', async (req, res) => {
     const { userId } = req.params;
     try {
-        const garage = await Garage.findOne({ userId });
+        const garage = await Garage.findById(userId);
         if (!garage) {
             return res.status(404).json({ message: 'Garage non trouvé' });
         }
@@ -158,7 +159,7 @@ app.post('/api/initial-info', upload.single('image_path'), async (req, res) => {
 
     try {
         const garage = await Garage.findOneAndUpdate(
-            { userId },
+            { _id: userId },
             {
                 Ville,
                 nomGarage,
@@ -182,7 +183,7 @@ app.post('/api/prestations', async (req, res) => {
     const { userId, compétances, methodesPaiement } = req.body;
     try {
         const garage = await Garage.findOneAndUpdate(
-            { userId },
+            { _id: userId },
             {
                 compétances: compétances.join(','),
                 methodesPaiement: methodesPaiement.join(',')
@@ -201,7 +202,7 @@ app.post('/api/marques', async (req, res) => {
     const { userId, Spécialités } = req.body;
     try {
         const garage = await Garage.findOneAndUpdate(
-            { userId },
+            { _id: userId },
             { Spécialités: Spécialités.join(',') },
             { upsert: true, new: true }
         );
@@ -227,7 +228,7 @@ app.post('/api/upload-documents/:userId', upload.fields([
         };
 
         const garage = await Garage.findOneAndUpdate(
-            { userId },
+            { _id: userId },
             { $set: updateData },
             { new: true }
         );
@@ -242,7 +243,7 @@ app.post('/api/upload-documents/:userId', upload.fields([
 app.get('/api/documents/:userId', async (req, res) => {
     const { userId } = req.params;
     try {
-        const garage = await Garage.findOne({ userId });
+        const garage = await Garage.findById(userId);
         if (!garage) return res.status(404).json({ message: 'Garage non trouvé' });
         res.json({
             pieceIdentite: garage.pieceIdentite ? `http://localhost:5001/${garage.pieceIdentite}` : null,
