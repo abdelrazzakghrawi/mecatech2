@@ -165,10 +165,33 @@ const getReservationByMecaniqueId = async (req, res) => {
         res.status(500).json({ message: 'Error fetching reservations', error: error.message });
     }
 };
+const updateReservationStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    // Fetch the reservation by ID
+    const reservation = await Reservation.findById(id);
+
+    if (!reservation) {
+      return res.status(404).json({ message: 'Reservation not found.' });
+    }
+
+    // Update the status of the reservation
+    reservation.status = status || reservation.status;
+
+    await reservation.save();
+    res.status(200).json({ message: 'Reservation status updated successfully.', reservation });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
 module.exports = {
   createReservation,
   updateReservation,
   deleteReservation, 
-  getReservationByMecaniqueId
+  getReservationByMecaniqueId,
+  updateReservationStatus // Export the new function
 };
+

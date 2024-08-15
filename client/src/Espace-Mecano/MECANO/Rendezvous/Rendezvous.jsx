@@ -1,40 +1,78 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { format, isSameDay } from 'date-fns';
 import { Hourglass, CircleX, CircleCheck } from 'lucide-react';
+import axios from 'axios';
 import "./Rendez.css";
 
 const Rendezvous = () => {
   const [date, setDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
   const [activeStartDate, setActiveStartDate] = useState(new Date());
-  const [rendezVous, setRendezVous] = useState([
-    { id: 1, date: new Date(2024, 7, 1), status: 'confirmed', clientName: 'Fouad', clientNumber: '123-456-7890' },
-    { id: 2, date: new Date(2024, 7, 2), status: 'cancelled', clientName: 'Hatim', clientNumber: '098-765-4321' },
-    { id: 3, date: new Date(2024, 7, 3), status: 'pending', clientName: 'Kader', clientNumber: '456-789-0123' },
-    { id: 4, date: new Date(2054, 7, 4), status: 'pending', clientName: 'Yassin', clientNumber: '456-789-0123' },
-  ]);
+  const [rendezVous, setRendezVous] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const updateRendezVousStatus = (id, newStatus) => {
-    setRendezVous(rendezVous.map(rdv => rdv.id === id ? { ...rdv, status: newStatus } : rdv));
+  const mecaniqueId = localStorage.getItem('_id');
+
+  useEffect(() => {
+    if (mecaniqueId) {
+      fetchReservations();
+    } else {
+      setError("Mechanic ID not found. Please log in.");
+      setLoading(false);
+    }
+  }, [mecaniqueId]);
+
+  const fetchReservations = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(`http://localhost:3007/api/reservations/${mecaniqueId}`);
+      const formattedReservations = response.data.map(item => ({
+        id: item.reservation._id,
+        date: new Date(item.reservation.date),
+        status: item.reservation.status,
+        clientName: item.clientDetails.username,
+        clientNumber: item.clientDetails.telephone || 'Non spécifié',
+        timeSlot: item.reservation.time_slot === 'matin' ? 'Matin' : 'Après-midi'
+      }));
+      setRendezVous(formattedReservations);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching reservations:', error);
+      setError("Failed to fetch reservations. Please try again.");
+      setLoading(false);
+    }
   };
 
-  const handleConfirm = (id) => {
-    updateRendezVousStatus(id, 'confirmed');
+  const handleConfirm = async (id) => {
+    try {
+      await axios.put(`http://localhost:3007/api/reservations/${id}/status`, { status: 'Confirmed' });
+      fetchReservations();
+    } catch (error) {
+      console.error('Error confirming reservation:', error);
+      setError("Failed to confirm reservation. Please try again.");
+    }
   };
 
-  const handleCancel = (id) => {
-    updateRendezVousStatus(id, 'cancelled');
+  const handleCancel = async (id) => {
+    try {
+      await axios.put(`http://localhost:3007/api/reservations/${id}/status`, { status: 'Cancelled' });
+      fetchReservations();
+    } catch (error) {
+      console.error('Error cancelling reservation:', error);
+      setError("Failed to cancel reservation. Please try again.");
+    }
   };
 
   const renderStatusIcon = (status) => {
     switch (status) {
-      case 'confirmed':
+      case 'Confirmed':
         return <CircleCheck style={{ color: 'green', fontSize: '16px' }} />;
-      case 'cancelled':
+      case 'Cancelled':
         return <CircleX style={{ color: 'red', fontSize: '16px' }} />;
-      case 'pending':
+      case 'Pending':
         return <Hourglass style={{ color: 'orange', fontSize: '16px' }} />;
       default:
         return null;
@@ -67,6 +105,14 @@ const Rendezvous = () => {
 
   const filteredRendezVous = rendezVous.filter(rdv => isSameDay(rdv.date, selectedDate));
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   return (
     <div className="Rendez-container">
       <div className='resultat'>
@@ -79,6 +125,7 @@ const Rendezvous = () => {
                 <thead>
                   <tr>
                     <th>Date</th>
+                    <th>Horaire</th>
                     <th>Status</th>
                     <th>Nom du client</th>
                     <th>Numéro du client</th>
@@ -89,19 +136,21 @@ const Rendezvous = () => {
                   {filteredRendezVous.map(rdv => (
                     <tr key={rdv.id}>
                       <td>{format(rdv.date, 'dd/MM/yyyy')}</td>
+                      <td>{rdv.timeSlot}</td>
                       <td>
                         {renderStatusIcon(rdv.status)}
+                        {rdv.status}
                       </td>
                       <td>{rdv.clientName}</td>
                       <td>{rdv.clientNumber}</td>
                       <td>
-                        {rdv.status === 'pending' && (
+                        {rdv.status === 'Pending' && (
                           <>
-                            <button className='confirmer' onClick={() => handleConfirm(rdv.id)} style={{ marginRight: '5px' }}>Confirmer</button>
+                            <button className='confirmer' onClick={() => handleConfirm(rdv.id)}>Confirmer</button>
                             <button className='annuler' onClick={() => handleCancel(rdv.id)}>Annuler</button>
                           </>
                         )}
-                        {rdv.status !== 'pending' && rdv.status !== 'cancelled' && (
+                        {rdv.status !== 'Pending' && rdv.status !== 'Cancelled' && (
                           <button className='annuler' onClick={() => handleCancel(rdv.id)}>Annuler</button>
                         )}
                       </td>
@@ -120,6 +169,7 @@ const Rendezvous = () => {
               <thead>
                 <tr>
                   <th>Date</th>
+                  <th>Horaire</th>
                   <th>Status</th>
                   <th>Nom du client</th>
                   <th>Numéro du client</th>
@@ -130,19 +180,21 @@ const Rendezvous = () => {
                 {rendezVous.map(rdv => (
                   <tr key={rdv.id} onClick={() => handleRendezvousClick(rdv.date)}>
                     <td>{format(rdv.date, 'dd/MM/yyyy')}</td>
+                    <td>{rdv.timeSlot}</td>
                     <td>
                       {renderStatusIcon(rdv.status)}
+                      {rdv.status}
                     </td>
                     <td>{rdv.clientName}</td>
                     <td>{rdv.clientNumber}</td>
                     <td>
-                      {rdv.status === 'pending' && (
+                      {rdv.status === 'Pending' && (
                         <>
-                          <button className='confirmer' onClick={() => handleConfirm(rdv.id)} style={{ marginRight: '5px' }}>Confirmer</button>
+                          <button className='confirmer' onClick={() => handleConfirm(rdv.id)}>Confirmer</button>
                           <button className='annuler' onClick={() => handleCancel(rdv.id)}>Annuler</button>
                         </>
                       )}
-                      {rdv.status !== 'pending' && rdv.status !== 'cancelled' && (
+                      {rdv.status !== 'Pending' && rdv.status !== 'Cancelled' && (
                         <button className='annuler' onClick={() => handleCancel(rdv.id)}>Annuler</button>
                       )}
                     </td>

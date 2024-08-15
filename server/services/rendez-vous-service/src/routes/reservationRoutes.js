@@ -1,12 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const { createReservation, updateReservation, deleteReservation,  getReservationByMecaniqueId  } = require('../controllers/reservationController');
+const { createReservation, updateReservation, deleteReservation,  getReservationByMecaniqueId , updateReservationStatus  } = require('../controllers/reservationController');
 
 // Route to create a reservation
 router.post('/reservations', createReservation);
 
 // Route to update a reservation
 router.put('/reservations/:id', updateReservation);
+
+router.put('/reservations/:id/status', updateReservationStatus);
 
 // Route to delete a reservation
 router.delete('/reservations/:id', deleteReservation);
