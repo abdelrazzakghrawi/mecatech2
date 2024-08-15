@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-const Sidebar = ({ selectedSection, setSelectedSection, profileImage, setProfileImage }) => {
+const Sidebar = ({
+   selectedSection, setSelectedSection, profileImage, setProfileImage }) => {
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {

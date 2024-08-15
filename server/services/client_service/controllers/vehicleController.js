@@ -1,78 +1,72 @@
-const axios = require('axios');
 const Vehicle = require('../models/Vehicle');
-const Contact = require('../models/Contact');
 
-// Middleware d'authentification
-const auth = async (req, res, next) => {
-  try {
-    const token = req.header('Authorization').replace('Bearer ', '');
-    const response = await axios.get(process.env.AUTH_SERVICE_URL, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    req.user = response.data;
-    next();
-  } catch (error) {
-    res.status(401).json({ error: 'Unauthorized' });
-  }
-};
-
-// Soumettre le formulaire de contact
-const submitContactForm = async (req, res) => {
-  try {
-    const { sujet, message } = req.body;
-
-    // Créer un nouveau document de contact
-    const contact = new Contact({
-      sujet,
-      message,
-    });
-
-    // Sauvegarder dans la base de données
-    await contact.save();
-
-    res.status(201).json({ message: 'Message reçu avec succès.' });
-  } catch (error) {
-    console.error('Erreur lors de l\'envoi du message:', error);
-    res.status(400).json({ error: 'Erreur lors de l\'envoi du message.' });
-  }
-};
-
-// Ajouter un véhicule
-// Ajouter un véhicule
 const addVehicle = async (req, res) => {
+  const { modele, nom, plaque, dateMiseEnCirculation, userId } = req.body;
+  const photoPath = req.file ? `/uploads/${req.file.filename}` : null;
+
   try {
-    const { modele, nom, plaque, dateMiseEnCirculation } = req.body;
-
-    // Vérification que req.user existe bien et contient l'_id
-    if (!req.user || !req.user._id) {
-      return res.status(400).json({ error: 'User information is missing or invalid.' });
-    }
-
-    const vehicle = new Vehicle({
-      modele,
-      nom,
-      plaque,
-      dateMiseEnCirculation,
-      photo: req.file ? req.file.path : '',
-      user: req.user._id, // Associe le véhicule à l'utilisateur connecté
-    });
-
+    const vehicle = new Vehicle({ userId, modele, nom, plaque, dateMiseEnCirculation, photo: photoPath });
     await vehicle.save();
-    res.status(201).json(vehicle);
+    res.status(201).json({ message: 'Véhicule ajouté avec succès.' });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(500).json({ error: 'Erreur lors de l\'ajout du véhicule.' });
   }
 };
 
+const getVehicles = async (req, res) => {
+  const userId = req.user.id;
 
-// Récupérer les véhicules de l'utilisateur
-const getUserVehicles = async (req, res) => {
   try {
-    const vehicles = await Vehicle.find({ user: req.user._id }); // Filtrer par `userId`
+    const vehicles = await Vehicle.find({ userId });
     res.json(vehicles);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(500).json({ error: 'Erreur lors de la récupération des véhicules.' });
+  }
+};
+const updateVehicle = async (req, res) => {
+  const { id } = req.params; // Récupère l'ID du véhicule depuis les paramètres de la requête
+  const { modele, nom, plaque, dateMiseEnCirculation } = req.body;
+  const photoPath = req.file ? `/uploads/${req.file.filename}` : null;
+
+  try {
+    const vehicle = await Vehicle.findById(id);
+
+    if (!vehicle) {
+      return res.status(404).json({ error: 'Véhicule non trouvé.' });
+    }
+
+    // Mise à jour des champs
+    vehicle.modele = modele || vehicle.modele;
+    vehicle.nom = nom || vehicle.nom;
+    vehicle.plaque = plaque || vehicle.plaque;
+    vehicle.dateMiseEnCirculation = dateMiseEnCirculation || vehicle.dateMiseEnCirculation;
+    if (photoPath) {
+      vehicle.photo = photoPath; // Mettre à jour la photo si une nouvelle a été envoyée
+    }
+
+    await vehicle.save();
+
+    res.status(200).json({ message: 'Véhicule mis à jour avec succès.', vehicle });
+  } catch (error) {
+    res.status(500).json({ error: 'Erreur lors de la mise à jour du véhicule.' });
+  }
+};
+const deleteVehicle = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const vehicle = await Vehicle.findByIdAndDelete(id);
+
+    if (!vehicle) {
+      return res.status(404).json({ error: 'Véhicule non trouvé.' });
+    }
+
+    res.status(200).json({ message: 'Véhicule supprimé avec succès.' });
+  } catch (error) {
+    res.status(500).json({ error: 'Erreur lors de la suppression du véhicule.' });
   }
 };
 
-module.exports = { addVehicle, getUserVehicles, submitContactForm, auth };
+
+
+module.exports = { addVehicle, getVehicles,updateVehicle,deleteVehicle };
