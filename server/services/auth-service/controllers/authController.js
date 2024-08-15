@@ -134,10 +134,15 @@ const updateUserProfile = async (req, res) => {
       user.nom = req.body.nom || user.nom;
       user.username = req.body.username || user.username;
       user.name = req.body.name || user.name;
-    
       user.email = req.body.email || user.email;
       user.telephone = req.body.telephone || user.telephone;
       user.adresse = req.body.adresse || user.adresse;
+
+      // Ajout de la gestion de l'image de profil
+      if (req.body.profileImage) {
+        user.profileImage = req.body.profileImage;
+      }
+
       if (req.body.motDePasse) {
         user.password = req.body.motDePasse;
       }
@@ -151,6 +156,7 @@ const updateUserProfile = async (req, res) => {
     res.status(500).json({ message: 'Erreur lors de la mise à jour des informations utilisateur' });
   }
 };
+
 
 const verifyEmail = async (req, res) => {
   const { userId } = req.params;

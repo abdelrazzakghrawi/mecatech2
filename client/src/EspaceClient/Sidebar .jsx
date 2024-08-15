@@ -1,14 +1,13 @@
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-const Sidebar = ({
-   selectedSection, setSelectedSection, profileImage, setProfileImage }) => {
+const Sidebar = ({ selectedSection, setSelectedSection, profileImage }) => {
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setProfileImage(reader.result);
+        (reader.result);
       };
       reader.readAsDataURL(file);
     }
@@ -99,7 +98,6 @@ Sidebar.propTypes = {
   selectedSection: PropTypes.string.isRequired,
   setSelectedSection: PropTypes.func.isRequired,
   profileImage: PropTypes.string,
-  setProfileImage: PropTypes.func.isRequired,
 };
 
 export default Sidebar;

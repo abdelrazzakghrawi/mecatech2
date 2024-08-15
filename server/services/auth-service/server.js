@@ -14,7 +14,14 @@ connectDB();
 
 const app = express();
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:5173', // Remplacez par l'URL de votre frontend si différent
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Méthodes autorisées
+    credentials: true
+  }));
+ 
+  app.use(express.json({ limit: '10mb' })); // Augmentez la taille selon vos besoins
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 app.use(passport.initialize());
 require('./utils/passport');

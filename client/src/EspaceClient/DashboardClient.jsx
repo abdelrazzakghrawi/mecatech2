@@ -1,36 +1,15 @@
-import { useState,useEffect  } from 'react';
+import { useState } from 'react';
 import Sidebar from '../EspaceClient/Sidebar ';
 import MonCompte from './MonCompte';
 import MesRendezVous from './MesRendezVous';
 import MesVehicules from './MesVehicules';
 import ChoisirPrestation from './ChoisirPrestation';
 import ContactezNous from './ContactezNous';
-import axios from 'axios';
 import Navbar from '../Espace-Mecano/Navbar/Navbar';
-import Footer from "../Espace-Mecano/Footer/Footer"
+import Footer from "../Espace-Mecano/Footer/Footer";
 
 const DashboardClient = () => {
   const [selectedSection, setSelectedSection] = useState('monCompte');
-  const [profileImage, setProfileImage] = useState('/path-to-default-image.png');
-
-  useEffect(() => {
-    const fetchProfileData = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:5000/api/users/me', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        console.log('Profile image fetched:', response.data.profileImage); // Debug log
-        setProfileImage(response.data.profileImage || '/path-to-default-image.png');
-      } catch (error) {
-        console.error('Failed to fetch profile data:', error);
-      }
-    };
-
-    fetchProfileData();
-  }, []);
 
   const renderContent = () => {
     switch (selectedSection) {
@@ -57,8 +36,6 @@ const DashboardClient = () => {
           <Sidebar
             selectedSection={selectedSection}
             setSelectedSection={setSelectedSection}
-            profileImage={profileImage}
-            setProfileImage={setProfileImage}
           />
         </div>
         <main className="flex-1 p-6 overflow-y-auto">{renderContent()}</main>

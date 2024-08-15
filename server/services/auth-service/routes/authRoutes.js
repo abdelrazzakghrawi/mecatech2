@@ -15,4 +15,5 @@ router.route('/me')
 .put(protect, updateUserProfile);
 router.get('/details/:userId', getUserById);
 
+
 module.exports = router;
