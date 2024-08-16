@@ -5,6 +5,22 @@ import { CircleAlert, CircleCheck } from 'lucide-react';
 import axios from 'axios';
 import mecano from "../assets/mecano.png";
 import Swal from 'sweetalert2';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
+
+// Importez les images directement
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+
+// Correction pour l'icône du marqueur Leaflet
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: markerIcon2x,
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow,
+});
 
 const Compte = ({ setGarageId, setImageURL }) => {
   const userId = localStorage.getItem('_id');
@@ -14,7 +30,8 @@ const Compte = ({ setGarageId, setImageURL }) => {
   const [ipadresse, setIpadresse] = useState("");
   const [geoInfo, setGeoInfo] = useState({});
   const [image_path, setImage] = useState(null);
-  const [imag, setimg] = useState(mecano); // Initialiser avec l'image par défaut
+  const [imag, setimg] = useState(mecano);
+  const [showMap, setShowMap] = useState(false);
   const [formData, setFormData] = useState({
     Ville: '',
     nomGarage: '',
@@ -45,12 +62,11 @@ const Compte = ({ setGarageId, setImageURL }) => {
         if (data.image_path) {
           setImage(data.image_path || '');
           setimg(data.image_path || '');
-          setImageURL(data.image_path || ''); // Passer l'URL de l'image au composant parent
+          setImageURL(data.image_path || '');
         }
         if (data.id) {
-          setGarageId(data.id); // Mettre à jour l'ID du garage
+          setGarageId(data.id);
         }
-        // Mettre à jour les erreurs en fonction des données récupérées
         setErrors({
           nomGarage: !!data.nomGarage,
           Adresse: !!data.Adresse,
@@ -76,7 +92,7 @@ const Compte = ({ setGarageId, setImageURL }) => {
   const validateField = (name, value) => {
     setErrors((prevErrors) => ({
       ...prevErrors,
-      [name]: !!value.trim(), // Met à jour l'état d'erreur en fonction du contenu du champ
+      [name]: !!value.trim(),
     }));
   };
 
@@ -88,7 +104,7 @@ const Compte = ({ setGarageId, setImageURL }) => {
         const newImageURL = event.target.result;
         setImage(file);
         setimg(newImageURL);
-        setImageURL(newImageURL); // Passer l'URL de l'image au composant parent
+        setImageURL(newImageURL);
       };
       reader.readAsDataURL(file);
     }
@@ -117,9 +133,9 @@ const Compte = ({ setGarageId, setImageURL }) => {
       const response = await axios.post('http://localhost:5001/api/initial-info', form, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
-      setGarageId(response.data.id); // Mettre à jour l'ID du garage
+      setGarageId(response.data.id);
       if (response.data.image_path) {
-        setImageURL(response.data.image_path); // Mettre à jour l'URL de l'image après l'enregistrement
+        setImageURL(response.data.image_path);
       }
       Swal.fire({
         icon: "success",
@@ -137,6 +153,7 @@ const Compte = ({ setGarageId, setImageURL }) => {
       setGeoInfo(data);
       setLatitude(data.lat);
       setLongitude(data.lon);
+      setShowMap(true);
     } catch (error) {
       console.error('Erreur lors de la récupération des informations géographiques', error);
     }
@@ -218,6 +235,24 @@ const Compte = ({ setGarageId, setImageURL }) => {
               }}
             />
           </Box>
+     
+
+          {showMap && latitude && longitude && (
+            <div className="map-container">
+              <MapContainer key={`${latitude}-${longitude}`} center={[latitude, longitude]} zoom={13} style={{ height: '400px', width: '100%' }}>
+                <TileLayer
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                />
+                <Marker position={[latitude, longitude]}>
+                  <Popup>
+                    Votre localisation
+                  </Popup>
+                </Marker>
+              </MapContainer>
+            </div>
+          )}
+            
           <label className="mecanlabel" htmlFor="">Votre Image de profile</label>
           <img className="mecan" src={imag} alt="" onClick={handleImageClick} />
           <input
@@ -228,6 +263,7 @@ const Compte = ({ setGarageId, setImageURL }) => {
             onChange={handleImageChange}
           />
           <button className="buttE" type="submit">Enregistrer</button>
+          
           <div className="ipadress">
             <br />
             <TextField
@@ -250,6 +286,7 @@ const Compte = ({ setGarageId, setImageURL }) => {
                 ),
               }}
             />
+            
             <TextField
               label="Longitude"
               name="longitude"
@@ -270,8 +307,15 @@ const Compte = ({ setGarageId, setImageURL }) => {
                 ),
               }}
             />
-          </div>            <button className="buttadress" type="button" onClick={handleGetGeoInfo}>Obtenir les informations de Votre localisation</button>
-
+          </div>
+          <button className="buttadress" type="button" onClick={handleGetGeoInfo}>
+            Obtenir les informations de Votre localisation
+          </button>
+          <button className="buttShowMap" type="button" onClick={() => setShowMap(!showMap)}>
+            {showMap ? 'Masquer la carte' : 'Afficher la carte'}
+          </button>
+          
+          
         </div>
       </form>
     </div>
