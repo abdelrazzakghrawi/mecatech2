@@ -28,6 +28,21 @@ const ReservationModal = ({ mechanicId, clientId, handleClose }) => {
       dayjs(date).isBetween(dayjs(unavailability.debut), dayjs(unavailability.fin), null, '[]')
     );
   };
+  const   
+  frenchLocale = {
+   name: 'fr',
+   weekdaysShort: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'], // Capitalized first letters
+   // ... other properties (months, etc.)
+ };
+ 
+ dayjs.locale(frenchLocale);
+
+ const isWorkingDay = (date) => {
+   if (!planning) return false;
+   const dayOfWeek = dayjs(date).format('ddd'); // Formatted in French now
+   console.log(dayOfWeek, planning.jours_travail);
+   return planning.jours_travail.includes(dayOfWeek);
+ };
 
   const handleReservation = () => {
     if (!selectedDate || !selectedTimeSlot) {
@@ -54,27 +69,6 @@ const ReservationModal = ({ mechanicId, clientId, handleClose }) => {
         setMessage({ type: 'error', content: errorMessage });
         console.error('Reservation error:', error);
       });
-  };
-
-  const renderWorkingDays = () => {
-    if (!planning) return null;
-    const daysOfWeek = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
-    return (
-      <div className="flex justify-between space-x-2 mb-4">
-        {daysOfWeek.map(day => (
-          <div
-            key={day}
-            className={`px-3 py-1 rounded-full text-xs font-semibold ${
-              planning.jours_travail.includes(day) 
-                ? 'bg-green-500 text-white' 
-                : 'bg-red-200 text-red-700'
-            }`}
-          >
-            {day}
-          </div>
-        ))}
-      </div>
-    );
   };
 
   const renderTimeSlots = () => {
@@ -125,15 +119,18 @@ const ReservationModal = ({ mechanicId, clientId, handleClose }) => {
         <div className="p-6">
           <h3 className="text-2xl font-bold mb-6 text-gray-800">Réserver une place</h3>
           <div className="space-y-6">
-            {renderWorkingDays()}
             <div>
               <label className="block text-gray-700 font-semibold mb-2">Sélectionnez une date:</label>
               <Calendar
                 value={selectedDate}
                 onChange={setSelectedDate}
-                tileClassName={({ date, view }) => 
-                  view === 'month' && isUnavailableDate(date) ? 'bg-red-200 text-red-700' : ''
-                }
+                tileClassName={({ date, view }) => {
+                  if (view === 'month') {
+                    if (isUnavailableDate(date)) return 'bg-red-200 text-red-700';
+                    if (isWorkingDay(date)) return 'bg-green-200 text-green-700';
+                  }
+                  return '';
+                }}
               />
             </div>
             <div>
