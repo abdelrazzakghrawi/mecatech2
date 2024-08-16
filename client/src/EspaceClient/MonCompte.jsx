@@ -12,6 +12,8 @@ const MonCompte = () => {
     telephone: '',
     adresse: '',
   });
+  const [message, setMessage] = useState(''); // Pour gérer le message de succès ou d'erreur
+  const [messageType, setMessageType] = useState(''); // Pour déterminer le type de message (succès ou erreur)
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -62,15 +64,24 @@ const MonCompte = () => {
     };
     try {
       await axios.put('http://localhost:5000/api/auth/me', formData, config);
-      console.log('Informations mises à jour avec succès');
+      setMessage('Vos informations ont été mises à jour avec succès.');
+      setMessageType('success'); // Définir le type de message à succès
     } catch (error) {
+      setMessage('Erreur lors de la mise à jour des informations.');
+      setMessageType('error'); // Définir le type de message à erreur
       console.error('Erreur lors de la mise à jour des informations:', error);
     }
+
+    // Réinitialiser le message après 5 secondes
+    setTimeout(() => {
+      setMessage('');
+      setMessageType('');
+    }, 5000);
   };
 
   return (
     <div className="bg-[#E9EAEB] shadow-lg rounded-2xl w-[850px] h-auto p-10 mx-auto my-10 relative">
-      <h2 className="text-3xl font-semibold text-[#00378A]  mb-8 border-b-4 border-[#00378A] inline-block pb-1">
+      <h2 className="text-3xl font-semibold text-[#00378A] mb-8 border-b-4 border-[#00378A] inline-block pb-1">
         Mon compte
       </h2>
       <form onSubmit={handleSubmit}>
@@ -169,6 +180,17 @@ const MonCompte = () => {
           Enregistrer
         </button>
       </form>
+
+      {/* Affichage du message de succès ou d'erreur */}
+      {message && (
+        <div
+          className={`mt-6 p-4 text-center font-semibold ${
+            messageType === 'success' ? 'text-green-700 bg-green-200' : 'text-red-700 bg-red-200'
+          } rounded-lg`}
+        >
+          {message}
+        </div>
+      )}
     </div>
   );
 };

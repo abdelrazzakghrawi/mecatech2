@@ -75,8 +75,9 @@ const LoginClient = ({ isOpen, closeModal, openRegisterModal }) => {
   
       // Appeler la fonction `login` avec tous les paramètres nécessaires
       login(jwtToken, username, role, _id); 
-  
-      navigate('/'); // Redirection après connexion réussie
+      localStorage.setItem('authToken', res.data.token);
+      navigate('/');
+       // Redirection après connexion réussie
     } catch (error) {
       console.error('Error during Google login:', error);
       setError("Erreur lors de l'authentification avec Google. Veuillez réessayer.");

@@ -1,30 +1,17 @@
-const axios = require('axios');
+const jwt = require('jsonwebtoken');
 
-// Middleware d'authentification
-const auth = async (req, res, next) => {
-  try {
-    const token = req.header('Authorization')?.replace('Bearer ', '');
 
-    if (!token) {
-      return res.status(401).json({ error: 'No token provided.' });
-    }
+const authenticateToken = async (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
 
-    const response = await axios.get(process.env.AUTH_SERVICE_URL, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+  if (token == null) return res.sendStatus(401); // Si aucun token, renvoyer une erreur 401
 
-    console.log('Auth Response:', response.data); // Log pour vérifier la réponse
-    req.user = response.data;
-
-    if (!req.user || !req.user._id) {
-      return res.status(401).json({ error: 'Invalid user data.' });
-    }
-
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403); // Si le token n'est pas valide, renvoyer une erreur 403
+    req.user = user;
     next();
-  } catch (error) {
-    console.error('Auth Error:', error.message || error.response?.data || error); // Log détaillé
-    res.status(401).json({ error: 'Unauthorized' });
-  }
+  });
 };
 
-module.exports = auth;
+module.exports = { authenticateToken };
