@@ -5,6 +5,7 @@ import { format, isSameDay } from 'date-fns';
 import { Hourglass, CircleX, CircleCheck } from 'lucide-react';
 import axios from 'axios';
 import "./Rendez.css";
+import Swal from 'sweetalert2';
 
 const Rendezvous = () => {
   const [date, setDate] = useState(new Date());
@@ -50,6 +51,13 @@ const Rendezvous = () => {
     try {
       await axios.put(`http://localhost:3007/api/reservations/${id}/status`, { status: 'Confirmed' });
       fetchReservations();
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "le reservation est Confirmer 👌",
+        showConfirmButton: false,
+        timer: 1500
+      });
     } catch (error) {
       console.error('Error confirming reservation:', error);
       setError("Failed to confirm reservation. Please try again.");
@@ -60,6 +68,13 @@ const Rendezvous = () => {
     try {
       await axios.put(`http://localhost:3007/api/reservations/${id}/status`, { status: 'Cancelled' });
       fetchReservations();
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "le reservation est Annuler ✖",
+        showConfirmButton: false,
+        timer: 1500
+      });
     } catch (error) {
       console.error('Error cancelling reservation:', error);
       setError("Failed to cancel reservation. Please try again.");
