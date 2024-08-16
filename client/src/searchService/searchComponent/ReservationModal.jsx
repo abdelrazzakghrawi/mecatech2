@@ -1,18 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Calendar from 'react-calendar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 import 'react-calendar/dist/Calendar.css';
-import { faTimes, faCalendarAlt, faCheckCircle, faExclamationTriangle, faClock } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faCalendarAlt, faCheckCircle, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 
+dayjs.extend(customParseFormat);
 dayjs.extend(isBetween);
 
 const ReservationModal = ({ mechanicId, clientId, handleClose }) => {
   const [planning, setPlanning] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedTimeSlot, setSelectedTimeSlot] = useState('');
+  const [selectedTime, setSelectedTime] = useState('');
   const [error, setError] = useState('');
   const [message, setMessage] = useState({ type: '', content: '' });
 
@@ -28,35 +30,108 @@ const ReservationModal = ({ mechanicId, clientId, handleClose }) => {
       dayjs(date).isBetween(dayjs(unavailability.debut), dayjs(unavailability.fin), null, '[]')
     );
   };
-  const   
-  frenchLocale = {
-   name: 'fr',
-   weekdaysShort: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'], // Capitalized first letters
-   // ... other properties (months, etc.)
- };
- 
- dayjs.locale(frenchLocale);
 
- const isWorkingDay = (date) => {
-   if (!planning) return false;
-   const dayOfWeek = dayjs(date).format('ddd'); // Formatted in French now
-   console.log(dayOfWeek, planning.jours_travail);
-   return planning.jours_travail.includes(dayOfWeek);
- };
+  const frenchLocale = {
+    name: 'fr',
+    weekdaysShort: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
+  };
 
-  const handleReservation = () => {
-    if (!selectedDate || !selectedTimeSlot) {
-      setMessage({ type: 'error', content: 'Please select a date and time slot.' });
-      return;
+  dayjs.locale(frenchLocale);
+
+  const isWorkingDay = (date) => {
+    if (!planning) return false;
+    const dayOfWeek = dayjs(date).format('ddd');
+    return planning.jours_travail.includes(dayOfWeek);
+  };
+
+  const parseTime = (timeString) => {
+    const time = dayjs(timeString, 'HH:mm');
+    if (!time.isValid()) {
+      console.error(`Invalid time format detected: ${timeString}`);
+      return null;
+    }
+    return time;
+  };
+  
+  const generateTimeOptions = useMemo(() => {
+    if (!planning || !selectedDate) return [];
+  
+    const times = [];
+  
+    const morningStart = parseTime(planning.horaires.matin.debut);
+    const morningEnd = parseTime(planning.horaires.matin.fin);
+    const afternoonStart = parseTime(planning.horaires.apres_midi.debut);
+    const afternoonEnd = parseTime(planning.horaires.apres_midi.fin);
+  
+    if (!morningStart || !morningEnd || !afternoonStart || !afternoonEnd) {
+      setError('Invalid time format in planning data.');
+      return [];
     }
   
+    let current = morningStart;
+  
+    while (current.isBefore(morningEnd) || current.isSame(morningEnd)) {
+      times.push(current.format('HH:mm'));
+      current = current.add(30, 'minute');
+    }
+  
+    current = afternoonStart;
+    while (current.isBefore(afternoonEnd) || current.isSame(afternoonEnd)) {
+      times.push(current.format('HH:mm'));
+      current = current.add(30, 'minute');
+    }
+  
+    return times;
+  }, [planning, selectedDate]);
+  
+  const isWithinWorkingHours = (time) => {
+    if (!planning) return false;
+    const timeObj = dayjs(time, 'HH:mm');
+    const morningStart = dayjs(planning.horaires.matin.debut, 'HH:mm');
+    const morningEnd = dayjs(planning.horaires.matin.fin, 'HH:mm');
+    const afternoonStart = dayjs(planning.horaires.apres_midi.debut, 'HH:mm');
+    const afternoonEnd = dayjs(planning.horaires.apres_midi.fin, 'HH:mm');
+
+    return (
+      (timeObj.isAfter(morningStart) || timeObj.isSame(morningStart)) &&
+      (timeObj.isBefore(morningEnd) || timeObj.isSame(morningEnd)) ||
+      (timeObj.isAfter(afternoonStart) || timeObj.isSame(afternoonStart)) &&
+      (timeObj.isBefore(afternoonEnd) || timeObj.isSame(afternoonEnd))
+    );
+  };
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+    setSelectedTime(''); // Reset selected time when date changes
+  };
+
+  const handleReservation = () => {
+    if (!selectedDate || !selectedTime) {
+      setMessage({ type: 'error', content: 'Please select a date and time.' });
+      return;
+    }
+
+    // Combine selected date and time
+    const combinedDateTime = dayjs(selectedDate)
+      .hour(dayjs(selectedTime, 'HH:mm').hour())
+      .minute(dayjs(selectedTime, 'HH:mm').minute())
+      .second(0)
+      .millisecond(0)
+      .toISOString();  // Convert to the desired ISO format
+
+    // Determine if the time is in the morning or afternoon
+    const morningStart = dayjs(planning.horaires.matin.debut, 'HH:mm');
+    const morningEnd = dayjs(planning.horaires.matin.fin, 'HH:mm');
+    const timeSlot = dayjs(selectedTime, 'HH:mm').isBetween(morningStart, morningEnd, null, '[]') ? 'matin' : 'apres_midi';
+
     const reservationData = {
       mecanique_id: mechanicId,
       client_id: clientId,
-      date: dayjs(selectedDate).format('YYYY-MM-DD'),
-      time_slot: selectedTimeSlot,
+      date: combinedDateTime,  // Use combined date and time
+      time_slot: timeSlot,      // Add the time slot (morning or afternoon)
+      status: 'Pending'
     };
-  
+
     axios.post('http://localhost:3007/api/reservations', reservationData)
       .then(() => {
         setMessage({ type: 'success', content: 'Reservation successful!' });
@@ -71,35 +146,6 @@ const ReservationModal = ({ mechanicId, clientId, handleClose }) => {
       });
   };
 
-  const renderTimeSlots = () => {
-    if (!planning || !selectedDate) return null;
-
-    const renderTimeSlot = (slot, label) => (
-      <button
-        className={`p-4 border-2 rounded-lg transition-colors duration-300 flex items-center justify-center ${
-          selectedTimeSlot === slot 
-            ? 'border-green-500 bg-green-100 text-green-700' 
-            : 'border-gray-300 hover:border-green-300'
-        }`}
-        onClick={() => setSelectedTimeSlot(slot)}
-        disabled={isUnavailableDate(selectedDate)}
-      >
-        <FontAwesomeIcon icon={faClock} className="mr-2" />
-        <span>{label}</span>
-        <span className="text-xs ml-2">
-          ({planning.horaires[slot].debut} - {planning.horaires[slot].fin})
-        </span>
-      </button>
-    );
-
-    return (
-      <div className="grid grid-cols-2 gap-4 mt-4">
-        {renderTimeSlot('matin', 'Matin')}
-        {renderTimeSlot('apres_midi', 'Après-midi')}
-      </div>
-    );
-  };
-
   if (!planning) {
     return (
       <div className="fixed inset-0 bg-gray-900 bg-opacity-80 flex items-center justify-center z-[1000]">
@@ -112,18 +158,18 @@ const ReservationModal = ({ mechanicId, clientId, handleClose }) => {
 
   return (
     <div className="fixed inset-0 bg-gray-900 bg-opacity-80 flex items-center justify-center z-[1000]">
-      <div className="bg-white rounded-lg shadow-2xl w-11/12 md:w-2/3 lg:w-1/2 max-h-[90vh] overflow-y-auto relative">
+      <div className="bg-white rounded-lg shadow-2xl w-11/12 md:w-3/4 lg:w-2/3 max-h-[90vh] overflow-y-auto relative">
         <button className="absolute top-4 right-4 text-gray-600 hover:text-gray-900" onClick={handleClose}>
           <FontAwesomeIcon icon={faTimes} size="lg" />
         </button>
         <div className="p-6">
           <h3 className="text-2xl font-bold mb-6 text-gray-800">Réserver une place</h3>
-          <div className="space-y-6">
-            <div>
+          <div className="flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-6">
+            <div className="w-full md:w-1/2">
               <label className="block text-gray-700 font-semibold mb-2">Sélectionnez une date:</label>
               <Calendar
                 value={selectedDate}
-                onChange={setSelectedDate}
+                onChange={handleDateChange}
                 tileClassName={({ date, view }) => {
                   if (view === 'month') {
                     if (isUnavailableDate(date)) return 'bg-red-200 text-red-700';
@@ -131,27 +177,46 @@ const ReservationModal = ({ mechanicId, clientId, handleClose }) => {
                   }
                   return '';
                 }}
+                className="w-full shadow-md rounded-lg"
               />
             </div>
-            <div>
-              <label className="block text-gray-700 font-semibold mb-2">Sélectionnez un créneau horaire:</label>
-              {renderTimeSlots()}
+            <div className="w-full md:w-1/2">
+              <label className="block text-gray-700 font-semibold mb-2">Sélectionnez une heure:</label>
+              {selectedDate ? (
+                <div className="grid grid-cols-4 gap-2">
+                  {generateTimeOptions.map((time) => (
+                    <button
+                      key={time}
+                      className={`p-2 rounded-lg transition-colors duration-300 ${
+                        selectedTime === time
+                          ? 'bg-[#1FA9B6] text-white'
+                          : isWithinWorkingHours(time)
+                          ? 'bg-green-100 text-green-700 hover:bg-green-200'
+                          : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                      }`}
+                      onClick={() => setSelectedTime(time)}
+                      disabled={!isWithinWorkingHours(time)}
+                    >
+                      {time}
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-gray-500">Please select a date first.</p>
+              )}
             </div>
-            {message.content && (
-              <div className={`text-center p-3 rounded-lg ${
-                message.type === 'error' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'
-              }`}>
-                <FontAwesomeIcon icon={message.type === 'error' ? faExclamationTriangle : faCheckCircle} className="mr-2" />
-                {message.content}
-              </div>
-            )}
+          </div>
+          {message.content && (
+            <div className={`text-center p-4 mt-6 rounded-lg text-white ${message.type === 'error' ? 'bg-red-500' : 'bg-green-500'}`}>
+              {message.content}
+            </div>
+          )}
+          <div className="mt-6 text-right">
             <button
-              className="w-full bg-[#1FA9B6] text-white py-3 rounded-lg hover:bg-[#178e9a] transition-colors duration-300 flex items-center justify-center"
+              className="px-6 py-3 bg-[#1FA9B6] text-white font-semibold rounded-lg shadow-md hover:bg-[#168D99] transition-colors duration-300"
               onClick={handleReservation}
-              disabled={!selectedDate || !selectedTimeSlot}
             >
-              <FontAwesomeIcon icon={faCalendarAlt} className="mr-2" />
-              Réserver
+              Confirmer la réservation
             </button>
           </div>
         </div>
