@@ -167,11 +167,12 @@ const ReservationModal = ({ mechanicId, clientId, handleClose }) => {
           <div className="flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-6">
             <div className="w-full md:w-1/2">
               <label className="block text-gray-700 font-semibold mb-2">Sélectionnez une date:</label>
-              <Calendar
+                            <Calendar
                 value={selectedDate}
                 onChange={handleDateChange}
                 tileClassName={({ date, view }) => {
                   if (view === 'month') {
+                    if (dayjs(date).isSame(selectedDate, 'day')) return 'bg-blue-200 text-blue-700'; // Highlight the selected date
                     if (isUnavailableDate(date)) return 'bg-red-200 text-red-700';
                     if (isWorkingDay(date)) return 'bg-green-200 text-green-700';
                   }
@@ -183,24 +184,25 @@ const ReservationModal = ({ mechanicId, clientId, handleClose }) => {
             <div className="w-full md:w-1/2">
               <label className="block text-gray-700 font-semibold mb-2">Sélectionnez une heure:</label>
               {selectedDate ? (
-                <div className="grid grid-cols-4 gap-2">
-                  {generateTimeOptions.map((time) => (
-                    <button
-                      key={time}
-                      className={`p-2 rounded-lg transition-colors duration-300 ${
-                        selectedTime === time
-                          ? 'bg-[#1FA9B6] text-white'
-                          : isWithinWorkingHours(time)
-                          ? 'bg-green-100 text-green-700 hover:bg-green-200'
-                          : 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                      }`}
-                      onClick={() => setSelectedTime(time)}
-                      disabled={!isWithinWorkingHours(time)}
-                    >
-                      {time}
-                    </button>
-                  ))}
-                </div>
+               <div className="grid grid-cols-4 gap-2">
+                    {generateTimeOptions.map((time) => (
+                      <button
+                        key={time}
+                        className={`p-2 rounded-lg transition-colors duration-300 ${
+                          selectedTime === time
+                            ? 'bg-[#1FA9B6] text-white' // Highlight the selected time
+                            : isWithinWorkingHours(time)
+                            ? 'bg-green-100 text-green-700 hover:bg-green-200'
+                            : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                        }`}
+                        onClick={() => setSelectedTime(time)}
+                        disabled={!isWithinWorkingHours(time)}
+                      >
+                        {time}
+                      </button>
+                    ))}
+                  </div>
+             
               ) : (
                 <p className="text-gray-500">Please select a date first.</p>
               )}
