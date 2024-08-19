@@ -11,4 +11,7 @@ router.get('/', getAllPlannings);
 router.post('/planning', createPlanning);
 router.put('/planning/:mecanique_id', updatePlanning);
 
+
+
+
 module.exports = router;

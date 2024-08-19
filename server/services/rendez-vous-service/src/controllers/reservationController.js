@@ -186,12 +186,31 @@ const updateReservationStatus = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+const getReservationsByClientId = async (req, res) => {
+  try {
+    const { client_id } = req.params;
+
+    // Récupérer toutes les réservations par client_id
+    const reservations = await Reservation.find({ client_id });
+
+    if (reservations.length === 0) {
+      return res.status(404).json({ message: 'Aucune réservation trouvée pour ce client.' });
+    }
+
+    res.status(200).json({ reservations });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 
 module.exports = {
   createReservation,
   updateReservation,
   deleteReservation, 
   getReservationByMecaniqueId,
-  updateReservationStatus // Export the new function
+  updateReservationStatus,
+  getReservationsByClientId
+   // Export the new function
 };
 
