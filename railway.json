@@ -1,6 +1,6 @@
 {
     "build": {
-      "dockerfilePath": "/mecatech2/docker-compose.yml"
+      "dockerComposePath": "docker-compose.yml"
     }
   }
   
