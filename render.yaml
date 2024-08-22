@@ -43,7 +43,7 @@ services:
     name: client-service
     env: node
     buildCommand: cd server/services/client-service && npm install
-    startCommand: cd server/services/client-service && node server.js
+    startCommand: cd server/services/client-service && npm start
     envVars:
       - key: PORT
         value: 5007
@@ -60,7 +60,7 @@ services:
     name: mecanique-service
     env: node
     buildCommand: cd server/services/mecanique-service && npm install
-    startCommand: cd server/services/mecanique-service && node server.js
+    startCommand: cd server/services/mecanique-service && npm start
     envVars:
       - key: PORT
         value: 5001
