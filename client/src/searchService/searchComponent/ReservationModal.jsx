@@ -1,13 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import Calendar from 'react-calendar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import dayjs from 'dayjs';
+import isBetween from 'dayjs/plugin/isBetween';
+import 'react-calendar/dist/Calendar.css';
 import { faTimes, faCalendarAlt, faCheckCircle, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+
+dayjs.extend(customParseFormat);
+dayjs.extend(isBetween);
 
 const ReservationModal = ({ mechanicId, clientId, handleClose }) => {
   const [planning, setPlanning] = useState(null);
-  const [selectedDate, setSelectedDate] = useState('');
-  const [selectedTimeSlot, setSelectedTimeSlot] = useState('');
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedTime, setSelectedTime] = useState('');
   const [error, setError] = useState('');
   const [message, setMessage] = useState({ type: '', content: '' });
 
@@ -17,19 +24,114 @@ const ReservationModal = ({ mechanicId, clientId, handleClose }) => {
       .catch(() => setError('Failed to load planning data.'));
   }, [mechanicId]);
 
-  const handleReservation = () => {
-    if (!selectedDate || !selectedTimeSlot) {
-      setMessage({ type: 'error', content: 'Please select a date and time slot.' });
-      return;
+  const isUnavailableDate = (date) => {
+    if (!planning) return false;
+    return planning.indisponibilites.some(unavailability =>
+      dayjs(date).isBetween(dayjs(unavailability.debut), dayjs(unavailability.fin), null, '[]')
+    );
+  };
+
+  const frenchLocale = {
+    name: 'fr',
+    weekdaysShort: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
+  };
+
+  dayjs.locale(frenchLocale);
+
+  const isWorkingDay = (date) => {
+    if (!planning) return false;
+    const dayOfWeek = dayjs(date).format('ddd');
+    return planning.jours_travail.includes(dayOfWeek);
+  };
+
+  const parseTime = (timeString) => {
+    const time = dayjs(timeString, 'HH:mm');
+    if (!time.isValid()) {
+      console.error(`Invalid time format detected: ${timeString}`);
+      return null;
+    }
+    return time;
+  };
+  
+  const generateTimeOptions = useMemo(() => {
+    if (!planning || !selectedDate) return [];
+  
+    const times = [];
+  
+    const morningStart = parseTime(planning.horaires.matin.debut);
+    const morningEnd = parseTime(planning.horaires.matin.fin);
+    const afternoonStart = parseTime(planning.horaires.apres_midi.debut);
+    const afternoonEnd = parseTime(planning.horaires.apres_midi.fin);
+  
+    if (!morningStart || !morningEnd || !afternoonStart || !afternoonEnd) {
+      setError('Invalid time format in planning data.');
+      return [];
     }
   
+    let current = morningStart;
+  
+    while (current.isBefore(morningEnd) || current.isSame(morningEnd)) {
+      times.push(current.format('HH:mm'));
+      current = current.add(30, 'minute');
+    }
+  
+    current = afternoonStart;
+    while (current.isBefore(afternoonEnd) || current.isSame(afternoonEnd)) {
+      times.push(current.format('HH:mm'));
+      current = current.add(30, 'minute');
+    }
+  
+    return times;
+  }, [planning, selectedDate]);
+  
+  const isWithinWorkingHours = (time) => {
+    if (!planning) return false;
+    const timeObj = dayjs(time, 'HH:mm');
+    const morningStart = dayjs(planning.horaires.matin.debut, 'HH:mm');
+    const morningEnd = dayjs(planning.horaires.matin.fin, 'HH:mm');
+    const afternoonStart = dayjs(planning.horaires.apres_midi.debut, 'HH:mm');
+    const afternoonEnd = dayjs(planning.horaires.apres_midi.fin, 'HH:mm');
+
+    return (
+      (timeObj.isAfter(morningStart) || timeObj.isSame(morningStart)) &&
+      (timeObj.isBefore(morningEnd) || timeObj.isSame(morningEnd)) ||
+      (timeObj.isAfter(afternoonStart) || timeObj.isSame(afternoonStart)) &&
+      (timeObj.isBefore(afternoonEnd) || timeObj.isSame(afternoonEnd))
+    );
+  };
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+    setSelectedTime(''); // Reset selected time when date changes
+  };
+
+  const handleReservation = () => {
+    if (!selectedDate || !selectedTime) {
+      setMessage({ type: 'error', content: 'Please select a date and time.' });
+      return;
+    }
+
+    // Combine selected date and time
+    const combinedDateTime = dayjs(selectedDate)
+      .hour(dayjs(selectedTime, 'HH:mm').hour())
+      .minute(dayjs(selectedTime, 'HH:mm').minute())
+      .second(0)
+      .millisecond(0)
+      .toISOString();  // Convert to the desired ISO format
+
+    // Determine if the time is in the morning or afternoon
+    const morningStart = dayjs(planning.horaires.matin.debut, 'HH:mm');
+    const morningEnd = dayjs(planning.horaires.matin.fin, 'HH:mm');
+    const timeSlot = dayjs(selectedTime, 'HH:mm').isBetween(morningStart, morningEnd, null, '[]') ? 'matin' : 'apres_midi';
+
     const reservationData = {
       mecanique_id: mechanicId,
       client_id: clientId,
-      date: selectedDate,
-      time_slot: selectedTimeSlot,
+      date: combinedDateTime,  // Use combined date and time
+      time_slot: timeSlot,      // Add the time slot (morning or afternoon)
+      status: 'Pending'
     };
-  
+
     axios.post('http://localhost:3007/api/reservations', reservationData)
       .then(() => {
         setMessage({ type: 'success', content: 'Reservation successful!' });
@@ -44,104 +146,81 @@ const ReservationModal = ({ mechanicId, clientId, handleClose }) => {
       });
   };
 
-  const renderWorkingDays = () => {
-    const daysOfWeek = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
-    return daysOfWeek.map(day => (
-      <div
-        key={day}
-        className={`px-4 py-2 rounded-lg text-white font-semibold ${
-          planning.jours_travail.includes(day) ? 'bg-green-500' : 'bg-gray-300'
-        }`}
-      >
-        {day}
+  if (!planning) {
+    return (
+      <div className="fixed inset-0 bg-gray-900 bg-opacity-80 flex items-center justify-center z-[1000]">
+        <div className="bg-white rounded-lg shadow-2xl p-6">
+          <p className="text-gray-700">Chargement des données de planification...</p>
+        </div>
       </div>
-    ));
-  };
-
-  const renderUnavailability = () => {
-    return planning.indisponibilites.map((unavailability, index) => (
-      <div
-        key={index}
-        className="text-red-500 font-semibold text-sm mt-2 p-2 border-2 border-red-500 rounded-lg bg-red-100"
-      >
-        Indisponible du {dayjs(unavailability.debut).format('DD/MM/YYYY')} au {dayjs(unavailability.fin).format('DD/MM/YYYY')}
-      </div>
-    ));
-  };
+    );
+  }
 
   return (
     <div className="fixed inset-0 bg-gray-900 bg-opacity-80 flex items-center justify-center z-[1000]">
-      <div className="bg-white rounded-lg shadow-2xl w-11/12 md:w-2/3 lg:w-1/2 overflow-hidden relative">
+      <div className="bg-white rounded-lg shadow-2xl w-11/12 md:w-3/4 lg:w-2/3 max-h-[90vh] overflow-y-auto relative">
         <button className="absolute top-4 right-4 text-gray-600 hover:text-gray-900" onClick={handleClose}>
           <FontAwesomeIcon icon={faTimes} size="lg" />
         </button>
         <div className="p-6">
-          <h3 className="text-2xl font-bold mb-6">Réserver une place</h3>
-          {planning ? (
-            <div className="space-y-6">
-              <div>
-                <label className="block text-gray-700 font-semibold mb-2">Jours de travail:</label>
-                <div className="flex justify-between space-x-2">
-                  {renderWorkingDays()}
-                </div>
-              </div>
-              <div>
-                <label className="block text-gray-700 font-semibold mb-2">Indisponibilités:</label>
-                {renderUnavailability().length > 0 ? (
-                  renderUnavailability()
-                ) : (
-                  <p className="text-gray-500">Pas d'indisponibilités prévues.</p>
-                )}
-              </div>
-              <div>
-                <label className="block text-gray-700 font-semibold mb-2">Date:</label>
-                <input
-                  type="date"
-                  value={selectedDate}
-                  onChange={(e) => setSelectedDate(e.target.value)}
-                  className="w-full border-2 border-gray-300 rounded-lg px-3 py-2 focus:border-[#1FA9B6] transition duration-300"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700 font-semibold mb-2">Heure:</label>
-                <div className="grid grid-cols-2 gap-4">
-                  <button
-                    className={`p-4 border-2 rounded-lg transition-colors duration-300 ${
-                      selectedTimeSlot === 'matin' ? 'border-green-500 bg-green-100' : 'border-gray-300'
-                    }`}
-                    onClick={() => setSelectedTimeSlot('matin')}
-                  >
-                    Matin ({planning.horaires.matin.debut} - {planning.horaires.matin.fin})
-                  </button>
-                  <button
-                    className={`p-4 border-2 rounded-lg transition-colors duration-300 ${
-                      selectedTimeSlot === 'apres_midi' ? 'border-green-500 bg-green-100' : 'border-gray-300'
-                    }`}
-                    onClick={() => setSelectedTimeSlot('apres_midi')}
-                  >
-                    Après-midi ({planning.horaires.apres_midi.debut} - {planning.horaires.apres_midi.fin})
-                  </button>
-                </div>
-              </div>
-              {message.content && (
-                <div className={`text-center p-3 rounded-lg ${
-                  message.type === 'error' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'
-                }`}>
-                  <FontAwesomeIcon icon={message.type === 'error' ? faExclamationTriangle : faCheckCircle} className="mr-2" />
-                  {message.content}
-                </div>
-              )}
-              <button
-                className="w-full bg-[#1FA9B6] text-white py-3 rounded-lg hover:bg-[#178e9a] transition-colors duration-300 flex items-center justify-center"
-                onClick={handleReservation}
-              >
-                <FontAwesomeIcon icon={faCalendarAlt} className="mr-2" />
-                Réserver
-              </button>
+          <h3 className="text-2xl font-bold mb-6 text-gray-800">Réserver une place</h3>
+          <div className="flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-6">
+            <div className="w-full md:w-1/2">
+              <label className="block text-gray-700 font-semibold mb-2">Sélectionnez une date:</label>
+                            <Calendar
+                value={selectedDate}
+                onChange={handleDateChange}
+                tileClassName={({ date, view }) => {
+                  if (view === 'month') {
+                    if (dayjs(date).isSame(selectedDate, 'day')) return 'bg-blue-200 text-blue-700'; // Highlight the selected date
+                    if (isUnavailableDate(date)) return 'bg-red-200 text-red-700';
+                    if (isWorkingDay(date)) return 'bg-green-200 text-green-700';
+                  }
+                  return '';
+                }}
+                className="w-full shadow-md rounded-lg"
+              />
             </div>
-          ) : (
-            <p className="text-gray-500">Chargement des données de planification...</p>
+            <div className="w-full md:w-1/2">
+              <label className="block text-gray-700 font-semibold mb-2">Sélectionnez une heure:</label>
+              {selectedDate ? (
+               <div className="grid grid-cols-4 gap-2">
+                    {generateTimeOptions.map((time) => (
+                      <button
+                        key={time}
+                        className={`p-2 rounded-lg transition-colors duration-300 ${
+                          selectedTime === time
+                            ? 'bg-[#1FA9B6] text-white' // Highlight the selected time
+                            : isWithinWorkingHours(time)
+                            ? 'bg-green-100 text-green-700 hover:bg-green-200'
+                            : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                        }`}
+                        onClick={() => setSelectedTime(time)}
+                        disabled={!isWithinWorkingHours(time)}
+                      >
+                        {time}
+                      </button>
+                    ))}
+                  </div>
+             
+              ) : (
+                <p className="text-gray-500">Please select a date first.</p>
+              )}
+            </div>
+          </div>
+          {message.content && (
+            <div className={`text-center p-4 mt-6 rounded-lg text-white ${message.type === 'error' ? 'bg-red-500' : 'bg-green-500'}`}>
+              {message.content}
+            </div>
           )}
+          <div className="mt-6 text-right">
+            <button
+              className="px-6 py-3 bg-[#1FA9B6] text-white font-semibold rounded-lg shadow-md hover:bg-[#168D99] transition-colors duration-300"
+              onClick={handleReservation}
+            >
+              Confirmer la réservation
+            </button>
+          </div>
         </div>
       </div>
     </div>

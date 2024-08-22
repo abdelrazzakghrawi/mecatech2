@@ -10,11 +10,16 @@ import Footer from "../Espace-Mecano/Footer/Footer";
 
 const DashboardClient = () => {
   const [selectedSection, setSelectedSection] = useState('monCompte');
+  const [profileImage, setProfileImage] = useState(null);  // State pour l'image de profil
+
+  const handleUpdateProfileImage = (newImage) => {
+    setProfileImage(newImage);  // Mise à jour de l'image de profil
+  };
 
   const renderContent = () => {
     switch (selectedSection) {
       case 'monCompte':
-        return <MonCompte />;
+        return <MonCompte onUpdateProfileImage={handleUpdateProfileImage} />;
       case 'rendezVous':
         return <MesRendezVous />;
       case 'vehicules':
@@ -36,6 +41,8 @@ const DashboardClient = () => {
           <Sidebar
             selectedSection={selectedSection}
             setSelectedSection={setSelectedSection}
+            profileImage={profileImage}  // Passer l'image de profil à la Sidebar
+            onUpdateProfileImage={handleUpdateProfileImage}  // Passer la fonction de mise à jour de l'image
           />
         </div>
         <main className="flex-1 p-6 overflow-y-auto">{renderContent()}</main>
