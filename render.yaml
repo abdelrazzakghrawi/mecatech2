@@ -87,8 +87,8 @@ services:
   - type: web
     name: frontend
     env: node
-    buildCommand: cd client && npm install && npm run build && npm install -g serve
-    startCommand: serve -s dist -l 5173
+    buildCommand: cd client && npm install && npm run build && snap install serve
+    startCommand: cd client && npm run dev 
     envVars:
       - key: REACT_APP_API_URL
         value: http://localhost:3003
