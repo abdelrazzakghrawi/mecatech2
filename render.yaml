@@ -88,7 +88,7 @@ services:
     name: frontend
     env: node
     buildCommand: cd client && npm install && npm run build
-    startCommand: cd client && serve -s dist -l 5173
+    startCommand: cd client && npm run dev 
     envVars:
       - key: REACT_APP_API_URL
         value: http://localhost:3003
