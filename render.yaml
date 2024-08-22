@@ -42,8 +42,8 @@ services:
   - type: web
     name: client-service
     env: node
-    buildCommand: cd server/services/client-service && npm install
-    startCommand: cd server/services/client-service && npm start
+    buildCommand: cd server/services/client_service && npm install
+    startCommand: cd server/services/client_service && npm start
     envVars:
       - key: PORT
         value: 5007
@@ -59,8 +59,8 @@ services:
   - type: web
     name: mecanique-service
     env: node
-    buildCommand: cd server/services/mecanique-service && npm install
-    startCommand: cd server/services/mecanique-service && npm start
+    buildCommand: cd server/services/mecanique_service && npm install
+    startCommand: cd server/services/mecanique_service && npm start
     envVars:
       - key: PORT
         value: 5001
