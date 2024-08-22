@@ -1,0 +1,9 @@
+{
+    "build": {
+      "dockerfile": "Dockerfile"
+    },
+    "deploy": {
+      "docker_compose_path": "docker-compose.yml"
+    }
+  }
+  
