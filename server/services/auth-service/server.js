@@ -19,7 +19,8 @@ app.use(cors({
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Méthodes autorisées
     credentials: true
   }));
- 
+  
+  
   app.use(express.json({ limit: '10mb' })); // Augmentez la taille selon vos besoins
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
