@@ -87,8 +87,8 @@ services:
   - type: web
     name: frontend
     env: node
-    buildCommand: cd client && npm install && npm run build && snap install serve
-    startCommand: cd client && npm run dev 
+    buildCommand: cd client && npm install && npm run build
+    startCommand: cd client && npm run build && npx vite preview --port 5173
     envVars:
       - key: REACT_APP_API_URL
         value: http://localhost:3003
