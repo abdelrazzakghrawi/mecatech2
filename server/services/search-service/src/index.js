@@ -9,7 +9,8 @@ const path = require('path');
 
 
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin: 'https://frontend-57c4.onrender.com'
+  
 };
 
 const app = express();
