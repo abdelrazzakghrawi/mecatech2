@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 
 const CitySelect = ({ onCityChange }) => {
   const [cities, setCities] = useState([]);
-
+  const searchServiceUrl = process.env.REACT_APP_SEARCH_SERVICE_URL || 'http://localhost:3003';
   useEffect(() => {
-    fetch('http://localhost:3003/api/villequartier/villes')
+    fetch(`${searchServiceUrl}/api/villequartier/villes`)
       .then(response => response.json())
       .then(data => setCities(data))
       .catch(error => console.error('Error fetching cities:', error));
