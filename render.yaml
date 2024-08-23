@@ -87,7 +87,7 @@ services:
   - type: web
     name: frontend
     env: node
-    buildCommand: cd client && npm install && npm run build
+    buildCommand: cd client && npm install -g serve && npm install && npm run build
     startCommand: cd client && npm run build && npx vite preview --port 5173
     envVars:
       - key: REACT_APP_API_URL
