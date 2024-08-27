@@ -28,8 +28,7 @@ const App = () => {
           {role === 'mecano' && (
             <Route path="/dashboard-mecano" element={<Espacemeca/>} />
           )}
-                      <Route path="/dashboard-mecano" element={<Espacemeca/>} />
-
+                
           {role === 'client' && (
             <Route path="/dashboard-client" element={<DashboardClient />} />
           )}
