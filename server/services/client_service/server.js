@@ -11,7 +11,7 @@ const app = express();
 const port = process.env.PORT || 5007;
 
 // Middlewares
-app.use(cors({ origin: '*' }));
+app.use(cors({ origin: 'https://mecatech2.vercel.app/' }));
 
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));

@@ -10,7 +10,7 @@ const app = express();
 const port = 5001;
 
 // Configuration de CORS
-app.use(cors({ origin: '*' }));
+app.use(cors({ origin: 'https://mecatech2.vercel.app/' }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static('uploads'));
