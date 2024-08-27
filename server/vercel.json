@@ -1,72 +1,12 @@
 {
-    "version": 2,
+    "version":2,
     "builds": [
-      {
-        "src": "server/services/search-service/index.js",
-        "use": "@vercel/node"
-      },
-      {
-        "src": "server/services/auth-service/server.js",
-        "use": "@vercel/node"
-      },
-      {
-        "src": "server/services/client_service/index.js",
-        "use": "@vercel/node"
-      },
-      {
-        "src": "server/services/mecanique_service/index.js",
-        "use": "@vercel/node"
-      },
-      {
-        "src": "server/services/rendez-vous-service/index.js",
-        "use": "@vercel/node"
-      },
-      {
-        "src": "client/package.json",
-        "use": "@vercel/static-build",
-        "config": {
-          "distDir": "build"
-        }
-      }
+      { "src": "*.js", "use": "@vercel/node" }
     ],
     "routes": [
-      {
-        "src": "/api/search/(.*)",
-        "dest": "/server/services/search-service/index.js"
-      },
-      {
-        "src": "/api/auth/(.*)",
-        "dest": "/server/services/auth-service/server.js"
-      },
-      {
-        "src": "/api/client/(.*)",
-        "dest": "/server/services/client_service/index.js"
-      },
-      {
-        "src": "/api/mecanique/(.*)",
-        "dest": "/server/services/mecanique_service/index.js"
-      },
-      {
-        "src": "/api/rendezvous/(.*)",
-        "dest": "/server/services/rendez-vous-service/index.js"
-      },
-      {
-        "src": "/(.*)",
-        "dest": "/client/$1"
-      }
-    ],
-    "env": {
-      "MONGO_URI": "mongodb+srv://arazzak2002:uPtejgtGR7C1Ujzn@cluster0.urne9v5.mongodb.net",
-      "JWT_SECRET": "your_jwt_secret",
-      "GOOGLE_CLIENT_ID": "961029157972-u1snijjdd7vpdqverlns8oiuj17f374d.apps.googleusercontent.com",
-      "GOOGLE_CLIENT_SECRET": "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",
-      "EMAIL_USER": "a.razzak2002@gmail.com",
-      "EMAIL_PASS": "rsfv ifzm yjfi kgpu",
-      "REACT_APP_SEARCH_SERVICE_URL": "https://mecatech2-server.vercel.app/api/search",
-      "REACT_APP_AUTH_SERVICE_URL": "https://mecatech2-server.vercel.app/api/auth",
-      "REACT_APP_CLIENT_SERVICE_URL": "https://mecatech2-server.vercel.app/api/client",
-      "REACT_APP_MECANIQUE_SERVICE_URL": "https://mecatech2-server.vercel.app/api/mecanique",
-      "REACT_APP_RENDEZ_VOUS_SERVICE_URL": "https://mecatech2-server.vercel.app/api/rendezvous"
-    }
+        {
+          "src": "/(.*)",
+          "dest": "/"
+        }
+    ]
   }
-  
