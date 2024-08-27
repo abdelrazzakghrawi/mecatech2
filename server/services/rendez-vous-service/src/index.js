@@ -9,7 +9,8 @@ const path = require('path');
 
 
 const corsOptions = {
-  origin: "http://localhost:5173", 
+  origin: '*', // For testing, allow all origins
+ optionsSuccessStatus: 200
 };
 
 const app = express();
