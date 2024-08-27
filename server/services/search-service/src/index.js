@@ -7,7 +7,7 @@ const path = require('path');
 const app = express();
 
 const corsOptions = {
-   origin: 'https://mecatech2.vercel.app/', // For testing, allow all origins
+   origin: '*', // For testing, allow all origins
   optionsSuccessStatus: 200
 };
 
