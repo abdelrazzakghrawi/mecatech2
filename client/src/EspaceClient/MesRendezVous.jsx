@@ -1,10 +1,13 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import RatingForm from '../Rating/RatingForm';
 
 const MesRendezVous = () => {
   const [filter, setFilter] = useState('tous');
   const [rendezVous, setRendezVous] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showRatingModal, setShowRatingModal] = useState(false);
+  const [selectedReservation, setSelectedReservation] = useState(null);
 
   const clientId = localStorage.getItem('_id');
 
@@ -47,13 +50,23 @@ const MesRendezVous = () => {
 
   const filterRendezVous = (rdv) => {
     const statusLower = rdv.status.toLowerCase();
+    const currentDate = new Date();
 
     if (filter === 'tous') return true;
-    if (filter === 'passés') return new Date(rdv.date) < new Date() && statusLower === 'confirmed';
+    if (filter === 'passés') return new Date(rdv.date) < currentDate && statusLower === 'confirmed';
     if (filter === 'en attente') return statusLower === 'pending';
     if (filter === 'confirmés') return statusLower === 'confirmed';
     if (filter === 'annulés') return statusLower === 'cancelled';
     return false;
+  };
+
+  const handleRateClick = (rdv) => {
+    setSelectedReservation(rdv);
+    setShowRatingModal(true);
+  };
+  const handleCloseRatingModal = () => {
+    setShowRatingModal(false);
+    setSelectedReservation(null);
   };
 
   return (
@@ -94,6 +107,7 @@ const MesRendezVous = () => {
               .filter(filterRendezVous)
               .map((rdv) => {
                 const statusLower = rdv.status.toLowerCase();
+                const isPast = new Date(rdv.date) < new Date();
 
                 let statusLabel;
                 switch (statusLower) {
@@ -127,7 +141,7 @@ const MesRendezVous = () => {
                     >
                       {statusLabel}
                     </span>
-                    {statusLower !== 'cancelled' && (
+                    {statusLower !== 'cancelled' && !isPast && (
                       <button
                         className="ml-4 px-4 py-2 bg-red-600 text-white rounded-lg"
                         onClick={() => handleCancel(rdv._id)}
@@ -135,11 +149,30 @@ const MesRendezVous = () => {
                         Annuler
                       </button>
                     )}
+                    {isPast && statusLower === 'confirmed' && (
+                      <button
+                        className="ml-4 px-4 py-2 bg-blue-600 text-white rounded-lg"
+                        onClick={() => handleRateClick(rdv)}
+                      >
+                        Rate this mecanique
+                      </button>
+                    )}
                   </li>
                 );
               })
           )}
         </ul>
+      )}
+
+{showRatingModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white rounded-lg overflow-hidden">
+            <RatingForm 
+              reservationId={selectedReservation._id} 
+              onClose={handleCloseRatingModal}
+            />
+          </div>
+        </div>
       )}
     </div>
   );

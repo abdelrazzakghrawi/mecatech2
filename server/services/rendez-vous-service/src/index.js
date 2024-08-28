@@ -26,6 +26,7 @@ app.use('/api/planning', require('./routes/planningRoutes'));
 app.use('/api/planning', require('./routes/planningRoutes'));
 app.use('/api', require('./routes/reservationRoutes'));
 app.use('/api/reservations', require('./routes/reservationRoutes'));
+app.use('/api',  require('./routes/ratingRoutes'));
 
 
 // Start server

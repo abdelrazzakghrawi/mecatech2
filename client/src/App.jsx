@@ -10,6 +10,7 @@ import VerifyEmail from './Auth/VerifyEmail/VerifyEmail';
 import Animation from "../src/Animation/Animation"
 
 import './App.css'
+import RatingForm from './Rating/RatingForm';
 
 Modal.setAppElement('#root');
 
@@ -25,6 +26,7 @@ const App = () => {
         <Animation/>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/rating" element={<RatingForm/>}/>
           {role === 'mecano' && (
             <Route path="/dashboard-mecano" element={<Espacemeca/>} />
           )}
