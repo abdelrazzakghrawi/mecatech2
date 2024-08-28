@@ -22,14 +22,12 @@ const MesRendezVous = () => {
   };
 
   const handleCancel = async (rdvId) => {
-    if (window.confirm('Êtes-vous sûr de vouloir annuler ce rendez-vous ?')) {
-      try {
-        await axios.delete(`http://localhost:3007/api/reservations/${rdvId}`);
-        setRendezVous(rendezVous.filter((rdv) => rdv._id !== rdvId));
-        alert('Rendez-vous annulé avec succès.');
-      } catch (error) {
-        console.error('Erreur lors de l\'annulation du rendez-vous', error);
-      }
+    try {
+      await axios.delete(`http://localhost:3007/api/reservations/${rdvId}`);
+      setRendezVous(rendezVous.filter((rdv) => rdv._id !== rdvId));
+      
+    } catch (error) {
+      console.error('Erreur lors de l\'annulation du rendez-vous', error);
     }
   };
 
@@ -57,7 +55,7 @@ const MesRendezVous = () => {
   };
 
   return (
-    <div className="bg-[#E9EAEB] shadow-lg rounded-xl w-[800px] h-[540px] p-6 mx-auto my-10 animate-fadeIn">
+    <div className="bg-[#E9EAEB] shadow-lg rounded-xl w-[900px] h-[580px] p-6 mx-auto my-10 animate-fadeIn">
       <h2 className="text-3xl font-bold text-[#00378A] mb-6 border-b-4 border-[#00378A] inline-block">
         Mes rendez-vous
       </h2>
