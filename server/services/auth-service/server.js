@@ -15,7 +15,7 @@ connectDB();
 const app = express();
 app.use(bodyParser.json());
 app.use(cors({
-    origin: '*', // Remplacez par l'URL de votre frontend si différent
+    origin: 'http://localhost:5173', // Remplacez par l'URL de votre frontend si différent
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Méthodes autorisées
     credentials: true
   }));
