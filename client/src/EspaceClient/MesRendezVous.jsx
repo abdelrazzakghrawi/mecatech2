@@ -4,13 +4,12 @@ import axios from 'axios';
 const MesRendezVous = () => {
   const [filter, setFilter] = useState('tous');
   const [rendezVous, setRendezVous] = useState([]);
-  const [loading, setLoading] = useState(true); // Indicateur de chargement
+  const [loading, setLoading] = useState(true);
 
-  // Récupérer l'ID du client connecté depuis le localStorage
   const clientId = localStorage.getItem('_id');
 
   const fetchRendezVous = async () => {
-    setLoading(true); // Commence le chargement
+    setLoading(true);
     try {
       const response = await axios.get(`http://localhost:3007/api/reservations/client/${clientId}`);
       const fetchedRendezVous = Array.isArray(response.data.reservations) ? response.data.reservations : [];
@@ -18,7 +17,19 @@ const MesRendezVous = () => {
     } catch (error) {
       console.error('Erreur lors du chargement des rendez-vous', error);
     } finally {
-      setLoading(false); // Terminer le chargement
+      setLoading(false);
+    }
+  };
+
+  const handleCancel = async (rdvId) => {
+    if (window.confirm('Êtes-vous sûr de vouloir annuler ce rendez-vous ?')) {
+      try {
+        await axios.delete(`http://localhost:3007/api/reservations/${rdvId}`);
+        setRendezVous(rendezVous.filter((rdv) => rdv._id !== rdvId));
+        alert('Rendez-vous annulé avec succès.');
+      } catch (error) {
+        console.error('Erreur lors de l\'annulation du rendez-vous', error);
+      }
     }
   };
 
@@ -28,18 +39,14 @@ const MesRendezVous = () => {
       return;
     }
 
-    // Charger les rendez-vous à l'ouverture du composant
     fetchRendezVous();
+    const intervalId = setInterval(fetchRendezVous, 30000);
 
-    // Rafraîchir les rendez-vous toutes les 30 secondes
-    const intervalId = setInterval(fetchRendezVous, 30000); // 30 secondes
-
-    return () => clearInterval(intervalId); // Nettoyer l'intervalle lorsque le composant est démonté
+    return () => clearInterval(intervalId);
   }, [clientId]);
 
-  // Fonction pour filtrer les rendez-vous en fonction du filtre sélectionné
   const filterRendezVous = (rdv) => {
-    const statusLower = rdv.status.toLowerCase(); // Normaliser le statut en minuscules
+    const statusLower = rdv.status.toLowerCase();
 
     if (filter === 'tous') return true;
     if (filter === 'passés') return new Date(rdv.date) < new Date() && statusLower === 'confirmed';
@@ -66,7 +73,7 @@ const MesRendezVous = () => {
                   ? 'bg-[#00378A] text-white'
                   : 'bg-[#E0E3E8] text-[#00378A] hover:bg-[#00378A] hover:text-white'
               }`}
-              onClick={() => setFilter(item.toLowerCase())} // Mettre à jour le filtre
+              onClick={() => setFilter(item.toLowerCase())}
             >
               {`Rendez-vous ${item}`}
             </button>
@@ -74,7 +81,6 @@ const MesRendezVous = () => {
         </div>
       </div>
 
-      {/* Affichage du spinner pendant le chargement */}
       {loading ? (
         <div className="flex justify-center items-center h-full">
           <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[#00378A]"></div>
@@ -85,7 +91,7 @@ const MesRendezVous = () => {
             <li className="text-gray-600">Aucun rendez-vous disponible dans votre historique</li>
           ) : (
             rendezVous
-              .filter(filterRendezVous) // Appliquer le filtre sélectionné
+              .filter(filterRendezVous)
               .map((rdv) => {
                 const statusLower = rdv.status.toLowerCase();
 
@@ -121,6 +127,14 @@ const MesRendezVous = () => {
                     >
                       {statusLabel}
                     </span>
+                    {statusLower !== 'cancelled' && (
+                      <button
+                        className="ml-4 px-4 py-2 bg-red-600 text-white rounded-lg"
+                        onClick={() => handleCancel(rdv._id)}
+                      >
+                        Annuler
+                      </button>
+                    )}
                   </li>
                 );
               })
