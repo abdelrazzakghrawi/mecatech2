@@ -24,11 +24,14 @@ app.use('/garage_images', express.static(path.join(__dirname, 'garage_images')))
 app.use('/meca_images', express.static(path.join(__dirname, 'random_image_meca')));
 
 // Routes
+app.use('/api', require('./routes/searchRoutes'));
 app.use('/api/auto', require('./routes/autoRoutes'));
 app.use('/api/search', require('./routes/searchRoutes'));
 app.use('/api/prestations', require('./routes/prestationsRoutes')); 
 app.use('/api/villequartier', require('./routes/villeQuartierRoutes'));
+;
 
 // Start server
 const PORT = process.env.PORT || 3003;
 app.listen(PORT, () => console.log(`Search Service running on port ${PORT}`));
+

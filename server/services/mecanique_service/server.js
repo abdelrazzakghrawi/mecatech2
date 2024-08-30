@@ -5,7 +5,9 @@ const multer = require('multer');
 const path = require('path');
 const { MongoClient } = require('mongodb');
 const cors = require('cors');
-
+const FormData = require('form-data');
+const fs = require('fs');
+const axios = require('axios');
 const app = express();
 const port = 5001;
 
@@ -13,18 +15,20 @@ const port = 5001;
 app.use(cors({ origin: 'http://localhost:5173' }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use('/uploads', express.static('uploads'));
+app.use('/garage_images', express.static('garage_images'));
 
-// Configuration de multer pour le stockage des fichiers
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads/');
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname));
+// Ensure the directory exists
+const ensureDirectoryExists = (dir) => {
+    if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+        console.log(`Directory ${dir} created.`);
+    } else {
+        console.log(`Directory ${dir} already exists.`);
     }
-});
-const upload = multer({ storage: storage });
+};
+
+// Configure multer for file upload (memory storage)
+const upload = multer({ storage: multer.memoryStorage() });
 
 // Connexion à MongoDB
 mongoose.connect(process.env.MONGO_URI, {
@@ -38,7 +42,7 @@ mongoose.connect(process.env.MONGO_URI, {
 
 // Définition du schéma et du modèle Mongoose pour Garage
 const GarageSchema = new mongoose.Schema({
-    _id: String, // userId devient l'_id principal
+    _id: String,
     Ville: String,
     nomGarage: String,
     Telephone: String,
@@ -51,7 +55,7 @@ const GarageSchema = new mongoose.Schema({
     Spécialités: String,
     pieceIdentite: String,
     diplome: String
-}, { _id: false }); // Désactive la génération automatique de l'_id
+}, { _id: false });
 
 const Garage = mongoose.model('mecanique_details', GarageSchema);
 
@@ -152,12 +156,48 @@ app.get('/api/prestations/:userId', async (req, res) => {
     }
 });
 
-// Route pour mettre à jour les informations initiales
 app.post('/api/initial-info', upload.single('image_path'), async (req, res) => {
+    console.log('Received upload request');
+    console.log('Request body:', req.body);
+    console.log('Uploaded file:', req.file);
     const { Ville, nomGarage, Telephone, Adresse, latitude, longitude, userId } = req.body;
-    const image_path = req.file ? req.file.path : '';
+    
+    if (!req.file) {
+        return res.status(400).json({ message: 'No file uploaded' });
+    }
+
+    const original_filename = req.file.originalname;
+    const dir = 'garage_images/';
+    ensureDirectoryExists(dir);
+    const image_path = path.join(dir, original_filename);
 
     try {
+        // Write the file to disk
+        fs.writeFileSync(image_path, req.file.buffer);
+        console.log("Image saved to:", image_path);
+
+        let imageUrl = '';
+
+        // Send the image to the external service
+        const formData = new FormData();
+        formData.append('image', fs.createReadStream(image_path), {
+            filename: original_filename,
+            contentType: req.file.mimetype
+        });
+
+        const response = await axios.post('http://search-service:3003/api/upload-garage-image', formData, {
+            headers: {
+                ...formData.getHeaders(),
+                'Content-Type': 'multipart/form-data'
+            },
+            maxContentLength: Infinity,
+            maxBodyLength: Infinity
+        });
+
+        // Store the image URL returned from the external service
+        imageUrl = response.data.imageUrl;
+
+        // Find and update the garage with the provided data
         const garage = await Garage.findOneAndUpdate(
             { _id: userId },
             {
@@ -167,14 +207,18 @@ app.post('/api/initial-info', upload.single('image_path'), async (req, res) => {
                 Adresse,
                 latitude,
                 longitude,
-                image_path
+                image_path // Store the path to the image
             },
             { upsert: true, new: true }
         );
 
-        res.status(201).json({ id: garage._id });
+        
+
+        // Respond with the updated garage information
+        res.status(201).json({ id: garage._id, imageUrl });
     } catch (error) {
-        res.status(500).json({ message: 'Erreur lors de la création des informations initiales', error });
+        console.error('Error:', error);
+        res.status(500).json({ message: 'Error creating initial information', error: error.message });
     }
 });
 

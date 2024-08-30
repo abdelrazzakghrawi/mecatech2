@@ -37,4 +37,16 @@ const searchMecanique = async (req, res) => {
   }
 };
 
-module.exports = { searchMecanique };
+const uploadGarageImage = (req, res) => {
+  console.log(req.file)
+
+  if (!req.file) {
+      return res.status(400).send('No file uploaded.');
+  }
+  
+  const imageUrl = `${req.protocol}://${req.get('host')}/garage_images/${req.file.filename}`;
+  res.status(200).json({ imageUrl: imageUrl });
+};
+
+
+module.exports = { searchMecanique , uploadGarageImage };
