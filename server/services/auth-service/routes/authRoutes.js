@@ -12,8 +12,14 @@ router.get('/verify-email/:userId', verifyEmail);
 
 router.route('/me')
 .get(protect, getUserProfile)
-.put(protect, updateUserProfile);
+.put(protect, upload.single('profileImage'), updateUserProfile); // Utilisation de `multer` ici
 router.get('/details/:userId', getUserById);
+router.get('/details/:userId', getUserById);
+router.get('/me/image', protect, (req, res) => {
+    res.json({ profileImage: req.user.profileImage });
+  });
+  
+
 
 
 module.exports = router;

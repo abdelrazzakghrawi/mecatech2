@@ -125,6 +125,35 @@ const getUserById = async (req, res) => {
 };
 
 // Mettre à jour les informations de l'utilisateur connecté
+const multer = require('multer');
+const path = require('path');
+
+// Configurez multer pour stocker les fichiers dans un dossier spécifique
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/profileImages');
+  },
+  filename: function (req, file, cb) {
+    cb(null, `${req.user.id}${path.extname(file.originalname)}`);
+  },
+});
+
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 1024 * 1024 * 5 }, // Limite de 5 Mo
+  fileFilter: (req, file, cb) => {
+    const filetypes = /jpeg|jpg|png/;
+    const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = filetypes.test(file.mimetype);
+
+    if (extname && mimetype) {
+      return cb(null, true);
+    } else {
+      cb(new Error('Images uniquement !'));
+    }
+  },
+});
+
 const updateUserProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
@@ -138,9 +167,8 @@ const updateUserProfile = async (req, res) => {
       user.telephone = req.body.telephone || user.telephone;
       user.adresse = req.body.adresse || user.adresse;
 
-      // Ajout de la gestion de l'image de profil
-      if (req.body.profileImage) {
-        user.profileImage = req.body.profileImage;
+      if (req.file) {
+        user.profileImage = `/uploads/profileImages/${req.file.filename}`;
       }
 
       if (req.body.motDePasse) {
@@ -156,6 +184,9 @@ const updateUserProfile = async (req, res) => {
     res.status(500).json({ message: 'Erreur lors de la mise à jour des informations utilisateur' });
   }
 };
+
+module.exports = { register, login, googleLogin, getUserProfile, updateUserProfile, verifyEmail, getUserById, upload };
+
 
 
 const verifyEmail = async (req, res) => {

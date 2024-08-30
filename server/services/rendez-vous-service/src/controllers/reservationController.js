@@ -2,6 +2,7 @@ const Planning = require('../models/planingModel');
 const Reservation = require('../models/reservationModel');
 const axios = require('axios');
 
+
 // Create a new reservation
 const createReservation = async (req, res) => {
   try {
